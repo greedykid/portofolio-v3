@@ -1,0 +1,52 @@
+---
+title: 'Panduan Lengkap Arsitektur MVC Laravel'
+description: 'Memahami pola Model-View-Controller (MVC) di Laravel, mulai dari routing, controller, model dengan Eloquent, hingga blade template.'
+date: '2025-09-10'
+tags: ['Laravel', 'PHP', 'MVC', 'Backend']
+---
+
+## Konsep MVC
+
+Laravel mengikuti pola **Model-View-Controller**. Pola ini memisahkan logika aplikasi menjadi tiga bagian yang saling terkait namun terdefinisi dengan jelas.
+
+- **Model** — berinteraksi dengan database (Eloquent ORM).
+- **View** — menampilkan data ke pengguna (Blade templates).
+- **Controller** — menangani permintaan dan mengoordinasikan Model & View.
+
+## Routing
+
+Setiap request masuk melewati route. Di `routes/web.php`:
+
+```php
+Route::get('/products', [ProductController::class, 'index']);
+```
+
+## Model & Migration
+
+```php
+php artisan make:model Product -m
+```
+
+Migration mendefinisikan skema tabel:
+
+```php
+Schema::create('products', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->text('description');
+    $table->decimal('price', 10, 2);
+    $table->timestamps();
+});
+```
+
+## Controller & Eloquent
+
+```php
+public function index()
+{
+    $products = Product::latest()->paginate(10);
+    return view('products.index', compact('products'));
+}
+```
+
+Pola MVC membuat kode lebih terstruktur, mudah dirawat, dan scalable — fondasi dari aplikasi e-commerce yang saya bangun seperti GEGARES.

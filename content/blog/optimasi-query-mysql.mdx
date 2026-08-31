@@ -1,0 +1,48 @@
+---
+title: 'Optimasi Query MySQL untuk Performa'
+description: 'Teknik mengoptimalkan query MySQL agar aplikasi lebih cepat — penggunaan index, EXPLAIN, dan strategi caching.'
+date: '2025-11-20'
+tags: ['MySQL', 'Database', 'Optimasi', 'SQL']
+---
+
+## Mengapa Performa Penting?
+
+Query yang lambat adalah penyebab utama aplikasi web terasa lambat. Optimasi database dapat meningkatkan kecepatan hingga puluhan kali lipat.
+
+## Gunakan Index
+
+Index mempercepat pencarian. Buat index pada kolom yang sering dipakai di `WHERE`, `JOIN`, dan `ORDER BY`:
+
+```sql
+CREATE INDEX idx_products_category ON products (category_id);
+```
+
+## Analisis dengan EXPLAIN
+
+**EXPLAIN** menunjukkan bagaimana database mengeksekusi query:
+
+```sql
+EXPLAIN SELECT * FROM products WHERE category_id = 5;
+```
+
+Perhatikan kolom `type` — idealnya `ALL` berubah menjadi `ref` atau `range` setelah indexing.
+
+## Hindari SELECT *
+
+Selalu sebutkan kolom yang dibutuhkan:
+
+```sql
+-- Kurang optimal
+SELECT * FROM orders;
+
+-- Lebih baik
+SELECT id, total, created_at FROM orders;
+```
+
+## Strategi Lain
+
+- Gunakan `LIMIT` untuk data besar.
+- Pilih tipe data yang tepat (jangan `VARCHAR` untuk angka).
+- Manfaatkan query caching dengan hati-hati.
+
+Optimasi query adalah keterampilan yang membedakan backend developer yang baik dari yang biasa.

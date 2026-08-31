@@ -1,0 +1,36 @@
+---
+title: 'Pengenalan Jaringan LAN dan WAN'
+description: 'Memahami konsep dasar Jaringan Area Lokal (LAN) dan Jaringan Area Luas (WAN), perbedaannya, serta konfigurasi dasar dengan Cisco Router.'
+date: '2025-08-15'
+tags: ['Networking', 'Cisco', 'LAN', 'WAN']
+---
+
+## Apa itu LAN?
+
+**Local Area Network (LAN)** adalah jaringan komputer yang menghubungkan perangkat dalam area terbatas — seperti kantor, sekolah, atau rumah. LAN memungkinkan perangkat saling berbagi data, printer, dan koneksi internet dengan kecepatan tinggi.
+
+## Apa itu WAN?
+
+**Wide Area Network (WAN)** adalah jaringan yang menjangkau area geografis yang luas, bahkan antar negara. Internet adalah contoh WAN terbesar. WAN biasanya menghubungkan beberapa LAN melalui router dan leased line.
+
+## Perbedaan Utama
+
+| Aspek | LAN | WAN |
+|-------|-----|-----|
+| Jangkauan | Terbatas (gedung/kampus) | Luas (kota/negara) |
+| Kecepatan | Sangat tinggi | Lebih rendah |
+| Kepemilikan | Pribadi | Dioperasikan ISP |
+
+## Konfigurasi Cisco
+
+Pada praktikum, kami menggunakan Cisco Router untuk menghubungkan dua LAN berbeda melalui routing statis.
+
+```bash
+Router> enable
+Router# configure terminal
+Router(config)# interface gigabitEthernet 0/0
+Router(config-if)# ip address 192.168.1.1 255.255.255.0
+Router(config-if)# no shutdown
+```
+
+Konsep ini penting untuk memahami bagaimana jaringan berskala besar bekerja — dasar dari setiap sistem IT modern.

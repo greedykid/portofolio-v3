@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 208 100% 96%; /* #e7f0ff */
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 5%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --foreground: 0 0% 5%;
+  }
+
+  .dark {
+    --background: 0 0% 5.5%; /* #0e0e0e */
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --foreground: 0 0% 98%;
+  }
+
+  * {
+    @apply border-transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Onest', ui-sans-serif, system-ui, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@font-face {
+  font-family: 'Brakle';
+  src: url('/fonts/Brakle-Medium.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Brakle';
+  src: url('/fonts/Brakle-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('/fonts/Onest/Onest-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('/fonts/Onest/Onest-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('/fonts/Onest/Onest-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('/fonts/Onest/Onest-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Onest';
+  src: url('/fonts/Onest/Onest-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer components {
+  .section-heading {
+    @apply text-neutral-900 dark:text-white text-3xl lg:text-4xl font-brak tracking-tight;
+  }
+
+  .brutal-card {
+    @apply relative overflow-hidden rounded-3xl border-2 border-white/10 bg-neutral-950 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] rtl:shadow-[-6px_6px_0px_0px_rgba(99,102,241,0.3)];
+  }
+}
+
+/* Wave animation for hero hand */
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(14deg); }
+  20% { transform: rotate(-8deg); }
+  30% { transform: rotate(14deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+  60% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.5);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.8);
+}
+
+/* Selection */
+::selection {
+  background: #6366f1;
+  color: #fff;
+}
