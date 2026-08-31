@@ -1,5 +1,4 @@
 import { getAllPosts } from '@/common/libs/blog';
-import { getGithubStats } from '@/common/libs/github';
 
 import Introduction from '@/modules/home/components/Introduction';
 import TechStack from '@/modules/home/components/TechStack';
@@ -17,11 +16,11 @@ const HomePage = async () => {
   const posts = await getAllPosts();
 
   return (
-    <div className="flex flex-col gap-6 lg:gap-7">
+    <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
       <Introduction />
       <TechStack />
       <AboutSection />
-      <Projects />
+      <Projects limit={6} />
       <BlogSection posts={posts} />
       <Statistics />
       <GitHubStats />

@@ -9,7 +9,6 @@ function ProjectCard({ project }: { project: Project }) {
     <div className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#10141f] p-5 md:p-6 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[8px_8px_0px_0px_rgba(99,102,241,0.35)] hover:border-indigo-400/60">
       {/* Top Media / Thumbnail Preview */}
       <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-neutral-900 border border-neutral-200 dark:border-white/10 mb-5">
-        {/* Aesthetic background graphic mockup */}
         <div
           className="absolute inset-0 flex flex-col items-center justify-center p-4 select-none"
           style={{
@@ -82,14 +81,18 @@ function ProjectCard({ project }: { project: Project }) {
   );
 }
 
-export default function Projects() {
+export default function Projects({ limit }: { limit?: number }) {
+  const displayedProjects = limit ? PROJECTS.slice(0, limit) : PROJECTS;
+
   return (
-    <div className="w-full">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
-        {PROJECTS.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
+    <section className="w-full">
+      <div className="max-w-[1280px] mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+          {displayedProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
