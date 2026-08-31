@@ -14,7 +14,7 @@ export default function Introduction() {
             />
           </div>
 
-          <div className="relative z-50 w-full">
+          <div className="relative z-10 w-full">
             <h1 className="text-white text-2xl md:text-3xl lg:text-5xl font-brak leading-tight mb-4 md:mb-8">
               <span className="inline-block">Hey</span>
               <span className="inline-flex items-baseline ms-2 md:ms-3 me-2 md:me-4">

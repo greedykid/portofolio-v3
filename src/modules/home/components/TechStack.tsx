@@ -76,10 +76,11 @@ const TOOLS_DATA: ToolItem[] = [
 export default function TechStack() {
   const [offsets, setOffsets] = useState<Record<string, { x: number; y: number }>>({});
   const [activeId, setActiveId] = useState<string | null>(null);
+  const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const dragStartRef = useRef<{ id: string; startX: number; startY: number; initX: number; initY: number } | null>(null);
 
   const handlePointerDown = (id: string, e: React.PointerEvent<HTMLDivElement>) => {
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     const currentOffset = offsets[id] || { x: 0, y: 0 };
     dragStartRef.current = {
       id,
@@ -94,19 +95,67 @@ export default function TechStack() {
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!dragStartRef.current) return;
     const { id, startX, startY, initX, initY } = dragStartRef.current;
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
+    const deltaX = e.clientX - startX;
+    const deltaY = e.clientY - startY;
 
-    setOffsets((prev) => ({
-      ...prev,
-      [id]: { x: initX + dx, y: initY + dy },
-    }));
+    const newOffsetX = initX + deltaX;
+    const newOffsetY = initY + deltaY;
+
+    setOffsets((prev) => {
+      const nextOffsets = {
+        ...prev,
+        [id]: { x: newOffsetX, y: newOffsetY },
+      };
+
+      // Collision repulsion calculation
+      const activeEl = itemRefs.current[id];
+      if (activeEl) {
+        const activeRect = activeEl.getBoundingClientRect();
+        const activeCenter = {
+          x: activeRect.left + activeRect.width / 2,
+          y: activeRect.top + activeRect.height / 2,
+        };
+
+        TOOLS_DATA.forEach((otherTool) => {
+          if (otherTool.id === id) return;
+          const otherEl = itemRefs.current[otherTool.id];
+          if (!otherEl) return;
+
+          const otherRect = otherEl.getBoundingClientRect();
+          const otherCenter = {
+            x: otherRect.left + otherRect.width / 2,
+            y: otherRect.top + otherRect.height / 2,
+          };
+
+          const dx = otherCenter.x - activeCenter.x;
+          const dy = otherCenter.y - activeCenter.y;
+          const dist = Math.hypot(dx, dy);
+
+          // Threshold for collision based on badge radii
+          const minDist = (activeRect.width + otherRect.width) / 2.6;
+
+          if (dist < minDist && dist > 0) {
+            const overlap = minDist - dist;
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            const currentOtherOffset = nextOffsets[otherTool.id] || { x: 0, y: 0 };
+            nextOffsets[otherTool.id] = {
+              x: currentOtherOffset.x + nx * overlap * 0.35,
+              y: currentOtherOffset.y + ny * overlap * 0.35,
+            };
+          }
+        });
+      }
+
+      return nextOffsets;
+    });
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     if (dragStartRef.current) {
       try {
-        (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
       } catch {
         // ignore if already released
       }
@@ -160,16 +209,20 @@ export default function TechStack() {
               return (
                 <div
                   key={tool.id}
+                  ref={(el) => {
+                    itemRefs.current[tool.id] = el;
+                  }}
                   onPointerDown={(e) => handlePointerDown(tool.id, e)}
                   style={{
                     transform: `translate(${offset.x}px, ${offset.y}px) rotate(${isDragging ? 0 : tool.initialRotate}deg) scale(${isDragging ? 1.08 : 1})`,
                     zIndex: isDragging ? 50 : 1,
                     touchAction: 'none',
+                    transition: isDragging ? 'none' : 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s',
                   }}
                   className={cn(
-                    'group flex items-center gap-2.5 rounded-full border border-neutral-200/80 dark:border-white/10 bg-white dark:bg-neutral-900/90 px-4 md:px-5 py-2 md:py-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.3)] transition-shadow duration-200 cursor-grab active:cursor-grabbing hover:shadow-md hover:-translate-y-0.5',
+                    'group flex items-center gap-2.5 rounded-full border border-neutral-200/80 dark:border-white/10 bg-white dark:bg-neutral-900/90 px-4 md:px-5 py-2 md:py-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.3)] cursor-grab active:cursor-grabbing hover:shadow-md',
                     tool.borderColor,
-                    isDragging && 'shadow-2xl ring-2 ring-indigo-500/30'
+                    isDragging && 'shadow-2xl ring-2 ring-indigo-500/40'
                   )}
                 >
                   <Icon

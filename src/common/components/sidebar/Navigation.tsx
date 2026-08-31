@@ -23,7 +23,7 @@ export default function Navigation() {
   return (
     <>
       {/* Desktop */}
-      <nav className="hidden lg:flex items-center gap-8 ps-8 relative">
+      <nav className="hidden lg:flex items-center gap-4 ps-6 relative">
         {NAVIGATION.map(({ label, href }) => {
           const active = isActive(href);
           return (
@@ -31,15 +31,20 @@ export default function Navigation() {
               key={href}
               href={href}
               className={cn(
-                'text-base md:text-lg font-medium transition-all duration-200 cursor-pointer relative py-1',
+                'group relative px-3.5 py-1.5 rounded-full text-base md:text-lg font-medium transition-all duration-200 cursor-pointer',
                 active
                   ? 'text-primary dark:text-white font-semibold'
                   : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
               )}
             >
-              {label}
+              {/* Hover background pill animation */}
+              <span className="absolute inset-0 rounded-full bg-neutral-200/60 dark:bg-white/10 opacity-0 scale-90 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:scale-100 pointer-events-none" />
+
+              <span className="relative z-10">{label}</span>
+
+              {/* Active underline */}
               {active && (
-                <span className="absolute bottom-0 left-0 w-full h-[2.5px] bg-primary rounded-full" />
+                <span className="absolute bottom-0.5 left-3.5 right-3.5 h-[2.5px] bg-primary rounded-full" />
               )}
             </Link>
           );

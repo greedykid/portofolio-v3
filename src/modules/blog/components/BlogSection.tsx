@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import BlogCard from '@/modules/blog/components/BlogCard';
@@ -12,6 +12,7 @@ interface BlogSectionProps {
 
 export default function BlogSection({ posts }: BlogSectionProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   const scroll = (direction: 'left' | 'right') => {
     if (!sliderRef.current) return;
@@ -19,12 +20,29 @@ export default function BlogSection({ posts }: BlogSectionProps) {
     sliderRef.current.scrollBy({ left: offset, behavior: 'smooth' });
   };
 
+  // Continuous subtle auto-scroll from right to left, pausing when hovered
+  useEffect(() => {
+    if (isPaused || posts.length === 0) return;
+
+    const interval = setInterval(() => {
+      if (!sliderRef.current) return;
+      const el = sliderRef.current;
+      if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 10) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        el.scrollBy({ left: 1.5, behavior: 'auto' });
+      }
+    }, 30);
+
+    return () => clearInterval(interval);
+  }, [isPaused, posts.length]);
+
   return (
     <section className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
         <div className="relative rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-[#0c0f14] p-6 md:p-10 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.4)] overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between gap-4 mb-6 md:mb-8">
+          <div className="flex items-center justify-between gap-4 mb-4 md:mb-6">
             <h2 className="text-white text-3xl lg:text-4xl font-brak font-bold tracking-tight">
               Latest Articles
             </h2>
@@ -41,10 +59,12 @@ export default function BlogSection({ posts }: BlogSectionProps) {
             <p className="text-neutral-400 py-8 text-center">Belum ada artikel.</p>
           ) : (
             <>
-              {/* Carousel Container */}
+              {/* Carousel Container with generous vertical padding so hover highlight is never clipped */}
               <div
                 ref={sliderRef}
-                className="flex items-stretch gap-5 overflow-x-auto pb-3 pt-1 scrollbar-none snap-x snap-mandatory scroll-smooth"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+                className="flex items-stretch gap-6 overflow-x-auto pt-6 pb-6 px-1 scrollbar-none snap-x snap-mandatory scroll-smooth"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {posts.map((post, idx) => (
@@ -55,7 +75,7 @@ export default function BlogSection({ posts }: BlogSectionProps) {
               </div>
 
               {/* Bottom Nav Arrows */}
-              <div className="flex items-center justify-end gap-3 mt-4 md:mt-6">
+              <div className="flex items-center justify-end gap-3 mt-2 md:mt-4">
                 <button
                   onClick={() => scroll('left')}
                   aria-label="Previous article"
@@ -78,4 +98,5 @@ export default function BlogSection({ posts }: BlogSectionProps) {
     </section>
   );
 }
+
 
