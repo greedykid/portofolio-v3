@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef } from 'react';
 import Link from 'next/link';
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import BlogCard from '@/modules/blog/components/BlogCard';
@@ -12,38 +12,12 @@ interface BlogSectionProps {
 
 export default function BlogSection({ posts }: BlogSectionProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
 
   const scroll = (direction: 'left' | 'right') => {
     if (!sliderRef.current) return;
-    const offset = direction === 'left' ? -360 : 360;
+    const offset = direction === 'left' ? -380 : 380;
     sliderRef.current.scrollBy({ left: offset, behavior: 'smooth' });
   };
-
-  // Only auto-scroll if content actually overflows the container
-  useEffect(() => {
-    if (isPaused || posts.length === 0) return;
-
-    const el = sliderRef.current;
-    if (!el) return;
-
-    // Check if there is meaningful overflow to scroll
-    if (el.scrollWidth <= el.clientWidth + 30) {
-      return;
-    }
-
-    const interval = setInterval(() => {
-      if (!sliderRef.current) return;
-      const container = sliderRef.current;
-      if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 15) {
-        container.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        container.scrollBy({ left: 1, behavior: 'auto' });
-      }
-    }, 40);
-
-    return () => clearInterval(interval);
-  }, [isPaused, posts.length]);
 
   return (
     <section className="w-full">
@@ -67,11 +41,9 @@ export default function BlogSection({ posts }: BlogSectionProps) {
             <p className="text-neutral-400 py-8 text-center">Belum ada artikel.</p>
           ) : (
             <>
-              {/* Carousel Container with generous vertical padding so hover highlight is never clipped */}
+              {/* Static / Manual Carousel Container - Zero auto-scroll timers to avoid shaking */}
               <div
                 ref={sliderRef}
-                onMouseEnter={() => setIsPaused(true)}
-                onMouseLeave={() => setIsPaused(false)}
                 className="flex items-stretch gap-6 overflow-x-auto pt-6 pb-6 px-1 scrollbar-none snap-x snap-mandatory scroll-smooth"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
@@ -106,5 +78,3 @@ export default function BlogSection({ posts }: BlogSectionProps) {
     </section>
   );
 }
-
-
