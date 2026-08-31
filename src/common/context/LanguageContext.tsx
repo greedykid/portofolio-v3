@@ -1,224 +1,258 @@
 'use client';
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export type Locale = 'id' | 'en';
 
-export const TRANSLATIONS: Record<Locale, Record<string, string>> = {
+interface Dictionary {
+  // Navigation
+  nav_home: string;
+  nav_about: string;
+  nav_portfolio: string;
+  nav_blog: string;
+  nav_links: string;
+  nav_contact: string;
+  nav_more: string;
+  nav_stats: string;
+  nav_guestbook: string;
+
+  // Hero / Intro
+  hero_greeting: string;
+  hero_im: string;
+  hero_headline_1: string;
+  hero_headline_badge: string;
+  hero_headline_2: string;
+  hero_location: string;
+  hero_work: string;
+
+  // Tech Stack
+  tools_title: string;
+  tools_desc: string;
+
+  // About Section
+  about_badge: string;
+  about_title: string;
+  about_desc: string;
+  about_p1: string;
+  about_p2: string;
+  about_p3: string;
+  about_more_btn: string;
+
+  // Blog Section
+  blog_title: string;
+  blog_desc: string;
+  blog_view_all: string;
+  blog_min_read: string;
+
+  // Statistics
+  stats_title: string;
+  stats_desc: string;
+
+  // Experience
+  exp_title: string;
+  exp_desc: string;
+  exp_present: string;
+
+  // Education
+  edu_title: string;
+  edu_desc: string;
+
+  // Services
+  services_title: string;
+  services_desc: string;
+
+  // Contact
+  contact_title: string;
+  contact_desc: string;
+  contact_form_title: string;
+  contact_name: string;
+  contact_name_ph: string;
+  contact_email: string;
+  contact_email_ph: string;
+  contact_msg: string;
+  contact_msg_ph: string;
+  contact_send: string;
+  contact_sending: string;
+
+  // Footer
+  footer_pages: string;
+  footer_explore: string;
+  footer_insights: string;
+}
+
+const DICTIONARY: Record<Locale, Dictionary> = {
   id: {
-    // Navigation
+    nav_home: 'Home',
+    nav_about: 'About',
     nav_portfolio: 'Portfolio',
     nav_blog: 'Blog',
-    nav_about: 'About',
-    nav_tools: 'Tools',
     nav_links: 'Links',
     nav_contact: 'Contact',
     nav_more: 'More',
-    nav_more_insights: 'More Insights',
-    nav_menu_title: 'Navigasi Menu',
     nav_stats: 'Statistik Situs',
-    nav_stats_desc: 'Statistik pengunjung & GitHub metrics',
-    nav_setup: 'My Setup',
-    nav_setup_desc: 'Hardware, gears & workflow',
-    nav_guestbook: 'Guestbook',
-    nav_guestbook_desc: 'Tinggalkan pesan Anda',
-    nav_behind: 'Di Balik Layar',
-    nav_behind_desc: 'Proses kreatif & eksplorasi',
+    nav_guestbook: 'Buku Tamu',
 
-    // Hero / Intro
-    hero_greeting: "Hey 👋 I'm Rizki.",
-    hero_headline_1: 'Saya membangun ',
+    hero_greeting: 'Halo',
+    hero_im: "Saya Rizki.",
+    hero_headline_1: 'Saya merancang & membangun ',
     hero_headline_badge: 'digital experiences',
-    hero_headline_2: ' yang berfungsi dan dirancang dengan baik. Mengubah ide menjadi nyata, secepat pikiran.',
+    hero_headline_2: ' berkinerja tinggi, elegan, dan berdampak nyata. Mengubah ide kompleks menjadi produk digital kelas dunia secepat pikiran.',
     hero_location: 'Berbasis di Jakarta, Indonesia',
-    hero_work: 'Terbuka untuk Bekerja',
+    hero_work: 'Terbuka untuk Kolaborasi & Proyek Baru',
 
-    // Tech Stack
     tools_title: 'Tools of the Trade',
-    tools_desc: 'Ini tools dan teknologi yang saya pakai buat build things. Feel free to drag them around!',
+    tools_desc: 'Teknologi modern dan ekosistem tools yang saya andalkan untuk membangun solusi digital yang tangguh, cepat, dan mudah diskalakan.',
 
-    // About Section
-    about_title: 'About Me',
-    about_p1: 'Halo! Saya Rizki Arbiansyah, seorang Frontend / Fullstack Developer dan IT Support yang berdedikasi membangun aplikasi web modern, cepat, dan intuitif.',
-    about_p2: 'Dengan pengalaman dalam ekosistem JavaScript/TypeScript modern, Next.js, React, Node.js, serta infrastruktur IT, saya fokus menciptakan solusi perangkat lunak yang andal dan berdampak nyata.',
-    about_more: 'Selengkapnya tentang saya',
+    about_badge: 'Tentang Saya',
+    about_title: 'Membangun Produk Digital dengan Presisi & Dedikasi',
+    about_desc: 'Mengenal lebih dekat visi rekayasa perangkat lunak dan keahlian teknis saya.',
+    about_p1: 'Halo! Saya Rizki Arbiansyah, seorang Software Engineer & Web Developer yang berfokus pada arsitektur frontend modern, performa web tingkat lanjut, dan antarmuka pengguna yang intuitif.',
+    about_p2: 'Dengan pengalaman mendalam dalam ekosistem Next.js, React, TypeScript, dan full-stack development, saya memadukan estetika desain visual dengan kode yang bersih dan scalable.',
+    about_p3: 'Saya senang memecahkan masalah kompleks, mengoptimalkan pengalaman pengguna, serta mewujudkan produk digital yang memberi nilai tambah nyata.',
+    about_more_btn: 'Pelajari Lebih Lanjut',
 
-    // Projects
-    projects_view: 'View Project',
+    blog_title: 'Artikel & Wawasan',
+    blog_desc: 'Catatan perjalanan, eksplorasi teknologi web modern, dan praktik terbaik rekayasa software.',
+    blog_view_all: 'Lihat Semua Artikel',
+    blog_min_read: 'menit baca',
 
-    // Blog
-    blog_title: 'Latest Articles',
-    blog_view_all: 'View All',
-    blog_empty: 'Belum ada artikel.',
+    stats_title: 'Pencapaian & Angka',
+    stats_desc: 'Metrik pertumbuhan dan komitmen berkelanjutan dalam membangun karya digital.',
 
-    // Stats
-    stats_title: 'In Numbers',
-    stats_desc: 'Beberapa angka yang menggambarkan perjalanan saya.',
+    exp_title: 'Pengalaman Profesional',
+    exp_desc: 'Perjalanan karir dan kontribusi saya dalam berbagai proyek teknologi.',
+    exp_present: 'Sekarang',
 
-    // Experience
-    exp_title: 'Work Experience',
-    exp_desc: 'Pengalaman kerja dan proyek profesional.',
+    edu_title: 'Pendidikan & Sertifikasi',
+    edu_desc: 'Pondasi akademik formal dan sertifikasi kompetensi profesional.',
 
-    // Education
-    edu_title: 'Education & Certificates',
-    edu_desc: 'Latar belakang pendidikan dan sertifikasi kompetensi.',
+    services_title: 'Layanan & Keahlian',
+    services_desc: 'Solusi rekayasa perangkat lunak menyeluruh yang disesuaikan dengan kebutuhan Anda.',
 
-    // Services
-    services_title: 'What I Do',
-    services_desc: 'Layanan yang saya tawarkan sebagai pengembang web dan IT support.',
-
-    // Contact
-    contact_title: 'Get in Touch',
-    contact_desc: 'Punya proyek atau peluang kerja? Mari berdiskusi.',
-    contact_form_title: 'Drop Me a Message',
-    contact_form_desc: 'Punya pertanyaan atau ingin berkolaborasi? Kirimkan pesan di bawah ini.',
-    contact_name: 'Nama',
-    contact_name_ph: 'Nama lengkap Anda',
-    contact_email: 'Email',
-    contact_email_ph: 'nama@example.com',
-    contact_msg: 'Pesan',
-    contact_msg_ph: 'Tulis pesan Anda di sini...',
+    contact_title: 'Mari Terhubung',
+    contact_desc: 'Punya ide proyek menarik, tawaran kolaborasi, atau peluang kerja? Pintu saya selalu terbuka.',
+    contact_form_title: 'Kirimkan Pesan Anda',
+    contact_name: 'Nama / Perusahaan',
+    contact_name_ph: 'Nama Anda atau Perusahaan',
+    contact_email: 'Alamat Email',
+    contact_email_ph: 'email@example.com',
+    contact_msg: 'Pesan / Deskripsi Proyek',
+    contact_msg_ph: 'Ceritakan detail ide proyek atau sekadar menyapa...',
     contact_send: 'Kirim Pesan',
-    contact_sending: 'Mengirim...',
+    contact_sending: 'Mengirimkan Pesan...',
 
-    // Footer
-    footer_pages: 'Pages',
-    footer_explore: 'Explore',
-    footer_insights: 'Insights',
-    footer_rights: 'Hak Cipta Dilindungi.',
+    footer_pages: 'Halaman',
+    footer_explore: 'Eksplorasi',
+    footer_insights: 'Wawasan',
   },
   en: {
-    // Navigation
+    nav_home: 'Home',
+    nav_about: 'About',
     nav_portfolio: 'Portfolio',
     nav_blog: 'Blog',
-    nav_about: 'About',
-    nav_tools: 'Tools',
     nav_links: 'Links',
     nav_contact: 'Contact',
     nav_more: 'More',
-    nav_more_insights: 'More Insights',
-    nav_menu_title: 'Navigation Menu',
     nav_stats: 'Site Statistics',
-    nav_stats_desc: 'Visitor stats & GitHub metrics',
-    nav_setup: 'My Setup',
-    nav_setup_desc: 'Hardware, gears & workflow',
     nav_guestbook: 'Guestbook',
-    nav_guestbook_desc: 'Leave your message',
-    nav_behind: 'Behind the Scenes',
-    nav_behind_desc: 'Creative process & exploration',
 
-    // Hero / Intro
-    hero_greeting: "Hey 👋 I'm Rizki.",
-    hero_headline_1: 'I build ',
+    hero_greeting: 'Hey',
+    hero_im: "I'm Rizki.",
+    hero_headline_1: 'I craft & engineer ',
     hero_headline_badge: 'digital experiences',
-    hero_headline_2: ' that function and look exceptional. Turning ideas into reality, at the speed of thought.',
+    hero_headline_2: ' that are high-performance, elegant, and impactful. Transforming ambitious ideas into world-class digital products at the speed of thought.',
     hero_location: 'Based in Jakarta, Indonesia',
-    hero_work: 'Open to Work',
+    hero_work: 'Available for Collaborations & Roles',
 
-    // Tech Stack
     tools_title: 'Tools of the Trade',
-    tools_desc: 'These are the tools and technologies I use to build things. Feel free to drag them around!',
+    tools_desc: 'The modern tech stack and development ecosystem I leverage to build scalable, robust, and lightning-fast digital solutions.',
 
-    // About Section
-    about_title: 'About Me',
-    about_p1: "Hello! I'm Rizki Arbiansyah, a dedicated Frontend / Fullstack Developer and IT Support specialist passionate about creating modern, blazing-fast, and intuitive web applications.",
-    about_p2: 'With hands-on experience in modern JavaScript/TypeScript ecosystems, Next.js, React, Node.js, and IT systems, I focus on engineering robust software solutions with real-world impact.',
-    about_more: 'More about me',
+    about_badge: 'About Me',
+    about_title: 'Engineering Digital Products with Precision & Passion',
+    about_desc: 'A closer look into my engineering philosophy and technical craftsmanship.',
+    about_p1: "Hi! I'm Rizki Arbiansyah, a Software Engineer & Web Developer specialized in modern frontend architectures, cutting-edge web performance, and intuitive user experiences.",
+    about_p2: 'With deep expertise across Next.js, React, TypeScript, and full-stack solutions, I blend striking visual design with clean, maintainable, and scalable code.',
+    about_p3: 'I thrive on solving complex technical challenges, elevating user experiences, and delivering software that drives measurable real-world impact.',
+    about_more_btn: 'Discover More About Me',
 
-    // Projects
-    projects_view: 'View Project',
+    blog_title: 'Articles & Insights',
+    blog_desc: 'Documented explorations in modern web engineering, architecture patterns, and best practices.',
+    blog_view_all: 'View All Articles',
+    blog_min_read: 'min read',
 
-    // Blog
-    blog_title: 'Latest Articles',
-    blog_view_all: 'View All',
-    blog_empty: 'No articles found.',
+    stats_title: 'In Numbers & Impact',
+    stats_desc: 'Key growth metrics and continuous commitment to engineering excellence.',
 
-    // Stats
-    stats_title: 'In Numbers',
-    stats_desc: 'Key numbers highlighting my professional journey.',
-
-    // Experience
     exp_title: 'Work Experience',
-    exp_desc: 'Professional work experience and roles.',
+    exp_desc: 'My career trajectory and contributions across diverse technology projects.',
+    exp_present: 'Present',
 
-    // Education
     edu_title: 'Education & Certificates',
-    edu_desc: 'Educational qualifications and earned certifications.',
+    edu_desc: 'Academic foundations and professional industry credentials.',
 
-    // Services
-    services_title: 'What I Do',
-    services_desc: 'Services I offer as a web engineer and IT support specialist.',
+    services_title: 'Services & Capabilities',
+    services_desc: 'Comprehensive end-to-end software engineering solutions tailored to your vision.',
 
-    // Contact
-    contact_title: 'Get in Touch',
-    contact_desc: 'Have a project or work opportunity? Let us connect.',
+    contact_title: "Let's Connect",
+    contact_desc: 'Have an exciting project, collaboration opportunity, or role in mind? My inbox is always open.',
     contact_form_title: 'Drop Me a Message',
-    contact_form_desc: 'Have a question or want to collaborate? Send a message below.',
-    contact_name: 'Name',
-    contact_name_ph: 'Your full name',
-    contact_email: 'Email',
-    contact_email_ph: 'name@example.com',
-    contact_msg: 'Message',
-    contact_msg_ph: 'Write your message here...',
+    contact_name: 'Name / Company',
+    contact_name_ph: 'Your Name or Company Name',
+    contact_email: 'Email Address',
+    contact_email_ph: 'email@example.com',
+    contact_msg: 'Message / Project Details',
+    contact_msg_ph: "Tell me about your project goals or just say hi...",
     contact_send: 'Send Message',
-    contact_sending: 'Sending...',
+    contact_sending: 'Sending Message...',
 
-    // Footer
     footer_pages: 'Pages',
     footer_explore: 'Explore',
     footer_insights: 'Insights',
-    footer_rights: 'All Rights Reserved.',
   },
 };
 
-interface LanguageContextValue {
+interface LanguageContextType {
   locale: Locale;
-  setLocale: (l: Locale) => void;
+  setLocale: (locale: Locale) => void;
   toggleLocale: () => void;
-  t: (key: string) => string;
+  t: (key: keyof Dictionary) => string;
 }
 
-const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
+export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('id');
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem('preferred_locale') as Locale | null;
-    if (stored === 'en' || stored === 'id') {
-      setLocaleState(stored);
-      document.documentElement.lang = stored;
+    try {
+      const saved = localStorage.getItem('portfolio_locale') as Locale | null;
+      if (saved === 'id' || saved === 'en') {
+        setLocaleState(saved);
+      }
+    } catch {
+      // localStorage may not be accessible
     }
   }, []);
 
-  const setLocale = (l: Locale) => {
-    setLocaleState(l);
-    localStorage.setItem('preferred_locale', l);
-    if (typeof document !== 'undefined') {
-      document.documentElement.lang = l;
+  const setLocale = (newLocale: Locale) => {
+    setLocaleState(newLocale);
+    try {
+      localStorage.setItem('portfolio_locale', newLocale);
+    } catch {
+      // ignore
     }
   };
 
   const toggleLocale = () => {
-    const next: Locale = locale === 'id' ? 'en' : 'id';
-    setLocale(next);
+    setLocale(locale === 'id' ? 'en' : 'id');
   };
 
-  const t = (key: string): string => {
-    const currentDict = TRANSLATIONS[mounted ? locale : 'id'];
-    return currentDict[key] || key;
+  const t = (key: keyof Dictionary): string => {
+    return DICTIONARY[locale]?.[key] ?? DICTIONARY.id[key] ?? key;
   };
 
   return (
-    <LanguageContext.Provider value={{ locale: mounted ? locale : 'id', setLocale, toggleLocale, t }}>
+    <LanguageContext.Provider value={{ locale, setLocale, toggleLocale, t }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -226,8 +260,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
 export function useLanguage() {
   const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error('useLanguage must be used within LanguageProvider');
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
   }
   return context;
 }

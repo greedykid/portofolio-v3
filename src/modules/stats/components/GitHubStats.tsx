@@ -10,16 +10,21 @@ interface ContributionDay {
   level: number; // 0, 1, 2, 3, 4
 }
 
-// Generate realistic 52-week contribution data with organic distribution
+interface WeekData {
+  days: ContributionDay[];
+  monthLabel?: string;
+}
+
+// Generate realistic 52-week contribution data ending accurately on September 1, 2026
 function generateContributions(): {
-  weeks: ContributionDay[][];
+  weeks: WeekData[];
   total: number;
   thisWeek: number;
   bestDay: number;
   average: number;
 } {
-  const weeks: ContributionDay[][] = [];
-  const today = new Date();
+  const weeks: WeekData[] = [];
+  const today = new Date(2026, 8, 1); // 1 September 2026
   let totalCount = 0;
   let maxDay = 0;
   let thisWeekCount = 0;
@@ -28,12 +33,24 @@ function generateContributions(): {
   const startDate = new Date(today);
   startDate.setDate(today.getDate() - totalDays);
 
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  let lastMonth = -1;
+
   for (let w = 0; w < 52; w++) {
     const weekDays: ContributionDay[] = [];
+    let weekMonthLabel: string | undefined = undefined;
+
     for (let d = 0; d < 7; d++) {
       const dayIndex = w * 7 + d;
       const curDate = new Date(startDate);
       curDate.setDate(startDate.getDate() + dayIndex);
+
+      // Detect start of a new month in this week
+      const curMonth = curDate.getMonth();
+      if (curMonth !== lastMonth && curDate.getDate() <= 7) {
+        weekMonthLabel = monthNames[curMonth];
+        lastMonth = curMonth;
+      }
 
       const isWeekend = d === 0 || d === 6;
       const wave = Math.sin((w / 52) * Math.PI * 4) * 0.3 + 0.7;
@@ -70,7 +87,11 @@ function generateContributions(): {
         level,
       });
     }
-    weeks.push(weekDays);
+
+    weeks.push({
+      days: weekDays,
+      monthLabel: weekMonthLabel,
+    });
   }
 
   return {
@@ -81,8 +102,6 @@ function generateContributions(): {
     average: 16,
   };
 }
-
-const MONTHS = ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
 
 const LEVEL_COLORS: Record<number, string> = {
   0: 'bg-[#222831] hover:bg-[#343b45]',
@@ -188,11 +207,10 @@ export default function GitHubStats() {
     const render = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Launch fireworks frequently (every 400ms) with occasional double rocket bursts!
-      if (time - lastRocketTime > 400) {
+      if (time - lastRocketTime > 380) {
         createRocket();
-        if (Math.random() > 0.45) {
-          setTimeout(createRocket, 120);
+        if (Math.random() > 0.4) {
+          setTimeout(createRocket, 100);
         }
         lastRocketTime = time;
       }
@@ -202,7 +220,6 @@ export default function GitHubStats() {
         const r = rockets[i];
         r.y += r.speedY;
 
-        // Draw rocket glowing trail
         ctx.beginPath();
         ctx.arc(r.x, r.y, 2.5, 0, Math.PI * 2);
         ctx.fillStyle = r.color;
@@ -222,7 +239,7 @@ export default function GitHubStats() {
         const s = sparks[i];
         s.x += s.vx;
         s.y += s.vy;
-        s.vy += 0.045; // gravity
+        s.vy += 0.045;
         s.alpha -= s.decay;
 
         if (s.alpha <= 0) {
@@ -262,7 +279,7 @@ export default function GitHubStats() {
             className="pointer-events-none absolute inset-0 w-full h-full z-0 opacity-60"
           />
 
-          {/* Subtle Ambient Particle / Starfield backdrop */}
+          {/* Ambient Glows */}
           <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-30">
             <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-emerald-500/20 blur-3xl" />
             <div className="absolute -left-20 -bottom-20 h-72 w-72 rounded-full bg-emerald-700/20 blur-3xl" />
@@ -329,11 +346,17 @@ export default function GitHubStats() {
 
           {/* Contributions Heatmap Grid Container */}
           <div className="relative z-10 overflow-x-auto pb-4 pt-2">
-            <div className="min-w-[760px]">
-              {/* Month Labels */}
-              <div className="flex justify-between text-[11px] font-medium text-neutral-400 mb-2.5 px-1">
-                {MONTHS.map((m) => (
-                  <span key={m}>{m}</span>
+            <div className="min-w-[780px]">
+              {/* Synchronized Month Labels directly on 52 Columns */}
+              <div className="flex gap-[4.5px] text-[11px] font-medium text-neutral-400 mb-2 h-4 select-none">
+                {weeks.map((week, idx) => (
+                  <div key={idx} className="w-[13px] sm:w-[14px] shrink-0 text-left">
+                    {week.monthLabel && (
+                      <span className="whitespace-nowrap -translate-x-1 block">
+                        {week.monthLabel}
+                      </span>
+                    )}
+                  </div>
                 ))}
               </div>
 
@@ -341,7 +364,7 @@ export default function GitHubStats() {
               <div className="flex gap-[4.5px]">
                 {weeks.map((week, wIdx) => (
                   <div key={wIdx} className="flex flex-col gap-[4.5px]">
-                    {week.map((day, dIdx) => (
+                    {week.days.map((day, dIdx) => (
                       <div
                         key={dIdx}
                         onMouseEnter={(e) => {

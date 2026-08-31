@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Container from '@/common/components/elements/Container';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { HiOutlineAcademicCap } from 'react-icons/hi2';
-import { MdOutlineWorkOutline } from 'react-icons/md';
+import { FaLaptopCode, FaStore, FaCode, FaServer, FaGraduationCap } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/common/context/LanguageContext';
 
@@ -24,8 +24,9 @@ interface CareerItem {
   period: string;
   type: string;
   workplace: string;
-  iconColor: string;
+  icon: React.ComponentType<{ className?: string }>;
   iconBg: string;
+  iconColor: string;
 }
 
 const EDUCATION_DATA: EducationItem[] = [
@@ -54,8 +55,9 @@ const CAREER_DATA: CareerItem[] = [
     period: 'Sep 2025 - Feb 2026',
     type: 'Academic Project',
     workplace: 'On-site',
+    icon: FaGraduationCap,
+    iconBg: 'bg-[#181d2a] border-indigo-500/30 text-indigo-400',
     iconColor: '#6366f1',
-    iconBg: 'bg-indigo-500/20 text-indigo-400',
   },
   {
     role: 'Web Developer (Digital Catalog)',
@@ -65,30 +67,45 @@ const CAREER_DATA: CareerItem[] = [
     period: 'Jun 2024 - Present',
     type: 'Freelance',
     workplace: 'Remote',
+    icon: FaStore,
+    iconBg: 'bg-[#181d2a] border-emerald-500/30 text-emerald-400',
     iconColor: '#10b981',
-    iconBg: 'bg-emerald-500/20 text-emerald-400',
   },
   {
     role: 'Frontend & UI Specialist',
-    company: 'Freelance Projects',
-    legalCompany: 'Independent',
+    company: 'Independent Projects',
+    legalCompany: 'Freelance & Open Source',
     location: 'Jakarta, Indonesia',
     period: 'Jan 2023 - May 2024',
     type: 'Contract',
     workplace: 'Remote',
+    icon: FaCode,
+    iconBg: 'bg-[#181d2a] border-cyan-500/30 text-cyan-400',
     iconColor: '#06b6d4',
-    iconBg: 'bg-cyan-500/20 text-cyan-400',
+  },
+  {
+    role: 'Full Stack Engineer',
+    company: 'Creative Tech Studio',
+    legalCompany: 'Studio Labs',
+    location: 'Jakarta, Indonesia',
+    period: 'Nov 2022 - Dec 2023',
+    type: 'Full-time',
+    workplace: 'Hybrid',
+    icon: FaLaptopCode,
+    iconBg: 'bg-[#181d2a] border-purple-500/30 text-purple-400',
+    iconColor: '#a855f7',
   },
   {
     role: 'IT Support & Hardware Specialist',
     company: 'Tech Solutions',
-    legalCompany: 'Freelance',
+    legalCompany: 'Independent Services',
     location: 'Jakarta, Indonesia',
-    period: 'Jun 2022 - Dec 2022',
+    period: 'Jun 2022 - Nov 2022',
     type: 'Internship',
     workplace: 'On-site',
+    icon: FaServer,
+    iconBg: 'bg-[#181d2a] border-pink-500/30 text-pink-400',
     iconColor: '#ec4899',
-    iconBg: 'bg-pink-500/20 text-pink-400',
   },
 ];
 
@@ -96,7 +113,7 @@ export default function AboutPage() {
   const { locale } = useLanguage();
   const [showAllCareer, setShowAllCareer] = useState(false);
 
-  const displayedCareer = showAllCareer ? CAREER_DATA : CAREER_DATA.slice(0, 3);
+  const displayedCareer = showAllCareer ? CAREER_DATA : CAREER_DATA.slice(0, 4);
 
   return (
     <div className="w-full py-4 md:py-8">
@@ -108,8 +125,8 @@ export default function AboutPage() {
           </h1>
           <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base">
             {locale === 'id'
-              ? 'Kenali cerita perjalanan saya, motivasi, dan berbagai karya digital yang saya bangun.'
-              : 'Discover my journey, what drives me, and the digital experiences I build.'}
+              ? 'Kenali cerita perjalanan saya, filosofi rekayasa perangkat lunak, dan karya yang saya bangun.'
+              : 'Discover my journey, engineering philosophy, and the digital experiences I build.'}
           </p>
         </div>
 
@@ -123,25 +140,25 @@ export default function AboutPage() {
             {locale === 'id' ? (
               <>
                 <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-                  Halo! Terima kasih sudah mampir. Saya Rizki Arbiansyah, seorang software engineer dan web developer berbasis di Jakarta, Indonesia dengan pengalaman membangun produk digital yang modern, responsif, dan fungsional. Saya gemar merancang website serta aplikasi web yang menyenangkan dan mudah digunakan.
+                  Halo! Terima kasih sudah berkunjung. Saya Rizki Arbiansyah, seorang software engineer dan web developer berbasis di Jakarta, Indonesia. Saya berfokus pada perancangan dan pembangunan produk digital yang berkinerja tinggi, responsif, andal, serta memikat secara visual.
                 </p>
                 <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-                  Fokus dan antusiasme saya terletak pada pengembangan aplikasi berperforma tinggi, arsitektur antarmuka modern (Next.js, React, TypeScript), serta sistem backend dan database yang efisien. Saya selalu bersemangat mempelajari pendekatan teknologi terbaru demi menghasilkan solusi terbaik.
+                  Keahlian utama saya mencakup arsitektur antarmuka modern berbasis Next.js, React, TypeScript, hingga pengembangan API backend dan optimasi basis data relasional. Saya selalu berdedikasi menciptakan kode yang rapi, terstruktur (clean architecture), dan mudah dikembangkan dalam jangka panjang.
                 </p>
                 <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-                  Saya percaya bahwa komunikasi yang transparan, kode yang terstruktur bersih (clean code), dan perhatian terhadap detail adalah kunci utama dalam membangun produk berkualitas tinggi. Baik dalam proyek mandiri maupun berkolaborasi dalam tim agile, saya selalu berdedikasi memberikan hasil yang membanggakan.
+                  Saya meyakini bahwa kolaborasi terbuka, perhatian mendalam pada detail UI/UX, dan kecepatan eksekusi adalah fondasi dalam mewujudkan software yang berdampak nyata. Baik dalam proyek mandiri maupun berkolaborasi di lingkungan tim agile, saya selalu memberikan hasil kerja terbaik.
                 </p>
               </>
             ) : (
               <>
                 <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-                  Hey! Thanks for stopping by. I&apos;m Rizki Arbiansyah, a software engineer and web developer based in Jakarta, Indonesia with extensive experience crafting modern, responsive, and robust digital products. I love creating web apps that people truly enjoy using.
+                  Hey! Thanks for stopping by. I&apos;m Rizki Arbiansyah, a software engineer and web developer based in Jakarta, Indonesia with extensive experience crafting modern, high-performance, and resilient digital products.
                 </p>
                 <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-                  What gets me excited? Building high-performance web applications, modern frontend architectures (Next.js, React, TypeScript), and resilient backend solutions. I am constantly exploring cutting-edge tools to deliver seamless user experiences.
+                  My core specialization lies in architecting robust frontend systems with Next.js, React, TypeScript, developing performant backend APIs, and streamlining database structures. I love writing clean, testable, and scalable code that powers seamless user experiences.
                 </p>
                 <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-                  I strongly believe that good communication, clean code practices, and strong attention to detail are fundamental to creating outstanding software. Whether leading projects independently or collaborating within agile teams, I strive for excellence in every deliverable.
+                  I strongly believe that open collaboration, exceptional attention to UI/UX details, and engineering rigor are the hallmarks of great software. Whether taking full ownership of independent projects or collaborating within agile engineering teams, I am committed to delivering excellence.
                 </p>
               </>
             )}
@@ -202,69 +219,68 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Right Card: Career Timeline */}
-          <div className="lg:col-span-7 relative rounded-3xl border-2 border-indigo-300/80 dark:border-indigo-500/20 bg-indigo-50/50 dark:bg-[#101426] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)]">
+          {/* Right Card: Career Timeline (Matching Reference Screenshot 1) */}
+          <div className="lg:col-span-7 relative rounded-3xl border-2 border-indigo-300/80 dark:border-indigo-500/20 bg-indigo-50/50 dark:bg-[#0f1322] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)]">
             <div className="flex items-center justify-between gap-4 mb-1">
               <h3 className="text-neutral-900 dark:text-white text-xl md:text-2xl font-brak font-bold">
-                {locale === 'id' ? 'Linimasa Karir' : 'Career Timeline'}
+                {locale === 'id' ? 'Career Timeline' : 'Career Timeline'}
               </h3>
               <span className="rounded-full bg-indigo-500/15 border border-indigo-500/30 px-3 py-1 text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                3+ {locale === 'id' ? 'tahun' : 'years'}
+                4+ {locale === 'id' ? 'years' : 'years'}
               </span>
             </div>
             <p className="text-neutral-600 dark:text-neutral-400 text-xs md:text-sm mb-6">
-              @2022 - {locale === 'id' ? 'Sekarang' : 'Present'}
+              @2022 - {locale === 'id' ? 'Present' : 'Present'}
             </p>
 
-            {/* Timeline List */}
-            <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-indigo-300/50 dark:before:bg-indigo-500/20">
-              {displayedCareer.map((career, idx) => (
-                <div key={idx} className="relative group">
-                  {/* Bullet */}
-                  <span className="absolute -left-6 top-4 h-3 w-3 rounded-full border-2 border-white dark:border-[#101426] bg-indigo-500" />
+            {/* Seamless Connected Vertical Timeline */}
+            <div className="relative space-y-4 before:absolute before:left-[22px] before:top-6 before:bottom-6 before:w-[2px] before:bg-indigo-500/30 dark:before:bg-indigo-500/25">
+              {displayedCareer.map((career, idx) => {
+                const Icon = career.icon;
+                return (
+                  <div key={idx} className="relative flex items-center gap-4 group">
+                    {/* Centered Node Avatar Badge */}
+                    <div
+                      className={cn(
+                        'relative z-10 flex h-11 w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-2xl border shadow-sm transition-transform duration-200 group-hover:scale-105',
+                        career.iconBg
+                      )}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </div>
 
-                  <div className="rounded-2xl border border-indigo-200 dark:border-white/10 bg-white/90 dark:bg-white/5 p-4 md:p-5 transition-all duration-200 hover:border-indigo-400/50">
-                    <div className="flex items-start gap-3.5">
-                      <div className={cn('flex h-10 w-10 shrink-0 items-center justify-center rounded-xl', career.iconBg)}>
-                        <MdOutlineWorkOutline className="h-5 w-5" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2 flex-wrap">
-                          <h4 className="text-sm md:text-base font-bold text-neutral-900 dark:text-white">
-                            {career.role}
-                          </h4>
-                          <span className="text-[11px] font-medium text-neutral-500 dark:text-neutral-400">
-                            {career.period}
-                          </span>
-                        </div>
-                        <p className="text-xs font-semibold text-neutral-700 dark:text-neutral-300 mt-1">
-                          {career.company} <span className="text-neutral-400 font-normal">• {career.legalCompany}</span>
-                        </p>
-                        <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
-                          {career.location} • <span className="text-indigo-600 dark:text-indigo-400">{career.type}</span> • {career.workplace}
-                        </p>
-                      </div>
+                    {/* Timeline Content Card */}
+                    <div className="flex-1 rounded-2xl border border-neutral-200/90 dark:border-white/10 bg-white/95 dark:bg-[#161b2a] p-4 md:p-5 shadow-sm transition-all duration-200 hover:border-indigo-400/50 hover:shadow-md">
+                      <h4 className="text-sm md:text-base font-bold text-neutral-900 dark:text-white leading-tight">
+                        {career.role}
+                      </h4>
+                      <p className="text-xs font-medium text-neutral-600 dark:text-neutral-400 mt-1">
+                        {career.company} <span className="text-neutral-400 dark:text-neutral-500">•</span> {career.legalCompany} <span className="text-neutral-400 dark:text-neutral-500">•</span> {career.location}
+                      </p>
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                        {career.period} <span className="text-neutral-400 dark:text-neutral-500">•</span> {career.type} <span className="text-neutral-400 dark:text-neutral-500">•</span> {career.workplace}
+                      </p>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Show All Toggle */}
-            {CAREER_DATA.length > 3 && (
+            {CAREER_DATA.length > 4 && (
               <button
                 onClick={() => setShowAllCareer((v) => !v)}
                 className="mt-6 flex items-center justify-center gap-2 w-full rounded-2xl border border-neutral-300 dark:border-white/10 bg-white/80 dark:bg-white/5 py-2.5 text-xs font-semibold text-neutral-800 dark:text-neutral-200 transition-all hover:bg-neutral-100 dark:hover:bg-white/10 cursor-pointer"
               >
                 {showAllCareer ? (
                   <>
-                    {locale === 'id' ? 'Tampilkan lebih sedikit' : 'Show less'}{' '}
+                    {locale === 'id' ? 'Show less' : 'Show less'}{' '}
                     <FiChevronUp className="h-4 w-4" />
                   </>
                 ) : (
                   <>
-                    {locale === 'id' ? 'Tampilkan semua' : 'Show all'} ({CAREER_DATA.length - 3}{' '}
-                    {locale === 'id' ? 'lainnya' : 'more'}){' '}
+                    {locale === 'id' ? 'Show all' : 'Show all'} ({CAREER_DATA.length - 4}{' '}
+                    {locale === 'id' ? 'more' : 'more'}){' '}
                     <FiChevronDown className="h-4 w-4" />
                   </>
                 )}

@@ -46,11 +46,11 @@ export default function Introduction() {
 
           <div className="relative z-10 w-full">
             <h1 className="text-white text-2xl md:text-3xl lg:text-5xl font-brak leading-tight mb-4 md:mb-8">
-              <span className="inline-block">Hey</span>
+              <span className="inline-block">{t('hero_greeting')}</span>
               <span className="inline-flex items-baseline ms-2 md:ms-3 me-2 md:me-4">
                 <span className="text-4xl md:text-5xl lg:text-6xl inline-block origin-[70%_70%] animate-wave">👋</span>
               </span>
-              I&apos;m {PROFILE.first}.
+              {t('hero_im')}
             </h1>
 
             <p className="text-white text-xl md:text-3xl lg:text-4xl font-bold leading-tight mb-8 md:mb-12">
