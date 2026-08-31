@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { SOCIAL_MEDIA } from '@/common/constant/data';
 
 interface ContributionDay {
@@ -77,7 +77,7 @@ function generateContributions(): {
 
   return {
     weeks,
-    total: 5891, // As requested in Image 1
+    total: 5891,
     thisWeek: 32,
     bestDay: 86,
     average: 16,
@@ -94,8 +94,29 @@ const LEVEL_COLORS: Record<number, string> = {
   4: 'bg-[#216e39] hover:bg-[#2c8a49]',
 };
 
+// Fireworks particle simulation
+interface Rocket {
+  x: number;
+  y: number;
+  targetY: number;
+  speedY: number;
+  color: string;
+}
+
+interface Spark {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  alpha: number;
+  color: string;
+  size: number;
+  decay: number;
+}
+
 export default function GitHubStats() {
   const [hoveredDay, setHoveredDay] = useState<{ day: ContributionDay; x: number; y: number } | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { weeks, total, thisWeek, bestDay, average } = useMemo(() => generateContributions(), []);
 
@@ -103,10 +124,131 @@ export default function GitHubStats() {
     .replace('https://github.com/', '')
     .replace(/\/$/, '');
 
+  // Fireworks animation effect
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animId: number;
+    let rockets: Rocket[] = [];
+    let sparks: Spark[] = [];
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const colors = ['#22c55e', '#4ade80', '#86efac', '#10b981', '#a7f3d0', '#fbbf24'];
+
+    const createRocket = () => {
+      const x = Math.random() * (canvas.width - 100) + 50;
+      const targetY = Math.random() * (canvas.height * 0.45) + 40;
+      rockets.push({
+        x,
+        y: canvas.height,
+        targetY,
+        speedY: -(Math.random() * 4 + 7),
+        color: colors[Math.floor(Math.random() * colors.length)],
+      });
+    };
+
+    const explode = (x: number, y: number, color: string) => {
+      const count = 30 + Math.floor(Math.random() * 20);
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
+        const speed = Math.random() * 3.5 + 1.2;
+        sparks.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          alpha: 1,
+          color,
+          size: Math.random() * 2 + 1.5,
+          decay: Math.random() * 0.02 + 0.015,
+        });
+      }
+    };
+
+    let lastRocketTime = 0;
+
+    const render = (time: number) => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (time - lastRocketTime > 1200) {
+        createRocket();
+        lastRocketTime = time;
+      }
+
+      // Update rockets
+      for (let i = rockets.length - 1; i >= 0; i--) {
+        const r = rockets[i];
+        r.y += r.speedY;
+
+        // Draw trail
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = r.color;
+        ctx.shadowColor = r.color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        if (r.y <= r.targetY) {
+          explode(r.x, r.y, r.color);
+          rockets.splice(i, 1);
+        }
+      }
+
+      // Update sparks
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.vy += 0.04; // gravity
+        s.alpha -= s.decay;
+
+        if (s.alpha <= 0) {
+          sparks.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.globalAlpha = s.alpha;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fillStyle = s.color;
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = 6;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      animId = requestAnimationFrame(render);
+    };
+
+    animId = requestAnimationFrame(render);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
   return (
     <section className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
         <div className="relative rounded-3xl border-2 border-emerald-900/40 dark:border-emerald-500/20 bg-[#0c1015] p-6 md:p-10 lg:p-12 shadow-[6px_6px_0px_0px_rgba(16,185,129,0.25)] dark:shadow-[6px_6px_0px_0px_rgba(16,185,129,0.3)] overflow-hidden">
+          {/* Animated Fireworks Canvas */}
+          <canvas
+            ref={canvasRef}
+            className="pointer-events-none absolute inset-0 w-full h-full z-0 opacity-40"
+          />
+
           {/* Subtle Ambient Particle / Starfield backdrop */}
           <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-30">
             <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-emerald-500/20 blur-3xl" />

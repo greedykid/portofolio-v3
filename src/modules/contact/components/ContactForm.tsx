@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { FiChevronRight } from 'react-icons/fi';
 
 export default function ContactForm() {
   const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -29,48 +30,91 @@ export default function ContactForm() {
     }
   };
 
-  if (state === 'success') {
-    return (
-      <p className="text-emerald-500 font-medium">Terima kasih! Pesan Anda telah terkirim.</p>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="grid gap-4 md:grid-cols-2">
-      <input
-        type="text"
-        name="name"
-        placeholder="Nama"
-        required
-        className="rounded-xl border-2 border-neutral-300 dark:border-white/10 bg-white dark:bg-[#1a1a1a] px-4 py-3 text-neutral-900 dark:text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary"
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        required
-        className="rounded-xl border-2 border-neutral-300 dark:border-white/10 bg-white dark:bg-[#1a1a1a] px-4 py-3 text-neutral-900 dark:text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary"
-      />
-      <textarea
-        name="message"
-        placeholder="Pesan Anda"
-        rows={5}
-        required
-        className="rounded-xl border-2 border-neutral-300 dark:border-white/10 bg-white dark:bg-[#1a1a1a] px-4 py-3 text-neutral-900 dark:text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary md:col-span-2"
-      />
-      <button
-        type="submit"
-        disabled={state === 'sending'}
-        className="rounded-xl border-2 border-primary bg-primary px-6 py-3 font-medium text-white transition-all duration-300 hover:bg-primary/90 hover:shadow-[4px_4px_0px_0px_rgba(99,102,241,0.4)] disabled:opacity-50 md:col-span-2 md:w-fit cursor-pointer"
-      >
-        {state === 'sending' ? 'Mengirim...' : 'Kirim Pesan'}
-      </button>
-      {state === 'error' && (
-        <p className="md:col-span-2 text-sm text-red-500">
-          Gagal mengirim pesan. Silakan coba lagi atau email langsung ke rizkiarbi65@gmail.com.
-        </p>
+    <div className="w-full">
+      <div className="mb-6">
+        <h2 className="text-xl md:text-2xl font-brak font-bold text-neutral-900 dark:text-white">
+          Drop Me a Message
+        </h2>
+      </div>
+
+      {state === 'success' ? (
+        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center">
+          <p className="text-base font-bold text-emerald-500">
+            Terima kasih! Pesan Anda telah terkirim.
+          </p>
+          <p className="text-xs text-neutral-400 mt-1">
+            Saya akan membalas pesan Anda sesegera mungkin.
+          </p>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Row 1: Name & Email */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                Name/Company
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name/Company Name"
+                required
+                className="w-full rounded-2xl border border-neutral-300 dark:border-white/10 bg-neutral-50 dark:bg-[#1a202c] px-4 py-3.5 text-sm text-neutral-900 dark:text-white outline-none transition-all placeholder:text-neutral-500 focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                placeholder="ryan@example.com"
+                required
+                className="w-full rounded-2xl border border-neutral-300 dark:border-white/10 bg-neutral-50 dark:bg-[#1a202c] px-4 py-3.5 text-sm text-neutral-900 dark:text-white outline-none transition-all placeholder:text-neutral-500 focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+          </div>
+
+          {/* Row 2: Message */}
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-neutral-700 dark:text-neutral-300">
+              Message
+            </label>
+            <textarea
+              name="message"
+              placeholder="Tell me what's up atau cuma bilang hi aja juga boleh..."
+              rows={5}
+              required
+              className="w-full rounded-2xl border border-neutral-300 dark:border-white/10 bg-neutral-50 dark:bg-[#1a202c] p-4 text-sm text-neutral-900 dark:text-white outline-none transition-all placeholder:text-neutral-500 focus:border-primary focus:ring-2 focus:ring-primary/20 resize-none"
+            />
+          </div>
+
+          {/* Row 3: Send Message Button */}
+          <div>
+            <button
+              type="submit"
+              disabled={state === 'sending'}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 py-3.5 text-sm font-bold shadow-lg transition-all duration-200 hover:bg-neutral-800 dark:hover:bg-neutral-100 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 cursor-pointer"
+            >
+              <span>{state === 'sending' ? 'Sending Message...' : 'Send Message'}</span>
+              <FiChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+
+          {state === 'error' && (
+            <p className="text-xs text-red-500 text-center">
+              Gagal mengirim pesan. Silakan hubungi langsung ke rizkiarbi65@gmail.com.
+            </p>
+          )}
+
+          <p className="text-center text-xs text-neutral-500 pt-1">
+            By submitting this form, you agree to be contacted via email.
+          </p>
+        </form>
       )}
-    </form>
+    </div>
   );
 }
-

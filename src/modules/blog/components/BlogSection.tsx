@@ -20,19 +20,27 @@ export default function BlogSection({ posts }: BlogSectionProps) {
     sliderRef.current.scrollBy({ left: offset, behavior: 'smooth' });
   };
 
-  // Continuous subtle auto-scroll from right to left, pausing when hovered
+  // Only auto-scroll if content actually overflows the container
   useEffect(() => {
     if (isPaused || posts.length === 0) return;
 
+    const el = sliderRef.current;
+    if (!el) return;
+
+    // Check if there is meaningful overflow to scroll
+    if (el.scrollWidth <= el.clientWidth + 30) {
+      return;
+    }
+
     const interval = setInterval(() => {
       if (!sliderRef.current) return;
-      const el = sliderRef.current;
-      if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 10) {
-        el.scrollTo({ left: 0, behavior: 'smooth' });
+      const container = sliderRef.current;
+      if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 15) {
+        container.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
-        el.scrollBy({ left: 1.5, behavior: 'auto' });
+        container.scrollBy({ left: 1, behavior: 'auto' });
       }
-    }, 30);
+    }, 40);
 
     return () => clearInterval(interval);
   }, [isPaused, posts.length]);
