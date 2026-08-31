@@ -8,6 +8,7 @@ interface ContributionDay {
   date: string;
   count: number;
   level: number; // 0, 1, 2, 3, 4
+  isFuture?: boolean;
 }
 
 interface WeekData {
@@ -15,7 +16,7 @@ interface WeekData {
   monthLabel?: string;
 }
 
-// Generate realistic 52-week contribution data ending accurately on September 1, 2026
+// Generate realistic 53-week contribution data ending accurately on Tuesday, September 1, 2026
 function generateContributions(): {
   weeks: WeekData[];
   total: number;
@@ -24,67 +25,92 @@ function generateContributions(): {
   average: number;
 } {
   const weeks: WeekData[] = [];
-  const today = new Date(2026, 8, 1); // 1 September 2026
-  let totalCount = 0;
-  let maxDay = 0;
-  let thisWeekCount = 0;
+  const today = new Date(2026, 8, 1); // 1 September 2026 (Tuesday)
+  const todayDayOfWeek = today.getDay(); // 2 (Tuesday)
 
-  const totalDays = 52 * 7;
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() - totalDays);
+  // Start date = 52 weeks ago from current week's Sunday (Aug 30, 2026 - 52*7 = Aug 31, 2025)
+  const currentWeekSunday = new Date(today);
+  currentWeekSunday.setDate(today.getDate() - todayDayOfWeek);
+
+  const startDate = new Date(currentWeekSunday);
+  startDate.setDate(currentWeekSunday.getDate() - 52 * 7);
 
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   let lastMonth = -1;
 
-  for (let w = 0; w < 52; w++) {
+  let totalCount = 5891;
+  let thisWeekCount = 32;
+  let bestDay = 86;
+  let average = 16;
+
+  // 53 columns (0 to 52)
+  for (let w = 0; w < 53; w++) {
     const weekDays: ContributionDay[] = [];
     let weekMonthLabel: string | undefined = undefined;
 
     for (let d = 0; d < 7; d++) {
-      const dayIndex = w * 7 + d;
       const curDate = new Date(startDate);
-      curDate.setDate(startDate.getDate() + dayIndex);
+      curDate.setDate(startDate.getDate() + w * 7 + d);
 
-      // Detect start of a new month in this week
+      const isFuture = curDate > today;
+
+      // Detect start of a new month in this week column
       const curMonth = curDate.getMonth();
-      if (curMonth !== lastMonth && curDate.getDate() <= 7) {
+      if (curMonth !== lastMonth && curDate.getDate() <= 7 && !isFuture) {
         weekMonthLabel = monthNames[curMonth];
         lastMonth = curMonth;
       }
 
+      // Seeded pattern matching reference pixel-art screenshot aesthetic
+      const dayIndex = w * 7 + d;
       const isWeekend = d === 0 || d === 6;
-      const wave = Math.sin((w / 52) * Math.PI * 4) * 0.3 + 0.7;
-      const seed = Math.sin(dayIndex * 9301 + 49297) % 1;
-      const rand = Math.abs(seed);
+      const isToday = curDate.getTime() === today.getTime();
 
       let count = 0;
       let level = 0;
 
-      if (rand > 0.16) {
-        const intensity = rand * wave * (isWeekend ? 0.65 : 1.25);
-        if (intensity > 0.8) {
-          count = Math.floor(22 + rand * 64);
+      if (!isFuture) {
+        if (isToday) {
+          count = 18;
           level = 4;
-        } else if (intensity > 0.55) {
-          count = Math.floor(12 + rand * 16);
-          level = 3;
-        } else if (intensity > 0.3) {
-          count = Math.floor(6 + rand * 10);
-          level = 2;
         } else {
-          count = Math.floor(1 + rand * 6);
-          level = 1;
+          // Organic distribution with rich variance and clustered green blocks
+          const noise = Math.sin(dayIndex * 12.9898 + w * 78.233) * 43758.5453;
+          const rand = Math.abs(noise - Math.floor(noise));
+
+          // Stylized band mask (making top row darker and core blocks brighter)
+          const isTopRow = d === 0;
+          const isBottomRow = d === 6;
+
+          if (isTopRow && (w < 4 || (w > 18 && w < 24))) {
+            level = 0;
+            count = 0;
+          } else if (rand > 0.15) {
+            if (rand > 0.82) {
+              level = 4;
+              count = Math.floor(24 + rand * 62);
+            } else if (rand > 0.58) {
+              level = 3;
+              count = Math.floor(14 + rand * 14);
+            } else if (rand > 0.32) {
+              level = 2;
+              count = Math.floor(6 + rand * 8);
+            } else {
+              level = 1;
+              count = Math.floor(1 + rand * 5);
+            }
+          } else {
+            level = 0;
+            count = 0;
+          }
         }
       }
-
-      totalCount += count;
-      if (count > maxDay) maxDay = count;
-      if (w === 51) thisWeekCount += count;
 
       weekDays.push({
         date: curDate.toISOString().split('T')[0],
         count,
         level,
+        isFuture,
       });
     }
 
@@ -96,10 +122,10 @@ function generateContributions(): {
 
   return {
     weeks,
-    total: 5891,
-    thisWeek: 32,
-    bestDay: 86,
-    average: 16,
+    total: totalCount,
+    thisWeek: thisWeekCount,
+    bestDay: bestDay,
+    average: average,
   };
 }
 
@@ -142,7 +168,7 @@ export default function GitHubStats() {
     .replace('https://github.com/', '')
     .replace(/\/$/, '');
 
-  // Lively & Frequent Fireworks Animation Effect
+  // Fireworks Animation
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -346,13 +372,13 @@ export default function GitHubStats() {
 
           {/* Contributions Heatmap Grid Container */}
           <div className="relative z-10 overflow-x-auto pb-4 pt-2">
-            <div className="min-w-[780px]">
-              {/* Synchronized Month Labels directly on 52 Columns */}
+            <div className="min-w-[800px]">
+              {/* Synchronized Month Labels directly on 53 Columns */}
               <div className="flex gap-[4.5px] text-[11px] font-medium text-neutral-400 mb-2 h-4 select-none">
                 {weeks.map((week, idx) => (
                   <div key={idx} className="w-[13px] sm:w-[14px] shrink-0 text-left">
                     {week.monthLabel && (
-                      <span className="whitespace-nowrap -translate-x-1 block">
+                      <span className="whitespace-nowrap -translate-x-1 block font-mono">
                         {week.monthLabel}
                       </span>
                     )}
@@ -360,27 +386,38 @@ export default function GitHubStats() {
                 ))}
               </div>
 
-              {/* 52 Columns x 7 Rows Grid */}
+              {/* 53 Columns x 7 Rows Grid */}
               <div className="flex gap-[4.5px]">
                 {weeks.map((week, wIdx) => (
                   <div key={wIdx} className="flex flex-col gap-[4.5px]">
-                    {week.days.map((day, dIdx) => (
-                      <div
-                        key={dIdx}
-                        onMouseEnter={(e) => {
-                          const rect = e.currentTarget.getBoundingClientRect();
-                          setHoveredDay({
-                            day,
-                            x: rect.left + rect.width / 2,
-                            y: rect.top,
-                          });
-                        }}
-                        onMouseLeave={() => setHoveredDay(null)}
-                        className={`h-[13px] w-[13px] sm:h-[14px] sm:w-[14px] rounded-[3px] transition-transform duration-150 hover:scale-125 cursor-pointer ${
-                          LEVEL_COLORS[day.level]
-                        }`}
-                      />
-                    ))}
+                    {week.days.map((day, dIdx) => {
+                      if (day.isFuture) {
+                        return (
+                          <div
+                            key={dIdx}
+                            className="h-[13px] w-[13px] sm:h-[14px] sm:w-[14px] invisible"
+                          />
+                        );
+                      }
+
+                      return (
+                        <div
+                          key={dIdx}
+                          onMouseEnter={(e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setHoveredDay({
+                              day,
+                              x: rect.left + rect.width / 2,
+                              y: rect.top,
+                            });
+                          }}
+                          onMouseLeave={() => setHoveredDay(null)}
+                          className={`h-[13px] w-[13px] sm:h-[14px] sm:w-[14px] rounded-[3px] transition-transform duration-150 hover:scale-125 cursor-pointer ${
+                            LEVEL_COLORS[day.level]
+                          }`}
+                        />
+                      );
+                    })}
                   </div>
                 ))}
               </div>
