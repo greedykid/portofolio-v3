@@ -143,7 +143,7 @@ export default function Navigation() {
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex items-center gap-1.5 ps-6 relative">
+      <nav className="hidden lg:flex items-center gap-1 ps-6 relative">
         {PRIMARY_NAVIGATION.map(({ label, href }) => {
           const active = isActive(href);
           return (
@@ -151,21 +151,21 @@ export default function Navigation() {
               key={href}
               href={href}
               className={cn(
-                'group relative px-3 py-1.5 rounded-full text-sm md:text-base font-medium transition-all duration-200 cursor-pointer',
+                'group relative px-3 py-1.5 text-sm md:text-base font-medium transition-colors duration-200 cursor-pointer',
                 active
                   ? 'text-primary dark:text-white font-semibold'
                   : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
               )}
             >
-              {/* Hover background pill animation */}
-              <span className="absolute inset-0 rounded-full bg-neutral-200/60 dark:bg-white/10 opacity-0 scale-90 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:scale-100 pointer-events-none" />
-
               <span className="relative z-10">{label}</span>
 
-              {/* Active underline indicator */}
-              {active && (
-                <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-primary rounded-full" />
-              )}
+              {/* Underline expanding from the center on hover */}
+              <span
+                className={cn(
+                  'absolute bottom-0 left-2 right-2 h-[2px] bg-primary rounded-full origin-center transition-transform duration-300 ease-out',
+                  active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                )}
+              />
             </Link>
           );
         })}
@@ -175,18 +175,27 @@ export default function Navigation() {
           <button
             onClick={() => setMoreOpen((v) => !v)}
             className={cn(
-              'group relative flex items-center gap-1 px-3 py-1.5 rounded-full text-sm md:text-base font-medium transition-all duration-200 cursor-pointer',
+              'group relative flex items-center gap-1 px-3 py-1.5 text-sm md:text-base font-medium transition-colors duration-200 cursor-pointer',
               moreOpen || pathname === '/stats'
                 ? 'text-primary dark:text-white font-semibold'
                 : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
             )}
           >
-            <span className="absolute inset-0 rounded-full bg-neutral-200/60 dark:bg-white/10 opacity-0 scale-90 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:scale-100 pointer-events-none" />
             <span className="relative z-10">More</span>
             <FiChevronDown
               className={cn(
                 'h-3.5 w-3.5 transition-transform duration-200 relative z-10',
                 moreOpen && 'rotate-180'
+              )}
+            />
+
+            {/* Underline expanding from the center on hover */}
+            <span
+              className={cn(
+                'absolute bottom-0 left-2 right-2 h-[2px] bg-primary rounded-full origin-center transition-transform duration-300 ease-out',
+                moreOpen || pathname === '/stats'
+                  ? 'scale-x-100'
+                  : 'scale-x-0 group-hover:scale-x-100'
               )}
             />
           </button>
