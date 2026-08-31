@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { FiMapPin, FiBriefcase } from 'react-icons/fi';
-import { PROFILE } from '@/common/constant/data';
 import { useLanguage } from '@/common/context/LanguageContext';
 
 export default function Introduction() {
@@ -45,34 +44,28 @@ export default function Introduction() {
           />
 
           <div className="relative z-10 w-full">
-            <h1 className="text-white text-2xl md:text-3xl lg:text-5xl font-brak leading-tight mb-4 md:mb-8">
-              <span className="inline-block">{t('hero_greeting')}</span>
-              <span className="inline-flex items-baseline ms-2 md:ms-3 me-2 md:me-4">
-                <span className="text-4xl md:text-5xl lg:text-6xl inline-block origin-[70%_70%] animate-wave">👋</span>
-              </span>
-              {t('hero_im')}
+            <h1 className="text-white text-3xl md:text-5xl lg:text-6xl font-brak font-bold leading-tight mb-4 md:mb-6 flex items-center flex-wrap gap-x-3">
+              <span>{t('hero_greeting')}</span>
+              <span className="inline-block origin-[70%_70%] animate-wave">👋</span>
+              <span>{t('hero_im')}</span>
             </h1>
 
-            <p className="text-white text-xl md:text-3xl lg:text-4xl font-bold leading-tight mb-8 md:mb-12">
+            <p className="text-white text-xl md:text-3xl lg:text-4xl font-bold leading-snug max-w-4xl mb-8 md:mb-12">
               {t('hero_headline_1')}
-              <span className="bg-white text-black px-2 rounded">{t('hero_headline_badge')}</span>
+              <span className="bg-white text-black px-2.5 py-0.5 rounded-lg mx-1 inline-block font-brak font-extrabold shadow-sm">
+                {t('hero_headline_badge')}
+              </span>
               {t('hero_headline_2')}
             </p>
 
-            <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
-              <div className="group text-white flex items-center gap-2 text-base md:text-lg font-medium cursor-default">
-                <FiMapPin className="transition-transform duration-300 group-hover:scale-110 text-indigo-400" />
-                <span className="relative">
-                  {t('hero_location')}
-                  <span className="absolute left-0 -bottom-0.5 w-0 h-[1.5px] bg-white/70 transition-all duration-300 group-hover:w-full" />
-                </span>
+            <div className="flex flex-wrap items-center gap-4 md:gap-8 text-neutral-300">
+              <div className="flex items-center gap-2 text-sm md:text-base font-medium">
+                <FiMapPin className="text-indigo-400 h-4 w-4 shrink-0" />
+                <span>{t('hero_location')}</span>
               </div>
-              <div className="group text-white flex items-center gap-2 text-base md:text-lg font-medium cursor-default">
-                <FiBriefcase className="transition-transform duration-300 group-hover:scale-110 text-purple-400" />
-                <span className="relative">
-                  {t('hero_work')}
-                  <span className="absolute left-0 -bottom-0.5 w-0 h-[1.5px] bg-white/70 transition-all duration-300 group-hover:w-full" />
-                </span>
+              <div className="flex items-center gap-2 text-sm md:text-base font-medium">
+                <FiBriefcase className="text-purple-400 h-4 w-4 shrink-0" />
+                <span>{t('hero_work')}</span>
               </div>
             </div>
           </div>
