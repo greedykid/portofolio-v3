@@ -31,7 +31,7 @@ export default function ContactForm() {
 
   if (state === 'success') {
     return (
-      <p className="text-green-400">Terima kasih! Pesan Anda telah terkirim.</p>
+      <p className="text-emerald-500 font-medium">Terima kasih! Pesan Anda telah terkirim.</p>
     );
   }
 
@@ -42,21 +42,21 @@ export default function ContactForm() {
         name="name"
         placeholder="Nama"
         required
-        className="rounded-xl border-2 border-white/10 bg-[#1a1a1a] px-4 py-3 text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary"
+        className="rounded-xl border-2 border-neutral-300 dark:border-white/10 bg-white dark:bg-[#1a1a1a] px-4 py-3 text-neutral-900 dark:text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary"
       />
       <input
         type="email"
         name="email"
         placeholder="Email"
         required
-        className="rounded-xl border-2 border-white/10 bg-[#1a1a1a] px-4 py-3 text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary"
+        className="rounded-xl border-2 border-neutral-300 dark:border-white/10 bg-white dark:bg-[#1a1a1a] px-4 py-3 text-neutral-900 dark:text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary"
       />
       <textarea
         name="message"
         placeholder="Pesan Anda"
         rows={5}
         required
-        className="rounded-xl border-2 border-white/10 bg-[#1a1a1a] px-4 py-3 text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary md:col-span-2"
+        className="rounded-xl border-2 border-neutral-300 dark:border-white/10 bg-white dark:bg-[#1a1a1a] px-4 py-3 text-neutral-900 dark:text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary md:col-span-2"
       />
       <button
         type="submit"
@@ -66,10 +66,11 @@ export default function ContactForm() {
         {state === 'sending' ? 'Mengirim...' : 'Kirim Pesan'}
       </button>
       {state === 'error' && (
-        <p className="md:col-span-2 text-sm text-red-400">
+        <p className="md:col-span-2 text-sm text-red-500">
           Gagal mengirim pesan. Silakan coba lagi atau email langsung ke rizkiarbi65@gmail.com.
         </p>
       )}
     </form>
   );
 }
+

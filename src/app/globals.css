@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 6%; /* #0f0f0f - dark default */
+    --background: 0 0% 6%; /* dark default */
     --card: 0 0% 8%;
     --card-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
@@ -12,7 +12,7 @@
     --foreground: 0 0% 98%;
   }
 
-  .dark {
+  html.dark {
     --background: 0 0% 6%; /* #0f0f0f */
     --card: 0 0% 8%;
     --card-foreground: 0 0% 98%;
@@ -21,13 +21,13 @@
     --foreground: 0 0% 98%;
   }
 
-  .light {
-    --background: 208 100% 96%; /* #e7f0ff */
+  html.light {
+    --background: 215 100% 97%; /* #eef4fc */
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 5%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --foreground: 0 0% 5%;
+    --card-foreground: 222 47% 11%;
+    --muted: 210 40% 94%;
+    --muted-foreground: 215 16% 47%;
+    --foreground: 222 47% 11%;
   }
 
   * {
@@ -103,7 +103,7 @@
   }
 
   .brutal-card {
-    @apply relative overflow-hidden rounded-3xl border-2 border-white/10 bg-neutral-950 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] rtl:shadow-[-6px_6px_0px_0px_rgba(99,102,241,0.3)];
+    @apply relative overflow-hidden rounded-3xl border-2 border-neutral-200 dark:border-white/10 bg-white dark:bg-neutral-950 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] rtl:shadow-[-6px_6px_0px_0px_rgba(99,102,241,0.3)];
   }
 }
 

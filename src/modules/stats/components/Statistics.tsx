@@ -10,8 +10,8 @@ export default function Statistics() {
         <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
           {STATS.map(({ number, label }) => (
             <Card key={label} hover className="text-center">
-              <div className="text-3xl font-brak text-white">{number}</div>
-              <div className="mt-2 text-sm text-neutral-400">{label}</div>
+              <div className="text-3xl font-brak font-bold text-neutral-900 dark:text-white">{number}</div>
+              <div className="mt-2 text-sm font-medium text-neutral-600 dark:text-neutral-400">{label}</div>
             </Card>
           ))}
         </div>
@@ -19,3 +19,4 @@ export default function Statistics() {
     </section>
   );
 }
+

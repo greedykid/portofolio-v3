@@ -1,5 +1,8 @@
+'use client';
+
+import { useRef } from 'react';
 import Link from 'next/link';
-import SectionHeading from '@/common/components/elements/SectionHeading';
+import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import BlogCard from '@/modules/blog/components/BlogCard';
 import type { PostMeta } from '@/common/libs/blog';
 
@@ -8,23 +11,71 @@ interface BlogSectionProps {
 }
 
 export default function BlogSection({ posts }: BlogSectionProps) {
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (!sliderRef.current) return;
+    const offset = direction === 'left' ? -360 : 360;
+    sliderRef.current.scrollBy({ left: offset, behavior: 'smooth' });
+  };
+
   return (
-    <section>
+    <section className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-        <SectionHeading
-          title="Latest Posts"
-          description="Artikel dan catatan teknis seputar web development, IT support, dan networking."
-        />
-        {posts.length === 0 ? (
-          <p className="text-neutral-500 dark:text-neutral-400">Belum ada artikel.</p>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
-            {posts.slice(0, 4).map((post) => (
-              <BlogCard key={post.slug} post={post} />
-            ))}
+        <div className="relative rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-[#0c0f14] p-6 md:p-10 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.4)] overflow-hidden">
+          {/* Header */}
+          <div className="flex items-center justify-between gap-4 mb-6 md:mb-8">
+            <h2 className="text-white text-3xl lg:text-4xl font-brak font-bold tracking-tight">
+              Latest Articles
+            </h2>
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 md:px-5 py-2 text-xs md:text-sm font-bold text-neutral-950 shadow-md transition-all duration-200 hover:bg-neutral-100 hover:scale-105 active:scale-95"
+            >
+              View All <FiChevronRight className="h-4 w-4" />
+            </Link>
           </div>
-        )}
+
+          {/* Empty State */}
+          {posts.length === 0 ? (
+            <p className="text-neutral-400 py-8 text-center">Belum ada artikel.</p>
+          ) : (
+            <>
+              {/* Carousel Container */}
+              <div
+                ref={sliderRef}
+                className="flex items-stretch gap-5 overflow-x-auto pb-3 pt-1 scrollbar-none snap-x snap-mandatory scroll-smooth"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {posts.map((post, idx) => (
+                  <div key={post.slug} className="snap-start shrink-0">
+                    <BlogCard post={post} index={idx} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Bottom Nav Arrows */}
+              <div className="flex items-center justify-end gap-3 mt-4 md:mt-6">
+                <button
+                  onClick={() => scroll('left')}
+                  aria-label="Previous article"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white transition-all duration-200 hover:bg-white/20 hover:scale-110 active:scale-95 cursor-pointer"
+                >
+                  <FiChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => scroll('right')}
+                  aria-label="Next article"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white transition-all duration-200 hover:bg-white/20 hover:scale-110 active:scale-95 cursor-pointer"
+                >
+                  <FiChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </section>
   );
 }
+

@@ -13,11 +13,11 @@ export default function Services() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
           {SERVICES.map(({ title, description, icon: Icon }) => (
             <Card key={title} hover>
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/20 text-white transition-transform duration-300 group-hover:scale-110">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/15 text-primary transition-transform duration-300 group-hover:scale-110">
                 <Icon className="h-6 w-6" />
               </div>
-              <h3 className="mb-2 text-xl font-semibold text-white">{title}</h3>
-              <p className="text-neutral-400">{description}</p>
+              <h3 className="mb-2 text-xl font-semibold text-neutral-900 dark:text-white">{title}</h3>
+              <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base leading-relaxed">{description}</p>
             </Card>
           ))}
         </div>
@@ -25,3 +25,4 @@ export default function Services() {
     </section>
   );
 }
+
