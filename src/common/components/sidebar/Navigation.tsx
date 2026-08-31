@@ -42,9 +42,12 @@ export default function Navigation() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
+  const dragStartY = useRef(0);
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
@@ -58,6 +61,7 @@ export default function Navigation() {
 
   // Open with smooth slide up transition
   const handleOpen = () => {
+    setDragOffset(0);
     setIsOpen(true);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -71,8 +75,42 @@ export default function Navigation() {
     setIsVisible(false);
     setTimeout(() => {
       setIsOpen(false);
+      setDragOffset(0);
     }, 300);
   }, []);
+
+  // Pointer drag gestures for sheet header/handle
+  const handleDragStart = (e: React.PointerEvent<HTMLDivElement>) => {
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    dragStartY.current = e.clientY - dragOffset;
+    setIsDragging(true);
+  };
+
+  const handleDragMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    const deltaY = e.clientY - dragStartY.current;
+    if (deltaY > 0) {
+      setDragOffset(deltaY);
+    } else {
+      // Elastic resistance when dragged above viewport top
+      setDragOffset(deltaY * 0.2);
+    }
+  };
+
+  const handleDragEnd = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {
+      // ignore
+    }
+    setIsDragging(false);
+    if (dragOffset > 90) {
+      handleClose();
+    } else {
+      setDragOffset(0);
+    }
+  };
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -201,7 +239,7 @@ export default function Navigation() {
         <span className="w-5 h-0.5 bg-neutral-900 dark:bg-white rounded-full transition-all duration-300" />
       </button>
 
-      {/* Mobile Bottom Sheet Modal rendered via React Portal with smooth slide open & close */}
+      {/* Mobile Bottom Sheet Modal rendered via React Portal with gesture drag */}
       {isOpen &&
         mounted &&
         createPortal(
@@ -215,19 +253,32 @@ export default function Navigation() {
               onClick={handleClose}
             />
 
-            {/* Bottom Sheet Card */}
+            {/* Bottom Sheet Card with interactive drag */}
             <div
-              className={cn(
-                'relative z-10 w-full max-h-[85vh] overflow-y-auto rounded-t-[32px] border-t-2 border-neutral-300/80 dark:border-white/15 bg-white dark:bg-[#121622] p-6 pb-10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-out transform',
-                isVisible ? 'translate-y-0' : 'translate-y-full'
-              )}
+              style={{
+                transform: isVisible
+                  ? `translateY(${dragOffset}px)`
+                  : 'translateY(100%)',
+                transition: isDragging
+                  ? 'none'
+                  : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+              className="relative z-10 w-full max-h-[85vh] overflow-y-auto rounded-t-[32px] border-t-2 border-neutral-300/80 dark:border-white/15 bg-white dark:bg-[#121622] p-6 pb-10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] will-change-transform"
             >
-              {/* Top Drag Indicator */}
-              <div className="mx-auto h-1.5 w-12 rounded-full bg-neutral-300 dark:bg-white/20 mb-4" />
+              {/* Draggable Top Handle Area */}
+              <div
+                onPointerDown={handleDragStart}
+                onPointerMove={handleDragMove}
+                onPointerUp={handleDragEnd}
+                onPointerCancel={handleDragEnd}
+                className="touch-none cursor-grab active:cursor-grabbing select-none py-1 -mt-2 mb-3"
+              >
+                <div className="mx-auto h-1.5 w-12 rounded-full bg-neutral-300 dark:bg-white/25 hover:bg-neutral-400 dark:hover:bg-white/40 transition-colors" />
+              </div>
 
               {/* Header row in sheet */}
               <div className="flex items-center justify-between pb-4 border-b border-neutral-200 dark:border-white/10 mb-4">
-                <span className="text-sm font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">
+                <span className="text-sm font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider select-none">
                   Navigasi Menu
                 </span>
                 <button
@@ -264,7 +315,7 @@ export default function Navigation() {
 
               {/* More Insights Section */}
               <div className="pt-2 border-t border-neutral-200 dark:border-white/10 mb-6">
-                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider block mb-3">
+                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider block mb-3 select-none">
                   More Insights
                 </span>
                 <div className="space-y-2">
