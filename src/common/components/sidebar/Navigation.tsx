@@ -21,25 +21,12 @@ import {
 import { cn } from '@/lib/utils';
 import { SOCIAL } from '@/common/constant/social';
 import ThemeToggleButton from '@/common/components/elements/ThemeToggleButton';
-
-const PRIMARY_NAVIGATION = [
-  { label: 'Portfolio', href: '/projects', icon: FiFolder },
-  { label: 'Blog', href: '/blog', icon: FiFileText },
-  { label: 'About', href: '/about', icon: FiUser },
-  { label: 'Tools', href: '/#tools', icon: FiTool },
-  { label: 'Links', href: '/links', icon: FiLink },
-  { label: 'Contact', href: '/contact', icon: FiMail },
-];
-
-const MORE_NAVIGATION = [
-  { label: 'Statistik Situs', href: '/stats', icon: FiBarChart2, desc: 'Statistik pengunjung & GitHub metrics' },
-  { label: 'My Setup', href: '/#setup', icon: FiMonitor, desc: 'Hardware, gears & workflow' },
-  { label: 'Guestbook', href: '/#guestbook', icon: FiBook, desc: 'Tinggalkan pesan Anda' },
-  { label: 'Di Balik Layar', href: '/#behind-the-scenes', icon: FiFilm, desc: 'Proses kreatif & eksplorasi' },
-];
+import LanguageToggleButton from '@/common/components/elements/LanguageToggleButton';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 export default function Navigation() {
   const pathname = usePathname();
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
@@ -48,6 +35,22 @@ export default function Navigation() {
   const [mounted, setMounted] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const dragStartY = useRef(0);
+
+  const PRIMARY_NAVIGATION = [
+    { label: t('nav_portfolio'), href: '/projects', icon: FiFolder },
+    { label: t('nav_blog'), href: '/blog', icon: FiFileText },
+    { label: t('nav_about'), href: '/about', icon: FiUser },
+    { label: t('nav_tools'), href: '/#tools', icon: FiTool },
+    { label: t('nav_links'), href: '/links', icon: FiLink },
+    { label: t('nav_contact'), href: '/contact', icon: FiMail },
+  ];
+
+  const MORE_NAVIGATION = [
+    { label: t('nav_stats'), href: '/stats', icon: FiBarChart2, desc: t('nav_stats_desc') },
+    { label: t('nav_setup'), href: '/#setup', icon: FiMonitor, desc: t('nav_setup_desc') },
+    { label: t('nav_guestbook'), href: '/#guestbook', icon: FiBook, desc: t('nav_guestbook_desc') },
+    { label: t('nav_behind'), href: '/#behind-the-scenes', icon: FiFilm, desc: t('nav_behind_desc') },
+  ];
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/';
@@ -92,7 +95,6 @@ export default function Navigation() {
     if (deltaY > 0) {
       setDragOffset(deltaY);
     } else {
-      // Elastic resistance when dragged above viewport top
       setDragOffset(deltaY * 0.2);
     }
   };
@@ -181,7 +183,7 @@ export default function Navigation() {
                 : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
             )}
           >
-            <span className="relative z-10">More</span>
+            <span className="relative z-10">{t('nav_more')}</span>
             <FiChevronDown
               className={cn(
                 'h-3.5 w-3.5 transition-transform duration-200 relative z-10',
@@ -288,7 +290,7 @@ export default function Navigation() {
               {/* Header row in sheet */}
               <div className="flex items-center justify-between pb-4 border-b border-neutral-200 dark:border-white/10 mb-4">
                 <span className="text-sm font-bold text-neutral-500 dark:text-neutral-400 uppercase tracking-wider select-none">
-                  Navigasi Menu
+                  {t('nav_menu_title')}
                 </span>
                 <button
                   onClick={handleClose}
@@ -325,7 +327,7 @@ export default function Navigation() {
               {/* More Insights Section */}
               <div className="pt-2 border-t border-neutral-200 dark:border-white/10 mb-6">
                 <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider block mb-3 select-none">
-                  More Insights
+                  {t('nav_more_insights')}
                 </span>
                 <div className="space-y-2">
                   {MORE_NAVIGATION.map((item) => {
@@ -358,16 +360,10 @@ export default function Navigation() {
                 </div>
               </div>
 
-              {/* Bottom Controls Row: Flag, Theme Toggle & Social Media */}
+              {/* Bottom Controls Row: Language Toggle, Theme Toggle & Social Media */}
               <div className="flex items-center justify-between pt-4 border-t border-neutral-200 dark:border-white/10">
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 rounded-full border border-neutral-300 dark:border-white/15 bg-neutral-100 dark:bg-white/5 px-2.5 py-1 text-xs font-semibold text-neutral-800 dark:text-neutral-200">
-                    <span className="inline-block h-3.5 w-3.5 overflow-hidden rounded-full border border-neutral-400/40">
-                      <span className="block h-1/2 bg-[#e70011]" />
-                      <span className="block h-1/2 bg-white" />
-                    </span>
-                    <span>ID</span>
-                  </div>
+                  <LanguageToggleButton />
                   <ThemeToggleButton />
                 </div>
 

@@ -1,7 +1,12 @@
+'use client';
+
 import { PROFILE } from '@/common/constant/data';
 import { FiArrowUpRight } from 'react-icons/fi';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 export default function AboutSection() {
+  const { t } = useLanguage();
+
   return (
     <section className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
@@ -18,14 +23,15 @@ export default function AboutSection() {
 
             <div className="relative z-10">
               <h2 className="text-neutral-900 dark:text-neutral-100 text-2xl md:text-3xl lg:text-4xl tracking-tight font-brak font-bold mb-4 md:mb-6">
-                About Me
+                {t('about_title')}
               </h2>
               <div className="space-y-4 md:space-y-5">
-                {PROFILE.aboutParagraphs.map((para, i) => (
-                  <p key={i} className="text-neutral-700 dark:text-neutral-200 text-sm md:text-base leading-relaxed">
-                    {para}
-                  </p>
-                ))}
+                <p className="text-neutral-700 dark:text-neutral-200 text-sm md:text-base leading-relaxed">
+                  {t('about_p1')}
+                </p>
+                <p className="text-neutral-700 dark:text-neutral-200 text-sm md:text-base leading-relaxed">
+                  {t('about_p2')}
+                </p>
               </div>
             </div>
 
@@ -34,7 +40,7 @@ export default function AboutSection() {
                 href="/about"
                 className="inline-flex items-center gap-2 text-primary dark:text-white hover:underline transition-colors group/link"
               >
-                <span className="font-semibold text-sm md:text-base">More about me</span>
+                <span className="font-semibold text-sm md:text-base">{t('about_more')}</span>
                 <FiArrowUpRight className="transition-transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1" />
               </a>
             </div>
@@ -53,4 +59,3 @@ export default function AboutSection() {
     </section>
   );
 }
-

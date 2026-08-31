@@ -1,12 +1,17 @@
+'use client';
+
 import SectionHeading from '@/common/components/elements/SectionHeading';
 import Card from '@/common/components/elements/Card';
 import { EDUCATION, CERTIFICATES } from '@/common/constant/experience';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 export default function Education() {
+  const { t } = useLanguage();
+
   return (
     <section>
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-        <SectionHeading title="Education & Certificates" description="Latar belakang pendidikan dan sertifikasi kompetensi." />
+        <SectionHeading title={t('edu_title')} description={t('edu_desc')} />
         <div className="grid gap-6 lg:grid-cols-2">
           <Card hover>
             <h3 className="mb-2 text-xl font-semibold text-neutral-900 dark:text-white">{EDUCATION[0].degree}</h3>
@@ -43,4 +48,3 @@ export default function Education() {
     </section>
   );
 }
-

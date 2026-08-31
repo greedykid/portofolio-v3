@@ -1,12 +1,17 @@
+'use client';
+
 import SectionHeading from '@/common/components/elements/SectionHeading';
 import Card from '@/common/components/elements/Card';
 import { STATS } from '@/common/constant/services';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 export default function Statistics() {
+  const { t } = useLanguage();
+
   return (
     <section>
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-        <SectionHeading title="In Numbers" description="Beberapa angka yang menggambarkan perjalanan saya." />
+        <SectionHeading title={t('stats_title')} description={t('stats_desc')} />
         <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
           {STATS.map(({ number, label }) => (
             <Card key={label} hover className="text-center">
@@ -19,4 +24,3 @@ export default function Statistics() {
     </section>
   );
 }
-

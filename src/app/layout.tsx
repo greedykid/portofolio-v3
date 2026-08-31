@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ThemeProvider } from '@/common/context/ThemeContext';
+import { LanguageProvider } from '@/common/context/LanguageContext';
 import Layout from '@/common/components/layouts';
 import { SITE } from '@/common/constant/data';
 import './globals.css';
@@ -37,7 +38,9 @@ export default function RootLayout({
     <html lang="id" suppressHydrationWarning>
       <body>
         <ThemeProvider>
-          <Layout>{children}</Layout>
+          <LanguageProvider>
+            <Layout>{children}</Layout>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

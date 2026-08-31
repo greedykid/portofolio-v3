@@ -73,7 +73,10 @@ const TOOLS_DATA: ToolItem[] = [
   { id: 'git', name: 'Git', icon: SiGit, iconColor: '#F05032', borderColor: 'hover:border-orange-400', initialRotate: 5 },
 ];
 
+import { useLanguage } from '@/common/context/LanguageContext';
+
 export default function TechStack() {
+  const { t } = useLanguage();
   const [offsets, setOffsets] = useState<Record<string, { x: number; y: number }>>({});
   const [activeId, setActiveId] = useState<string | null>(null);
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -176,12 +179,12 @@ export default function TechStack() {
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8 md:mb-12">
             <div>
               <h2 className="text-neutral-900 dark:text-white tracking-tight text-3xl lg:text-4xl font-brak font-bold">
-                Tools of the Trade
+                {t('tools_title')}
               </h2>
             </div>
             <div className="flex items-center gap-4">
               <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-lg leading-relaxed">
-                Ini tools dan teknologi yang saya pakai buat build things. Feel free to drag them around!
+                {t('tools_desc')}
               </p>
               {Object.keys(offsets).length > 0 && (
                 <button

@@ -1,7 +1,12 @@
+'use client';
+
 import { FiMapPin, FiBriefcase } from 'react-icons/fi';
 import { PROFILE } from '@/common/constant/data';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 export default function Introduction() {
+  const { t } = useLanguage();
+
   return (
     <section className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
@@ -24,23 +29,23 @@ export default function Introduction() {
             </h1>
 
             <p className="text-white text-xl md:text-3xl lg:text-4xl font-bold leading-tight mb-8 md:mb-12">
-              Saya membangun{' '}
-              <span className="bg-white text-black px-2 rounded">digital experiences</span>{' '}
-              yang berfungsi dan dirancang dengan baik. Turning ideas into reality, at the speed of thought.
+              {t('hero_headline_1')}
+              <span className="bg-white text-black px-2 rounded">{t('hero_headline_badge')}</span>
+              {t('hero_headline_2')}
             </p>
 
             <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
               <div className="group text-white flex items-center gap-2 text-base md:text-lg font-medium cursor-default">
                 <FiMapPin className="transition-transform duration-300 group-hover:scale-110" />
                 <span className="relative">
-                  Based in {PROFILE.location}
+                  {t('hero_location')}
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1.5px] bg-white/70 transition-all duration-300 group-hover:w-full" />
                 </span>
               </div>
               <div className="group text-white flex items-center gap-2 text-base md:text-lg font-medium cursor-default">
                 <FiBriefcase className="transition-transform duration-300 group-hover:scale-110" />
                 <span className="relative">
-                  {PROFILE.workType}
+                  {t('hero_work')}
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1.5px] bg-white/70 transition-all duration-300 group-hover:w-full" />
                 </span>
               </div>

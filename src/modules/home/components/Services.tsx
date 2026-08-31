@@ -1,14 +1,19 @@
+'use client';
+
 import SectionHeading from '@/common/components/elements/SectionHeading';
 import Card from '@/common/components/elements/Card';
 import { SERVICES } from '@/common/constant/services';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 export default function Services() {
+  const { t } = useLanguage();
+
   return (
     <section>
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
         <SectionHeading
-          title="What I Do"
-          description="Layanan yang saya tawarkan sebagai pengembang web dan IT support."
+          title={t('services_title')}
+          description={t('services_desc')}
         />
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
           {SERVICES.map(({ title, description, icon: Icon }) => (
@@ -25,4 +30,3 @@ export default function Services() {
     </section>
   );
 }
-

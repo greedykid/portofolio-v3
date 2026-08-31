@@ -1,17 +1,22 @@
+'use client';
+
 import SectionHeading from '@/common/components/elements/SectionHeading';
 import Card from '@/common/components/elements/Card';
 import { EXPERIENCES } from '@/common/constant/experience';
+import { useLanguage } from '@/common/context/LanguageContext';
 
-function formatDate(date: string | null): string {
-  if (!date) return 'Now';
-  return new Date(date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short' });
+function formatDate(date: string | null, locale: string): string {
+  if (!date) return locale === 'id' ? 'Sekarang' : 'Present';
+  return new Date(date).toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', { year: 'numeric', month: 'short' });
 }
 
 export default function Experiences() {
+  const { t, locale } = useLanguage();
+
   return (
     <section>
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-        <SectionHeading title="Work Experience" description="Pengalaman kerja dan proyek profesional." />
+        <SectionHeading title={t('exp_title')} description={t('exp_desc')} />
         <div className="space-y-6">
           {EXPERIENCES.map((exp) => (
             <Card key={exp.company} hover>
@@ -21,7 +26,7 @@ export default function Experiences() {
                   <p className="mt-1 font-medium text-primary">{exp.company}</p>
                 </div>
                 <div className="text-sm font-medium text-neutral-500 dark:text-neutral-400">
-                  {formatDate(exp.startDate)} — {formatDate(exp.endDate)}
+                  {formatDate(exp.startDate, locale)} — {formatDate(exp.endDate, locale)}
                 </div>
               </div>
               <ul className="mt-4 space-y-2">
@@ -39,4 +44,3 @@ export default function Experiences() {
     </section>
   );
 }
-

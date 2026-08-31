@@ -5,6 +5,7 @@ import Container from '@/common/components/elements/Container';
 import Profile from '@/common/components/sidebar/Profile';
 import Navigation from '@/common/components/sidebar/Navigation';
 import ThemeToggleButton from '@/common/components/elements/ThemeToggleButton';
+import LanguageToggleButton from '@/common/components/elements/LanguageToggleButton';
 import { cn } from '@/lib/utils';
 
 export default function Header() {
@@ -40,13 +41,7 @@ export default function Header() {
             <Navigation />
           </div>
           <div className="flex items-center gap-2.5">
-            <div className="hidden sm:flex items-center gap-1.5 rounded-full border border-neutral-300 dark:border-white/15 bg-neutral-100 dark:bg-white/5 px-2.5 py-1 text-xs font-semibold text-neutral-800 dark:text-neutral-200 select-none shadow-sm">
-              <span className="inline-block h-3.5 w-3.5 overflow-hidden rounded-full border border-neutral-400/40">
-                <span className="block h-1/2 bg-[#e70011]" />
-                <span className="block h-1/2 bg-white" />
-              </span>
-              <span>ID</span>
-            </div>
+            <LanguageToggleButton className="hidden sm:flex" />
             <ThemeToggleButton />
           </div>
         </div>
@@ -54,4 +49,3 @@ export default function Header() {
     </header>
   );
 }
-

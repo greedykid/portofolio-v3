@@ -1,30 +1,35 @@
+'use client';
+
 import Container from '@/common/components/elements/Container';
 import SocialMedia from '@/common/components/elements/SocialMedia';
 import { PROFILE } from '@/common/constant/data';
 import Link from 'next/link';
-
-const FOOTER_LINKS = {
-  pages: [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Contact', href: '/contact' },
-  ],
-  explore: [
-    { label: 'Portfolio', href: '/projects' },
-    { label: 'Guestbook', href: '/#guestbook' },
-    { label: 'Service Status', href: '/#status' },
-    { label: 'Di Balik Layar', href: '/#behind-the-scenes' },
-  ],
-  insights: [
-    { label: 'Statistik', href: '/stats' },
-    { label: 'My Setup', href: '/#setup' },
-    { label: 'Useful Tools', href: '/#tools' },
-    { label: 'Links', href: '/links' },
-  ],
-};
+import { useLanguage } from '@/common/context/LanguageContext';
 
 export default function Footer() {
+  const { t } = useLanguage();
+
+  const FOOTER_LINKS = {
+    pages: [
+      { label: 'Home', href: '/' },
+      { label: 'About', href: '/about' },
+      { label: 'Blog', href: '/blog' },
+      { label: 'Contact', href: '/contact' },
+    ],
+    explore: [
+      { label: 'Portfolio', href: '/projects' },
+      { label: 'Guestbook', href: '/#guestbook' },
+      { label: 'Service Status', href: '/#status' },
+      { label: 'Di Balik Layar', href: '/#behind-the-scenes' },
+    ],
+    insights: [
+      { label: 'Statistik', href: '/stats' },
+      { label: 'My Setup', href: '/#setup' },
+      { label: 'Useful Tools', href: '/#tools' },
+      { label: 'Links', href: '/links' },
+    ],
+  };
+
   return (
     <footer className="mt-12 mb-8 md:mb-12 relative overflow-hidden">
       <Container>
@@ -47,7 +52,9 @@ export default function Footer() {
             {/* Right Col: 3 Link Columns */}
             <div className="grid w-full grid-cols-2 sm:grid-cols-3 gap-8 lg:w-[50%]">
               <div className="space-y-4">
-                <h6 className="text-base font-bold text-neutral-900 dark:text-white">Pages</h6>
+                <h6 className="text-base font-bold text-neutral-900 dark:text-white">
+                  {t('footer_pages')}
+                </h6>
                 <ul className="space-y-2.5 text-sm font-medium">
                   {FOOTER_LINKS.pages.map(({ label, href }) => (
                     <li key={label}>
@@ -63,7 +70,9 @@ export default function Footer() {
               </div>
 
               <div className="space-y-4">
-                <h6 className="text-base font-bold text-neutral-900 dark:text-white">Explore</h6>
+                <h6 className="text-base font-bold text-neutral-900 dark:text-white">
+                  {t('footer_explore')}
+                </h6>
                 <ul className="space-y-2.5 text-sm font-medium">
                   {FOOTER_LINKS.explore.map(({ label, href }) => (
                     <li key={label}>
@@ -79,7 +88,9 @@ export default function Footer() {
               </div>
 
               <div className="space-y-4">
-                <h6 className="text-base font-bold text-neutral-900 dark:text-white">Insights</h6>
+                <h6 className="text-base font-bold text-neutral-900 dark:text-white">
+                  {t('footer_insights')}
+                </h6>
                 <ul className="space-y-2.5 text-sm font-medium">
                   {FOOTER_LINKS.insights.map(({ label, href }) => (
                     <li key={label}>
@@ -110,5 +121,3 @@ export default function Footer() {
     </footer>
   );
 }
-
-

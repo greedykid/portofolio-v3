@@ -5,12 +5,14 @@ import Link from 'next/link';
 import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import BlogCard from '@/modules/blog/components/BlogCard';
 import type { PostMeta } from '@/common/libs/blog';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 interface BlogSectionProps {
   posts: PostMeta[];
 }
 
 export default function BlogSection({ posts }: BlogSectionProps) {
+  const { t } = useLanguage();
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -26,22 +28,22 @@ export default function BlogSection({ posts }: BlogSectionProps) {
           {/* Header */}
           <div className="flex items-center justify-between gap-4 mb-4 md:mb-6">
             <h2 className="text-white text-3xl lg:text-4xl font-brak font-bold tracking-tight">
-              Latest Articles
+              {t('blog_title')}
             </h2>
             <Link
               href="/blog"
               className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 md:px-5 py-2 text-xs md:text-sm font-bold text-neutral-950 shadow-md transition-all duration-200 hover:bg-neutral-100 hover:scale-105 active:scale-95"
             >
-              View All <FiChevronRight className="h-4 w-4" />
+              {t('blog_view_all')} <FiChevronRight className="h-4 w-4" />
             </Link>
           </div>
 
           {/* Empty State */}
           {posts.length === 0 ? (
-            <p className="text-neutral-400 py-8 text-center">Belum ada artikel.</p>
+            <p className="text-neutral-400 py-8 text-center">{t('blog_empty')}</p>
           ) : (
             <>
-              {/* Static / Manual Carousel Container - Zero auto-scroll timers to avoid shaking */}
+              {/* Static / Manual Carousel Container */}
               <div
                 ref={sliderRef}
                 className="flex items-stretch gap-6 overflow-x-auto pt-6 pb-6 px-1 scrollbar-none snap-x snap-mandatory scroll-smooth"
