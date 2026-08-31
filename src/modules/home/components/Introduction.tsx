@@ -1,23 +1,48 @@
 'use client';
 
+import { useState } from 'react';
 import { FiMapPin, FiBriefcase } from 'react-icons/fi';
 import { PROFILE } from '@/common/constant/data';
 import { useLanguage } from '@/common/context/LanguageContext';
 
 export default function Introduction() {
   const { t } = useLanguage();
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
 
   return (
     <section className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-        <div className="relative rounded-3xl p-6 md:p-14 overflow-hidden border-2 border-white/10 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] rtl:shadow-[-6px_6px_0px_0px_rgba(99,102,241,0.3)] bg-[#101010]">
-          {/* Gradient glow top-right */}
+        <div
+          onMouseMove={handleMouseMove}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className="group relative rounded-3xl p-6 md:p-14 overflow-hidden border-2 border-white/10 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] rtl:shadow-[-6px_6px_0px_0px_rgba(99,102,241,0.3)] bg-[#101010] transition-shadow duration-300 hover:shadow-[8px_8px_0px_0px_rgba(99,102,241,0.4)]"
+        >
+          {/* 1. Base Gradient glow top-right with interactive hover scaling */}
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div
-              className="absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full opacity-70 blur-3xl"
+              className="absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full opacity-70 blur-3xl transition-transform duration-500 ease-out group-hover:scale-125 group-hover:opacity-90"
               style={{ background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' }}
             />
           </div>
+
+          {/* 2. Interactive Spotlight that tracks cursor on hover */}
+          <div
+            className="pointer-events-none absolute inset-0 transition-opacity duration-300"
+            style={{
+              opacity: isHovered ? 1 : 0,
+              background: `radial-gradient(550px circle at ${mousePos.x}px ${mousePos.y}px, rgba(99,102,241,0.22), rgba(168,85,247,0.12), transparent 75%)`,
+            }}
+          />
 
           <div className="relative z-10 w-full">
             <h1 className="text-white text-2xl md:text-3xl lg:text-5xl font-brak leading-tight mb-4 md:mb-8">
@@ -36,14 +61,14 @@ export default function Introduction() {
 
             <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
               <div className="group text-white flex items-center gap-2 text-base md:text-lg font-medium cursor-default">
-                <FiMapPin className="transition-transform duration-300 group-hover:scale-110" />
+                <FiMapPin className="transition-transform duration-300 group-hover:scale-110 text-indigo-400" />
                 <span className="relative">
                   {t('hero_location')}
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1.5px] bg-white/70 transition-all duration-300 group-hover:w-full" />
                 </span>
               </div>
               <div className="group text-white flex items-center gap-2 text-base md:text-lg font-medium cursor-default">
-                <FiBriefcase className="transition-transform duration-300 group-hover:scale-110" />
+                <FiBriefcase className="transition-transform duration-300 group-hover:scale-110 text-purple-400" />
                 <span className="relative">
                   {t('hero_work')}
                   <span className="absolute left-0 -bottom-0.5 w-0 h-[1.5px] bg-white/70 transition-all duration-300 group-hover:w-full" />

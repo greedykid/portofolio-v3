@@ -16,7 +16,7 @@ const HomePage = async () => {
   const posts = await getAllPosts();
 
   return (
-    <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
+    <div className="flex flex-col gap-6 md:gap-8 lg:gap-10 pt-3 md:pt-5">
       <Introduction />
       <TechStack />
       <AboutSection />

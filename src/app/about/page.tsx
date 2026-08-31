@@ -6,6 +6,7 @@ import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import { HiOutlineAcademicCap } from 'react-icons/hi2';
 import { MdOutlineWorkOutline } from 'react-icons/md';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 interface EducationItem {
   institution: string;
@@ -92,6 +93,7 @@ const CAREER_DATA: CareerItem[] = [
 ];
 
 export default function AboutPage() {
+  const { locale } = useLanguage();
   const [showAllCareer, setShowAllCareer] = useState(false);
 
   const displayedCareer = showAllCareer ? CAREER_DATA : CAREER_DATA.slice(0, 3);
@@ -105,7 +107,9 @@ export default function AboutPage() {
             About Me
           </h1>
           <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base">
-            Kenalin cerita saya, apa yang drive saya, dan cool stuff yang saya suka bikin.
+            {locale === 'id'
+              ? 'Kenali cerita perjalanan saya, motivasi, dan berbagai karya digital yang saya bangun.'
+              : 'Discover my journey, what drives me, and the digital experiences I build.'}
           </p>
         </div>
 
@@ -113,27 +117,39 @@ export default function AboutPage() {
         <div className="relative rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#121622] p-6 md:p-10 lg:p-12 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] mb-8 md:mb-10 overflow-hidden">
           <div className="relative z-10 max-w-4xl space-y-5">
             <h2 className="text-neutral-900 dark:text-white text-2xl md:text-3xl font-brak font-bold">
-              Nice to meet you!
+              {locale === 'id' ? 'Senang bertemu dengan Anda!' : 'Nice to meet you!'}
             </h2>
 
-            <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-              Hey! Thanks for stopping by. I&apos;m Rizki, web developer & software enthusiast based di Jakarta, Indonesia dengan pengalaman membangun digital products yang modern, responsif, dan fungsional. Saya suka bikin websites dan web apps yang orang actually enjoy pakai.
-            </p>
-
-            <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-              Yang bikin saya excited? Building things yang look beautiful dan work smoothly. Saya suka banget create digital experiences yang simple to use dan bikin hidup orang lebih gampang. Whether it&apos;s a high-performance web app, interactive portfolio, e-commerce platform, atau full-stack solution, I&apos;m always learning new ways to make them better.
-            </p>
-
-            <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-              Throughout my journey, saya udah terbiasa merancang arsitektur web dari nol, mengoptimalkan database relasional, hingga mengintegrasikan API modern dengan UI/UX yang memikat. I believe good communication, clean code, dan attention to detail are the keys to creating something truly great.
-            </p>
-
-            <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
-              I&apos;m good at solving problems, adapting to new challenges, dan selalu give my best effort. Whether I&apos;m leading an independent project atau collaborating inside an agile team, I&apos;m all about getting things done dan bikin something yang bisa kita banggain.
-            </p>
+            {locale === 'id' ? (
+              <>
+                <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
+                  Halo! Terima kasih sudah mampir. Saya Rizki Arbiansyah, seorang software engineer dan web developer berbasis di Jakarta, Indonesia dengan pengalaman membangun produk digital yang modern, responsif, dan fungsional. Saya gemar merancang website serta aplikasi web yang menyenangkan dan mudah digunakan.
+                </p>
+                <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
+                  Fokus dan antusiasme saya terletak pada pengembangan aplikasi berperforma tinggi, arsitektur antarmuka modern (Next.js, React, TypeScript), serta sistem backend dan database yang efisien. Saya selalu bersemangat mempelajari pendekatan teknologi terbaru demi menghasilkan solusi terbaik.
+                </p>
+                <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
+                  Saya percaya bahwa komunikasi yang transparan, kode yang terstruktur bersih (clean code), dan perhatian terhadap detail adalah kunci utama dalam membangun produk berkualitas tinggi. Baik dalam proyek mandiri maupun berkolaborasi dalam tim agile, saya selalu berdedikasi memberikan hasil yang membanggakan.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
+                  Hey! Thanks for stopping by. I&apos;m Rizki Arbiansyah, a software engineer and web developer based in Jakarta, Indonesia with extensive experience crafting modern, responsive, and robust digital products. I love creating web apps that people truly enjoy using.
+                </p>
+                <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
+                  What gets me excited? Building high-performance web applications, modern frontend architectures (Next.js, React, TypeScript), and resilient backend solutions. I am constantly exploring cutting-edge tools to deliver seamless user experiences.
+                </p>
+                <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base leading-relaxed">
+                  I strongly believe that good communication, clean code practices, and strong attention to detail are fundamental to creating outstanding software. Whether leading projects independently or collaborating within agile teams, I strive for excellence in every deliverable.
+                </p>
+              </>
+            )}
 
             <div className="pt-4 border-t border-neutral-200 dark:border-white/10">
-              <p className="text-neutral-600 dark:text-neutral-400 text-sm">Best regards,</p>
+              <p className="text-neutral-600 dark:text-neutral-400 text-sm">
+                {locale === 'id' ? 'Salam hangat,' : 'Best regards,'}
+              </p>
               <p className="font-brak font-bold text-2xl md:text-3xl text-neutral-900 dark:text-white tracking-tight mt-0.5">
                 Rizki.
               </p>
@@ -147,10 +163,10 @@ export default function AboutPage() {
           <div className="lg:col-span-5 relative rounded-3xl border-2 border-teal-300/80 dark:border-teal-500/20 bg-teal-50/60 dark:bg-[#0d1e22] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(20,184,166,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(20,184,166,0.25)] flex flex-col justify-between">
             <div>
               <h3 className="text-neutral-900 dark:text-white text-xl md:text-2xl font-brak font-bold mb-1">
-                Where I Learned
+                {locale === 'id' ? 'Tempat Belajar' : 'Where I Learned'}
               </h3>
               <p className="text-neutral-600 dark:text-neutral-400 text-xs md:text-sm mb-6">
-                The foundation of my journey
+                {locale === 'id' ? 'Pondasi akademik & perjalanan studi' : 'The foundation of my journey'}
               </p>
 
               <div className="space-y-4">
@@ -190,14 +206,14 @@ export default function AboutPage() {
           <div className="lg:col-span-7 relative rounded-3xl border-2 border-indigo-300/80 dark:border-indigo-500/20 bg-indigo-50/50 dark:bg-[#101426] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)]">
             <div className="flex items-center justify-between gap-4 mb-1">
               <h3 className="text-neutral-900 dark:text-white text-xl md:text-2xl font-brak font-bold">
-                Career Timeline
+                {locale === 'id' ? 'Linimasa Karir' : 'Career Timeline'}
               </h3>
               <span className="rounded-full bg-indigo-500/15 border border-indigo-500/30 px-3 py-1 text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                3+ years
+                3+ {locale === 'id' ? 'tahun' : 'years'}
               </span>
             </div>
             <p className="text-neutral-600 dark:text-neutral-400 text-xs md:text-sm mb-6">
-              @2022 - Present
+              @2022 - {locale === 'id' ? 'Sekarang' : 'Present'}
             </p>
 
             {/* Timeline List */}
@@ -242,11 +258,14 @@ export default function AboutPage() {
               >
                 {showAllCareer ? (
                   <>
-                    Show less <FiChevronUp className="h-4 w-4" />
+                    {locale === 'id' ? 'Tampilkan lebih sedikit' : 'Show less'}{' '}
+                    <FiChevronUp className="h-4 w-4" />
                   </>
                 ) : (
                   <>
-                    Show all ({CAREER_DATA.length - 3} more) <FiChevronDown className="h-4 w-4" />
+                    {locale === 'id' ? 'Tampilkan semua' : 'Show all'} ({CAREER_DATA.length - 3}{' '}
+                    {locale === 'id' ? 'lainnya' : 'more'}){' '}
+                    <FiChevronDown className="h-4 w-4" />
                   </>
                 )}
               </button>

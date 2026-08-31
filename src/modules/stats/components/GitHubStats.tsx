@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { SOCIAL_MEDIA } from '@/common/constant/data';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 interface ContributionDay {
   date: string;
@@ -9,7 +10,7 @@ interface ContributionDay {
   level: number; // 0, 1, 2, 3, 4
 }
 
-// Generate realistic 52-week contribution data matching Image 1 aesthetics
+// Generate realistic 52-week contribution data with organic distribution
 function generateContributions(): {
   weeks: ContributionDay[][];
   total: number;
@@ -23,12 +24,10 @@ function generateContributions(): {
   let maxDay = 0;
   let thisWeekCount = 0;
 
-  // 52 weeks * 7 days
   const totalDays = 52 * 7;
   const startDate = new Date(today);
   startDate.setDate(today.getDate() - totalDays);
 
-  // Pattern seed for realistic active developer distribution
   for (let w = 0; w < 52; w++) {
     const weekDays: ContributionDay[] = [];
     for (let d = 0; d < 7; d++) {
@@ -36,7 +35,6 @@ function generateContributions(): {
       const curDate = new Date(startDate);
       curDate.setDate(startDate.getDate() + dayIndex);
 
-      // Seeded pseudorandom variation with clustering for organic look
       const isWeekend = d === 0 || d === 6;
       const wave = Math.sin((w / 52) * Math.PI * 4) * 0.3 + 0.7;
       const seed = Math.sin(dayIndex * 9301 + 49297) % 1;
@@ -45,10 +43,10 @@ function generateContributions(): {
       let count = 0;
       let level = 0;
 
-      if (rand > 0.18) {
-        const intensity = rand * wave * (isWeekend ? 0.6 : 1.2);
+      if (rand > 0.16) {
+        const intensity = rand * wave * (isWeekend ? 0.65 : 1.25);
         if (intensity > 0.8) {
-          count = Math.floor(20 + rand * 66); // up to 86
+          count = Math.floor(22 + rand * 64);
           level = 4;
         } else if (intensity > 0.55) {
           count = Math.floor(12 + rand * 16);
@@ -87,7 +85,7 @@ function generateContributions(): {
 const MONTHS = ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'];
 
 const LEVEL_COLORS: Record<number, string> = {
-  0: 'bg-[#2a3038] hover:bg-[#343b45]',
+  0: 'bg-[#222831] hover:bg-[#343b45]',
   1: 'bg-[#9be9a8] hover:bg-[#b8f5c2]',
   2: 'bg-[#40c463] hover:bg-[#52d677]',
   3: 'bg-[#30a14e] hover:bg-[#3ec462]',
@@ -115,6 +113,7 @@ interface Spark {
 }
 
 export default function GitHubStats() {
+  const { locale } = useLanguage();
   const [hoveredDay, setHoveredDay] = useState<{ day: ContributionDay; x: number; y: number } | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -124,7 +123,7 @@ export default function GitHubStats() {
     .replace('https://github.com/', '')
     .replace(/\/$/, '');
 
-  // Fireworks animation effect
+  // Lively & Frequent Fireworks Animation Effect
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -142,25 +141,35 @@ export default function GitHubStats() {
     resize();
     window.addEventListener('resize', resize);
 
-    const colors = ['#22c55e', '#4ade80', '#86efac', '#10b981', '#a7f3d0', '#fbbf24'];
+    const colors = [
+      '#22c55e',
+      '#4ade80',
+      '#86efac',
+      '#10b981',
+      '#a7f3d0',
+      '#38bdf8',
+      '#fbbf24',
+      '#a855f7',
+      '#f43f5e',
+    ];
 
     const createRocket = () => {
-      const x = Math.random() * (canvas.width - 100) + 50;
-      const targetY = Math.random() * (canvas.height * 0.45) + 40;
+      const x = Math.random() * (canvas.width - 80) + 40;
+      const targetY = Math.random() * (canvas.height * 0.55) + 30;
       rockets.push({
         x,
         y: canvas.height,
         targetY,
-        speedY: -(Math.random() * 4 + 7),
+        speedY: -(Math.random() * 5 + 8),
         color: colors[Math.floor(Math.random() * colors.length)],
       });
     };
 
     const explode = (x: number, y: number, color: string) => {
-      const count = 30 + Math.floor(Math.random() * 20);
+      const count = 45 + Math.floor(Math.random() * 35);
       for (let i = 0; i < count; i++) {
-        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
-        const speed = Math.random() * 3.5 + 1.2;
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+        const speed = Math.random() * 4.2 + 1.4;
         sparks.push({
           x,
           y,
@@ -168,8 +177,8 @@ export default function GitHubStats() {
           vy: Math.sin(angle) * speed,
           alpha: 1,
           color,
-          size: Math.random() * 2 + 1.5,
-          decay: Math.random() * 0.02 + 0.015,
+          size: Math.random() * 2.5 + 1.5,
+          decay: Math.random() * 0.022 + 0.012,
         });
       }
     };
@@ -179,8 +188,12 @@ export default function GitHubStats() {
     const render = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (time - lastRocketTime > 1200) {
+      // Launch fireworks frequently (every 400ms) with occasional double rocket bursts!
+      if (time - lastRocketTime > 400) {
         createRocket();
+        if (Math.random() > 0.45) {
+          setTimeout(createRocket, 120);
+        }
         lastRocketTime = time;
       }
 
@@ -189,12 +202,12 @@ export default function GitHubStats() {
         const r = rockets[i];
         r.y += r.speedY;
 
-        // Draw trail
+        // Draw rocket glowing trail
         ctx.beginPath();
-        ctx.arc(r.x, r.y, 2, 0, Math.PI * 2);
+        ctx.arc(r.x, r.y, 2.5, 0, Math.PI * 2);
         ctx.fillStyle = r.color;
         ctx.shadowColor = r.color;
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 12;
         ctx.fill();
         ctx.shadowBlur = 0;
 
@@ -209,7 +222,7 @@ export default function GitHubStats() {
         const s = sparks[i];
         s.x += s.vx;
         s.y += s.vy;
-        s.vy += 0.04; // gravity
+        s.vy += 0.045; // gravity
         s.alpha -= s.decay;
 
         if (s.alpha <= 0) {
@@ -218,12 +231,12 @@ export default function GitHubStats() {
         }
 
         ctx.save();
-        ctx.globalAlpha = s.alpha;
+        ctx.globalAlpha = Math.max(0, s.alpha);
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
         ctx.fillStyle = s.color;
         ctx.shadowColor = s.color;
-        ctx.shadowBlur = 6;
+        ctx.shadowBlur = 8;
         ctx.fill();
         ctx.restore();
       }
@@ -246,7 +259,7 @@ export default function GitHubStats() {
           {/* Animated Fireworks Canvas */}
           <canvas
             ref={canvasRef}
-            className="pointer-events-none absolute inset-0 w-full h-full z-0 opacity-40"
+            className="pointer-events-none absolute inset-0 w-full h-full z-0 opacity-60"
           />
 
           {/* Subtle Ambient Particle / Starfield backdrop */}
@@ -262,7 +275,9 @@ export default function GitHubStats() {
                 Contributions
               </h2>
               <p className="mt-2 text-sm md:text-base text-neutral-400">
-                A year of commits, PRs, dan debugging sessions tengah malem{' '}
+                {locale === 'id'
+                  ? 'A year of commits, PRs, dan debugging sessions tengah malem '
+                  : 'A year of commits, PRs, and midnight debugging sessions '}
                 <a
                   href={SOCIAL_MEDIA.github}
                   target="_blank"
@@ -289,7 +304,7 @@ export default function GitHubStats() {
                   {thisWeek}
                 </span>
                 <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
-                  THIS WEEK
+                  {locale === 'id' ? 'MINGGU INI' : 'THIS WEEK'}
                 </span>
               </div>
               <div className="flex flex-col">
@@ -297,16 +312,16 @@ export default function GitHubStats() {
                   {bestDay}
                 </span>
                 <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
-                  BEST DAY
+                  {locale === 'id' ? 'TERBAIK' : 'BEST DAY'}
                 </span>
               </div>
               <div className="flex flex-col">
                 <span className="text-2xl md:text-3xl font-brak font-bold text-[#22c55e]">
                   {average}{' '}
-                  <span className="text-sm font-normal text-neutral-400">/ day</span>
+                  <span className="text-sm font-normal text-neutral-400">/ {locale === 'id' ? 'hari' : 'day'}</span>
                 </span>
                 <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
-                  AVERAGE
+                  {locale === 'id' ? 'RATA-RATA' : 'AVERAGE'}
                 </span>
               </div>
             </div>
@@ -351,15 +366,15 @@ export default function GitHubStats() {
 
           {/* Footer: Less ... More Legend */}
           <div className="relative z-10 flex items-center gap-2 mt-4 text-xs text-neutral-400 font-medium">
-            <span>Less</span>
+            <span>{locale === 'id' ? 'Sedikit' : 'Less'}</span>
             <div className="flex items-center gap-1">
-              <span className="h-3 w-3 rounded-[2px] bg-[#2a3038]" />
+              <span className="h-3 w-3 rounded-[2px] bg-[#222831]" />
               <span className="h-3 w-3 rounded-[2px] bg-[#9be9a8]" />
               <span className="h-3 w-3 rounded-[2px] bg-[#40c463]" />
               <span className="h-3 w-3 rounded-[2px] bg-[#30a14e]" />
               <span className="h-3 w-3 rounded-[2px] bg-[#216e39]" />
             </div>
-            <span>More</span>
+            <span>{locale === 'id' ? 'Banyak' : 'More'}</span>
           </div>
 
           {/* Tooltip */}
@@ -369,10 +384,14 @@ export default function GitHubStats() {
               style={{ left: hoveredDay.x, top: hoveredDay.y }}
             >
               <p className="font-semibold text-emerald-400">
-                {hoveredDay.day.count > 0 ? `${hoveredDay.day.count} contributions` : 'No contributions'}
+                {hoveredDay.day.count > 0
+                  ? `${hoveredDay.day.count} ${locale === 'id' ? 'kontribusi' : 'contributions'}`
+                  : locale === 'id'
+                    ? 'Tidak ada kontribusi'
+                    : 'No contributions'}
               </p>
               <p className="text-[10px] text-neutral-300">
-                {new Date(hoveredDay.day.date).toLocaleDateString('en-US', {
+                {new Date(hoveredDay.day.date).toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
                   weekday: 'short',
                   month: 'short',
                   day: 'numeric',
@@ -386,4 +405,3 @@ export default function GitHubStats() {
     </section>
   );
 }
-

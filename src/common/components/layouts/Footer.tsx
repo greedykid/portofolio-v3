@@ -107,10 +107,10 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Giant Bottom Watermark */}
+          {/* Giant Bottom Watermark: rizkiarbi. */}
           <div className="pointer-events-none absolute -bottom-4 md:-bottom-8 inset-x-0 z-0 flex items-baseline justify-between px-4 md:px-8 select-none leading-none whitespace-nowrap">
             <span className="text-[60px] sm:text-[90px] md:text-[130px] lg:text-[160px] font-[900] tracking-tighter text-neutral-200/50 dark:text-[#181a20]/90">
-              rizkiarbiansyah.
+              rizkiarbi.
             </span>
             <span className="text-[24px] sm:text-[36px] md:text-[50px] lg:text-[70px] font-bold text-neutral-300/60 dark:text-[#252830]/80">
               © {new Date().getFullYear()}

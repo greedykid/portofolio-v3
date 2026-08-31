@@ -1,22 +1,24 @@
+'use client';
+
 import Container from '@/common/components/elements/Container';
 import ContactForm from '@/modules/contact/components/ContactForm';
-
-export const metadata = {
-  title: 'Contact',
-  description: 'Punya project in mind atau cuma mau ngobrol? Feel free to reach out through any of these channels.',
-};
+import { useLanguage } from '@/common/context/LanguageContext';
 
 export default function ContactPage() {
+  const { locale } = useLanguage();
+
   return (
     <div className="w-full py-4 md:py-8">
       <Container className="max-w-[1280px]">
         {/* Header */}
         <div className="mb-8 md:mb-10">
           <h1 className="text-neutral-900 dark:text-white text-3xl md:text-5xl font-brak font-bold tracking-tight mb-2">
-            Let&apos;s Connect
+            {locale === 'id' ? 'Mari Terhubung' : "Let's Connect"}
           </h1>
           <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base max-w-xl">
-            Punya project in mind atau cuma mau ngobrol? Feel free to reach out through any of these channels.
+            {locale === 'id'
+              ? 'Punya ide proyek, tawaran kolaborasi, atau peluang kerja? Jangan ragu untuk menghubungi saya.'
+              : 'Have a project in mind, collaboration idea, or career opportunity? Feel free to reach out anytime.'}
           </p>
         </div>
 

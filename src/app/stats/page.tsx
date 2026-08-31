@@ -17,6 +17,7 @@ import {
   FiSmartphone,
 } from 'react-icons/fi';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 type TimeRange = '7d' | '30d' | '90d' | 'all';
 
@@ -135,6 +136,7 @@ const TOP_DEVICES: BreakdownItem[] = [
 ];
 
 export default function StatsPage() {
+  const { locale } = useLanguage();
   const [timeRange, setTimeRange] = useState<TimeRange>('all');
   const [hoveredPoint, setHoveredPoint] = useState<{
     month: string;
@@ -167,10 +169,12 @@ export default function StatsPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 md:mb-10">
           <div>
             <h1 className="text-neutral-900 dark:text-white text-3xl md:text-5xl font-brak font-bold tracking-tight mb-2">
-              Statistik Situs
+              {locale === 'id' ? 'Statistik Situs' : 'Site Statistics'}
             </h1>
             <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base">
-              Analitik dan insight traffic untuk rizkiarbiansyah.com.
+              {locale === 'id'
+                ? 'Analitik dan insight traffic untuk rizkiarbiansyah.com.'
+                : 'Traffic insights and real-time analytics for rizkiarbiansyah.com.'}
             </p>
           </div>
 
@@ -181,7 +185,7 @@ export default function StatsPage() {
                 { id: '7d', label: '7d' },
                 { id: '30d', label: '30d' },
                 { id: '90d', label: '90d' },
-                { id: 'all', label: 'Sepanjang Waktu' },
+                { id: 'all', label: locale === 'id' ? 'Sepanjang Waktu' : 'All Time' },
               ] as const
             ).map((tab) => (
               <button
@@ -203,12 +207,37 @@ export default function StatsPage() {
         {/* 1. 6 Top Metric Cards Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 md:gap-4 mb-6 md:mb-8">
           {[
-            { label: 'Tayangan Halaman', val: currentStats.pageviews, icon: FiEye },
-            { label: 'Pengunjung', val: currentStats.visitors, icon: FiUsers },
-            { label: 'Kunjungan', val: currentStats.visits, icon: FiCompass },
-            { label: 'Rasio Pantul', val: currentStats.bounceRate, icon: FiPercent },
-            { label: 'Waktu Rata-rata', val: currentStats.avgTime, icon: FiClock },
-            { label: 'Aktif Sekarang', val: currentStats.activeNow, icon: FiZap, isLive: true },
+            {
+              label: locale === 'id' ? 'Tayangan Halaman' : 'Pageviews',
+              val: currentStats.pageviews,
+              icon: FiEye,
+            },
+            {
+              label: locale === 'id' ? 'Pengunjung' : 'Visitors',
+              val: currentStats.visitors,
+              icon: FiUsers,
+            },
+            {
+              label: locale === 'id' ? 'Kunjungan' : 'Visits',
+              val: currentStats.visits,
+              icon: FiCompass,
+            },
+            {
+              label: locale === 'id' ? 'Rasio Pantul' : 'Bounce Rate',
+              val: currentStats.bounceRate,
+              icon: FiPercent,
+            },
+            {
+              label: locale === 'id' ? 'Waktu Rata-rata' : 'Average Time',
+              val: currentStats.avgTime,
+              icon: FiClock,
+            },
+            {
+              label: locale === 'id' ? 'Aktif Sekarang' : 'Active Now',
+              val: currentStats.activeNow,
+              icon: FiZap,
+              isLive: true,
+            },
           ].map((item) => {
             const Icon = item.icon;
             return (
@@ -238,7 +267,7 @@ export default function StatsPage() {
         <div className="relative rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#101420] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] mb-8 md:mb-10 overflow-hidden">
           <div className="mb-4">
             <h2 className="text-base md:text-lg font-bold text-neutral-900 dark:text-white">
-              Tayangan Halaman
+              {locale === 'id' ? 'Tayangan Halaman' : 'Pageviews'}
             </h2>
           </div>
 
@@ -340,11 +369,11 @@ export default function StatsPage() {
                 {hoveredPoint.month}
               </p>
               <p className="flex items-center justify-between gap-4 font-semibold text-indigo-400">
-                <span>Tayangan Halaman:</span>
+                <span>{locale === 'id' ? 'Tayangan Halaman:' : 'Pageviews:'}</span>
                 <span>{hoveredPoint.views.toLocaleString('en-US')}</span>
               </p>
               <p className="flex items-center justify-between gap-4 font-semibold text-amber-400">
-                <span>Sesi:</span>
+                <span>{locale === 'id' ? 'Sesi:' : 'Sessions:'}</span>
                 <span>{hoveredPoint.sessions.toLocaleString('en-US')}</span>
               </p>
             </div>
@@ -354,11 +383,11 @@ export default function StatsPage() {
           <div className="flex items-center justify-center gap-6 mt-6 text-xs font-semibold text-neutral-600 dark:text-neutral-400">
             <div className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-              <span>Sesi</span>
+              <span>{locale === 'id' ? 'Sesi' : 'Sessions'}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full bg-indigo-500" />
-              <span>Tayangan Halaman</span>
+              <span>{locale === 'id' ? 'Tayangan Halaman' : 'Pageviews'}</span>
             </div>
           </div>
         </div>
@@ -367,7 +396,7 @@ export default function StatsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {/* Card 1: Halaman Teratas */}
           <BreakdownCard
-            title="Halaman Teratas"
+            title={locale === 'id' ? 'Halaman Teratas' : 'Top Pages'}
             icon={FiFileText}
             items={TOP_PAGES}
             barColor="bg-indigo-500/20"
@@ -376,7 +405,7 @@ export default function StatsPage() {
 
           {/* Card 2: Referensi Teratas */}
           <BreakdownCard
-            title="Referensi Teratas"
+            title={locale === 'id' ? 'Referensi Teratas' : 'Top Referrers'}
             icon={FiShare2}
             items={TOP_REFERRERS}
             barColor="bg-blue-500/20"
@@ -385,7 +414,7 @@ export default function StatsPage() {
 
           {/* Card 3: Negara Teratas */}
           <BreakdownCard
-            title="Negara Teratas"
+            title={locale === 'id' ? 'Negara Teratas' : 'Top Countries'}
             icon={FiGlobe}
             items={TOP_COUNTRIES}
             barColor="bg-emerald-500/20"
@@ -394,7 +423,7 @@ export default function StatsPage() {
 
           {/* Card 4: Browser */}
           <BreakdownCard
-            title="Browser"
+            title={locale === 'id' ? 'Browser' : 'Browsers'}
             icon={FiChrome}
             items={TOP_BROWSERS}
             barColor="bg-cyan-500/20"
@@ -403,7 +432,7 @@ export default function StatsPage() {
 
           {/* Card 5: Sistem Operasi */}
           <BreakdownCard
-            title="Sistem Operasi"
+            title={locale === 'id' ? 'Sistem Operasi' : 'Operating Systems'}
             icon={FiHardDrive}
             items={TOP_OS}
             barColor="bg-purple-500/20"
@@ -412,7 +441,7 @@ export default function StatsPage() {
 
           {/* Card 6: Perangkat */}
           <BreakdownCard
-            title="Perangkat"
+            title={locale === 'id' ? 'Perangkat' : 'Devices'}
             icon={FiSmartphone}
             items={TOP_DEVICES}
             barColor="bg-amber-500/20"

@@ -4,34 +4,36 @@ import { FiSun, FiMoon, FiGlobe, FiCalendar, FiCoffee, FiMail, FiArrowRight } fr
 import { SOCIAL } from '@/common/constant/social';
 import { PROFILE } from '@/common/constant/data';
 import { useTheme } from '@/common/context/ThemeContext';
+import { useLanguage } from '@/common/context/LanguageContext';
 import { BsQrCode } from 'react-icons/bs';
-
-const PERSONAL_LINKS = [
-  {
-    title: 'My Personal Space',
-    href: '/',
-    icon: FiGlobe,
-    accentBorder: 'border-b-emerald-400',
-    description: 'Explore my projects, writings, and background',
-  },
-  {
-    title: "Let's Chat!",
-    href: 'mailto:rizkiarbi65@gmail.com',
-    icon: FiCalendar,
-    accentBorder: 'border-b-rose-400',
-    description: 'Schedule a call or quick virtual coffee',
-  },
-  {
-    title: 'Buy Me Coffee?',
-    href: 'https://saweria.co',
-    icon: FiCoffee,
-    accentBorder: 'border-b-amber-400',
-    description: 'Support my open-source work & creative explorations',
-  },
-];
 
 export default function LinksPage() {
   const { theme, toggleTheme } = useTheme();
+  const { locale } = useLanguage();
+
+  const PERSONAL_LINKS = [
+    {
+      title: locale === 'id' ? 'Ruang Pribadi Saya' : 'My Personal Space',
+      href: '/',
+      icon: FiGlobe,
+      accentBorder: 'border-b-emerald-400',
+      description: locale === 'id' ? 'Eksplorasi proyek, tulisan, dan profil saya' : 'Explore my projects, writings, and background',
+    },
+    {
+      title: locale === 'id' ? 'Mari Berdiskusi!' : "Let's Chat!",
+      href: 'mailto:rizkiarbi65@gmail.com',
+      icon: FiCalendar,
+      accentBorder: 'border-b-rose-400',
+      description: locale === 'id' ? 'Jadwalkan obrolan atau ngopi virtual' : 'Schedule a call or quick virtual coffee',
+    },
+    {
+      title: locale === 'id' ? 'Traktir Kopi?' : 'Buy Me Coffee?',
+      href: 'https://saweria.co',
+      icon: FiCoffee,
+      accentBorder: 'border-b-amber-400',
+      description: locale === 'id' ? 'Dukung eksplorasi karya open-source saya' : 'Support my open-source work & explorations',
+    },
+  ];
 
   return (
     <div className="w-full py-6 md:py-10 flex items-center justify-center px-4">
@@ -86,7 +88,7 @@ export default function LinksPage() {
           {/* Links Section */}
           <div className="mt-8 text-left">
             <h2 className="text-sm font-bold text-neutral-800 dark:text-neutral-200 mb-3 uppercase tracking-wider">
-              Links
+              {locale === 'id' ? 'Tautan' : 'Links'}
             </h2>
             <div className="space-y-3">
               {PERSONAL_LINKS.map((link) => {
@@ -117,12 +119,14 @@ export default function LinksPage() {
           {/* Get in touch Card */}
           <div className="mt-8 text-left">
             <h2 className="text-sm font-bold text-neutral-800 dark:text-neutral-200 mb-3 uppercase tracking-wider">
-              Get in touch
+              {locale === 'id' ? 'Kontak Langsung' : 'Get in touch'}
             </h2>
             <div className="rounded-2xl border border-blue-200 dark:border-blue-500/20 bg-blue-50/80 dark:bg-[#131d2e] p-5 shadow-sm">
               <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 mb-1.5">
                 <FiMail className="h-5 w-5" />
-                <span className="text-sm font-bold">Drop Me an Email</span>
+                <span className="text-sm font-bold">
+                  {locale === 'id' ? 'Kirimkan Email' : 'Drop Me an Email'}
+                </span>
               </div>
               <a
                 href="mailto:rizkiarbi65@gmail.com"
@@ -131,7 +135,9 @@ export default function LinksPage() {
                 rizkiarbi65@gmail.com
               </a>
               <p className="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
-                Expect my rapid dan eager reply — your message won&apos;t be kept waiting!
+                {locale === 'id'
+                  ? 'Saya akan merespons pesan Anda secepat mungkin dengan senang hati!'
+                  : "Expect my rapid and eager reply — your message won't be kept waiting!"}
               </p>
             </div>
           </div>

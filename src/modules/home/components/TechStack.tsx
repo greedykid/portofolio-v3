@@ -26,6 +26,7 @@ import {
   SiRedux,
 } from 'react-icons/si';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 const AIIcon = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
   <svg
@@ -73,7 +74,84 @@ const TOOLS_DATA: ToolItem[] = [
   { id: 'git', name: 'Git', icon: SiGit, iconColor: '#F05032', borderColor: 'hover:border-orange-400', initialRotate: 5 },
 ];
 
-import { useLanguage } from '@/common/context/LanguageContext';
+// Interactive Web Audio Sound Synthesizer
+let audioCtx: AudioContext | null = null;
+function getAudioContext() {
+  if (typeof window === 'undefined') return null;
+  if (!audioCtx) {
+    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (AudioCtx) {
+      audioCtx = new AudioCtx();
+    }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playGrabSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    const now = ctx.currentTime;
+    osc.frequency.setValueAtTime(420, now);
+    osc.frequency.exponentialRampToValueAtTime(640, now + 0.08);
+    gain.gain.setValueAtTime(0.12, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.08);
+  } catch {
+    // Audio Context safe catch
+  }
+}
+
+function playCollisionSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    const now = ctx.currentTime;
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.exponentialRampToValueAtTime(200, now + 0.06);
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.06);
+  } catch {
+    // Safe catch
+  }
+}
+
+function playDropSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    const now = ctx.currentTime;
+    osc.frequency.setValueAtTime(560, now);
+    osc.frequency.exponentialRampToValueAtTime(360, now + 0.07);
+    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.07);
+  } catch {
+    // Safe catch
+  }
+}
 
 export default function TechStack() {
   const { t } = useLanguage();
@@ -81,9 +159,11 @@ export default function TechStack() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const dragStartRef = useRef<{ id: string; startX: number; startY: number; initX: number; initY: number } | null>(null);
+  const lastSoundTime = useRef(0);
 
   const handlePointerDown = (id: string, e: React.PointerEvent<HTMLDivElement>) => {
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    playGrabSound();
     const currentOffset = offsets[id] || { x: 0, y: 0 };
     dragStartRef.current = {
       id,
@@ -119,6 +199,8 @@ export default function TechStack() {
           y: activeRect.top + activeRect.height / 2,
         };
 
+        let hadCollision = false;
+
         TOOLS_DATA.forEach((otherTool) => {
           if (otherTool.id === id) return;
           const otherEl = itemRefs.current[otherTool.id];
@@ -138,6 +220,7 @@ export default function TechStack() {
           const minDist = (activeRect.width + otherRect.width) / 2.6;
 
           if (dist < minDist && dist > 0) {
+            hadCollision = true;
             const overlap = minDist - dist;
             const nx = dx / dist;
             const ny = dy / dist;
@@ -149,6 +232,12 @@ export default function TechStack() {
             };
           }
         });
+
+        const now = Date.now();
+        if (hadCollision && now - lastSoundTime.current > 120) {
+          playCollisionSound();
+          lastSoundTime.current = now;
+        }
       }
 
       return nextOffsets;
@@ -160,8 +249,9 @@ export default function TechStack() {
       try {
         (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
       } catch {
-        // ignore if already released
+        // ignore
       }
+      playDropSound();
       dragStartRef.current = null;
       setActiveId(null);
     }
@@ -189,7 +279,7 @@ export default function TechStack() {
               {Object.keys(offsets).length > 0 && (
                 <button
                   onClick={handleReset}
-                  className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 shadow-sm border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+                  className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 shadow-sm border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors cursor-pointer"
                 >
                   Reset
                 </button>
@@ -223,7 +313,7 @@ export default function TechStack() {
                     transition: isDragging ? 'none' : 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s',
                   }}
                   className={cn(
-                    'group flex items-center gap-2.5 rounded-full border border-neutral-200/80 dark:border-white/10 bg-white dark:bg-neutral-900/90 px-4 md:px-5 py-2 md:py-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.3)] cursor-grab active:cursor-grabbing hover:shadow-md',
+                    'group flex items-center gap-2.5 rounded-full border border-neutral-200/80 dark:border-white/10 bg-white dark:bg-neutral-900/90 px-4 md:px-5 py-2 md:py-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.3)] cursor-grab active:cursor-grabbing hover:shadow-md transition-colors',
                     tool.borderColor,
                     isDragging && 'shadow-2xl ring-2 ring-indigo-500/40'
                   )}
@@ -244,4 +334,3 @@ export default function TechStack() {
     </section>
   );
 }
-
