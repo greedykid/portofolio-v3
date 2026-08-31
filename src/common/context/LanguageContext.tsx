@@ -4,17 +4,26 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export type Locale = 'id' | 'en';
 
-interface Dictionary {
+export interface Dictionary {
   // Navigation
   nav_home: string;
   nav_about: string;
   nav_portfolio: string;
   nav_blog: string;
+  nav_tools: string;
   nav_links: string;
   nav_contact: string;
   nav_more: string;
   nav_stats: string;
+  nav_stats_desc: string;
+  nav_setup: string;
+  nav_setup_desc: string;
   nav_guestbook: string;
+  nav_guestbook_desc: string;
+  nav_behind: string;
+  nav_behind_desc: string;
+  nav_menu_title: string;
+  nav_more_insights: string;
 
   // Hero / Intro
   hero_greeting: string;
@@ -86,14 +95,23 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     nav_about: 'About',
     nav_portfolio: 'Portfolio',
     nav_blog: 'Blog',
+    nav_tools: 'Tools',
     nav_links: 'Links',
     nav_contact: 'Contact',
     nav_more: 'More',
     nav_stats: 'Statistik Situs',
+    nav_stats_desc: 'Analitik traffic & performa rizkiarbi.com',
+    nav_setup: 'Setup Kerja',
+    nav_setup_desc: 'Hardware & tools harian saya',
     nav_guestbook: 'Buku Tamu',
+    nav_guestbook_desc: 'Tinggalkan pesan Anda di sini',
+    nav_behind: 'Di Balik Layar',
+    nav_behind_desc: 'Cerita di balik website ini',
+    nav_menu_title: 'Navigasi Menu',
+    nav_more_insights: 'Wawasan & Ekplorasi',
 
     hero_greeting: 'Halo',
-    hero_im: "Saya Rizki.",
+    hero_im: 'Saya Rizki.',
     hero_headline_1: 'Saya merancang & membangun ',
     hero_headline_badge: 'digital experiences',
     hero_headline_2: ' berkinerja tinggi, elegan, dan berdampak nyata. Mengubah ide kompleks menjadi produk digital kelas dunia secepat pikiran.',
@@ -150,11 +168,20 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     nav_about: 'About',
     nav_portfolio: 'Portfolio',
     nav_blog: 'Blog',
+    nav_tools: 'Tools',
     nav_links: 'Links',
     nav_contact: 'Contact',
     nav_more: 'More',
     nav_stats: 'Site Statistics',
+    nav_stats_desc: 'Real-time traffic & performance insights',
+    nav_setup: 'My Setup',
+    nav_setup_desc: 'My daily workstation hardware & software',
     nav_guestbook: 'Guestbook',
+    nav_guestbook_desc: 'Leave a note for the community',
+    nav_behind: 'Behind the Scenes',
+    nav_behind_desc: 'The technical story behind this portfolio',
+    nav_menu_title: 'Navigation Menu',
+    nav_more_insights: 'Insights & Explore',
 
     hero_greeting: 'Hey',
     hero_im: "I'm Rizki.",
@@ -201,7 +228,7 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     contact_email: 'Email Address',
     contact_email_ph: 'email@example.com',
     contact_msg: 'Message / Project Details',
-    contact_msg_ph: "Tell me about your project goals or just say hi...",
+    contact_msg_ph: 'Tell me about your project goals or just say hi...',
     contact_send: 'Send Message',
     contact_sending: 'Sending Message...',
 
