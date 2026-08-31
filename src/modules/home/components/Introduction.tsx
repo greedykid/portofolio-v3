@@ -5,7 +5,15 @@ export default function Introduction() {
   return (
     <section className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-        <div data-aos="fade-up" className="relative rounded-3xl p-6 md:p-14 overflow-hidden border-2 border-white/10 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] rtl:shadow-[-6px_6px_0px_0px_rgba(99,102,241,0.3)] bg-neutral-950">
+        <div className="relative rounded-3xl p-6 md:p-14 overflow-hidden border-2 border-white/10 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] rtl:shadow-[-6px_6px_0px_0px_rgba(99,102,241,0.3)] bg-[#101010]">
+          {/* Gradient glow top-right */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div
+              className="absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full opacity-70 blur-3xl"
+              style={{ background: 'linear-gradient(135deg, #6366f1 0%, #a855f7 100%)' }}
+            />
+          </div>
+
           <div className="relative z-50 w-full">
             <h1 className="text-white text-2xl md:text-3xl lg:text-5xl font-brak leading-tight mb-4 md:mb-8">
               <span className="inline-block">Hey</span>

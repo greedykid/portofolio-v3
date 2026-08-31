@@ -31,9 +31,7 @@ export default function ContactForm() {
 
   if (state === 'success') {
     return (
-      <p className="text-green-600 dark:text-green-400">
-        Terima kasih! Pesan Anda telah terkirim.
-      </p>
+      <p className="text-green-400">Terima kasih! Pesan Anda telah terkirim.</p>
     );
   }
 
@@ -44,21 +42,21 @@ export default function ContactForm() {
         name="name"
         placeholder="Nama"
         required
-        className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3 text-neutral-900 outline-none transition-colors focus:border-primary dark:border-neutral-700 dark:bg-neutral-950 dark:text-white"
+        className="rounded-xl border-2 border-white/10 bg-[#1a1a1a] px-4 py-3 text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary"
       />
       <input
         type="email"
         name="email"
         placeholder="Email"
         required
-        className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3 text-neutral-900 outline-none transition-colors focus:border-primary dark:border-neutral-700 dark:bg-neutral-950 dark:text-white"
+        className="rounded-xl border-2 border-white/10 bg-[#1a1a1a] px-4 py-3 text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary"
       />
       <textarea
         name="message"
         placeholder="Pesan Anda"
         rows={5}
         required
-        className="rounded-xl border-2 border-neutral-200 bg-white px-4 py-3 text-neutral-900 outline-none transition-colors focus:border-primary dark:border-neutral-700 dark:bg-neutral-950 dark:text-white md:col-span-2"
+        className="rounded-xl border-2 border-white/10 bg-[#1a1a1a] px-4 py-3 text-white outline-none transition-colors placeholder:text-neutral-500 focus:border-primary md:col-span-2"
       />
       <button
         type="submit"
@@ -68,7 +66,7 @@ export default function ContactForm() {
         {state === 'sending' ? 'Mengirim...' : 'Kirim Pesan'}
       </button>
       {state === 'error' && (
-        <p className="md:col-span-2 text-sm text-red-500">
+        <p className="md:col-span-2 text-sm text-red-400">
           Gagal mengirim pesan. Silakan coba lagi atau email langsung ke rizkiarbi65@gmail.com.
         </p>
       )}

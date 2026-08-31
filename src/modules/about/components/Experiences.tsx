@@ -1,4 +1,5 @@
 import SectionHeading from '@/common/components/elements/SectionHeading';
+import Card from '@/common/components/elements/Card';
 import { EXPERIENCES } from '@/common/constant/experience';
 
 function formatDate(date: string | null): string {
@@ -13,28 +14,25 @@ export default function Experiences() {
         <SectionHeading title="Work Experience" description="Pengalaman kerja dan proyek profesional." />
         <div className="space-y-6">
           {EXPERIENCES.map((exp) => (
-            <div
-              key={exp.company}
-              className="rounded-3xl border-2 border-neutral-200 bg-white p-6 transition-all duration-300 hover:border-primary hover:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] dark:border-neutral-700 dark:bg-neutral-900 md:p-8"
-            >
+            <Card key={exp.company} hover>
               <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div>
-                  <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">{exp.role}</h3>
+                  <h3 className="text-xl font-semibold text-white">{exp.role}</h3>
                   <p className="mt-1 text-primary">{exp.company}</p>
                 </div>
-                <div className="text-sm text-neutral-400">
+                <div className="text-sm text-neutral-500">
                   {formatDate(exp.startDate)} — {formatDate(exp.endDate)}
                 </div>
               </div>
               <ul className="mt-4 space-y-2">
                 {exp.responsibilities.map((resp) => (
-                  <li key={resp} className="flex gap-3 text-neutral-500 dark:text-neutral-400">
+                  <li key={resp} className="flex gap-3 text-neutral-400">
                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                     {resp}
                   </li>
                 ))}
               </ul>
-            </div>
+            </Card>
           ))}
         </div>
       </div>

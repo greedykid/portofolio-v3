@@ -1,4 +1,5 @@
 import SectionHeading from '@/common/components/elements/SectionHeading';
+import Card from '@/common/components/elements/Card';
 import { STATS } from '@/common/constant/services';
 
 export default function Statistics() {
@@ -8,13 +9,10 @@ export default function Statistics() {
         <SectionHeading title="In Numbers" description="Beberapa angka yang menggambarkan perjalanan saya." />
         <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
           {STATS.map(({ number, label }) => (
-            <div
-              key={label}
-              className="rounded-3xl border-2 border-neutral-200 bg-white p-6 text-center transition-all duration-300 hover:border-primary hover:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] dark:border-neutral-700 dark:bg-neutral-900"
-            >
-              <div className="text-3xl font-brak text-primary">{number}</div>
-              <div className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">{label}</div>
-            </div>
+            <Card key={label} hover className="text-center">
+              <div className="text-3xl font-brak text-white">{number}</div>
+              <div className="mt-2 text-sm text-neutral-400">{label}</div>
+            </Card>
           ))}
         </div>
       </div>

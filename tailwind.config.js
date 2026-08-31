@@ -22,6 +22,7 @@ module.exports = {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
+        panel: '#171717',
       },
       fontFamily: {
         brak: ['Brakle', 'system-ui', 'sans-serif'],
@@ -35,6 +36,9 @@ module.exports = {
         'brutal-white': '6px 6px 0px 0px rgba(255,255,255,0.15)',
         'brutal-indigo': '4px 4px 0px 0px rgba(99,102,241,0.4)',
         'brutal-black': '6px 6px 0px 0px rgba(0,0,0,1)',
+        'brutal-indigo-solid': '6px 6px 0px 0px rgba(79,70,229,1)',
+        'brutal-green': '6px 6px 0px 0px rgba(22,101,52,0.4)',
+        'brutal-pink': '6px 6px 0px 0px rgba(190,24,93,0.4)',
       },
       animation: {
         wave: 'wave 2.5s ease-in-out infinite',
