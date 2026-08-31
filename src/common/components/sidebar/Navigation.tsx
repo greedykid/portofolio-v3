@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -40,7 +40,8 @@ const MORE_NAVIGATION = [
 
 export default function Navigation() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
@@ -53,6 +54,24 @@ export default function Navigation() {
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Open with smooth slide up transition
+  const handleOpen = () => {
+    setIsOpen(true);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setIsVisible(true);
+      });
+    });
+  };
+
+  // Close with smooth slide down transition
+  const handleClose = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 300);
   }, []);
 
   // Close dropdown on click outside
@@ -68,7 +87,7 @@ export default function Navigation() {
 
   // Lock body scroll when mobile bottomsheet is open
   useEffect(() => {
-    if (open) {
+    if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -76,12 +95,12 @@ export default function Navigation() {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [open]);
+  }, [isOpen]);
 
   // Close mobile sheet on route change
   useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+    handleClose();
+  }, [pathname, handleClose]);
 
   return (
     <>
@@ -175,26 +194,34 @@ export default function Navigation() {
       <button
         className="lg:hidden flex flex-col justify-center items-center gap-1.5 p-2 ms-auto rounded-xl hover:bg-neutral-200/50 dark:hover:bg-white/10 transition-colors"
         aria-label="Toggle Navigation Menu"
-        onClick={() => setOpen(true)}
+        onClick={handleOpen}
       >
         <span className="w-5 h-0.5 bg-neutral-900 dark:bg-white rounded-full transition-all duration-300" />
         <span className="w-5 h-0.5 bg-neutral-900 dark:bg-white rounded-full transition-all duration-300" />
         <span className="w-5 h-0.5 bg-neutral-900 dark:bg-white rounded-full transition-all duration-300" />
       </button>
 
-      {/* Mobile Bottom Sheet Modal rendered via React Portal directly into body */}
-      {open &&
+      {/* Mobile Bottom Sheet Modal rendered via React Portal with smooth slide open & close */}
+      {isOpen &&
         mounted &&
         createPortal(
           <div className="fixed inset-0 z-[99999] flex flex-col justify-end pointer-events-auto">
             {/* Backdrop Blur Overlay */}
             <div
-              className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
-              onClick={() => setOpen(false)}
+              className={cn(
+                'fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ease-in-out',
+                isVisible ? 'opacity-100' : 'opacity-0'
+              )}
+              onClick={handleClose}
             />
 
             {/* Bottom Sheet Card */}
-            <div className="relative z-10 w-full max-h-[85vh] overflow-y-auto rounded-t-[32px] border-t-2 border-neutral-300/80 dark:border-white/15 bg-white dark:bg-[#121622] p-6 pb-10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-out animate-in slide-in-from-bottom duration-300">
+            <div
+              className={cn(
+                'relative z-10 w-full max-h-[85vh] overflow-y-auto rounded-t-[32px] border-t-2 border-neutral-300/80 dark:border-white/15 bg-white dark:bg-[#121622] p-6 pb-10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-out transform',
+                isVisible ? 'translate-y-0' : 'translate-y-full'
+              )}
+            >
               {/* Top Drag Indicator */}
               <div className="mx-auto h-1.5 w-12 rounded-full bg-neutral-300 dark:bg-white/20 mb-4" />
 
@@ -204,7 +231,7 @@ export default function Navigation() {
                   Navigasi Menu
                 </span>
                 <button
-                  onClick={() => setOpen(false)}
+                  onClick={handleClose}
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-100 dark:bg-white/10 text-neutral-700 dark:text-neutral-300 hover:scale-105 active:scale-95 transition-all cursor-pointer"
                   aria-label="Close menu"
                 >
@@ -220,7 +247,7 @@ export default function Navigation() {
                     <Link
                       key={href}
                       href={href}
-                      onClick={() => setOpen(false)}
+                      onClick={handleClose}
                       className={cn(
                         'flex items-center gap-3 rounded-2xl p-3.5 text-sm font-semibold transition-all duration-200 cursor-pointer',
                         active
@@ -248,7 +275,7 @@ export default function Navigation() {
                       <Link
                         key={item.href}
                         href={item.href}
-                        onClick={() => setOpen(false)}
+                        onClick={handleClose}
                         className={cn(
                           'flex items-center gap-3.5 rounded-2xl p-3 text-xs md:text-sm font-medium transition-all cursor-pointer',
                           itemActive
@@ -256,7 +283,7 @@ export default function Navigation() {
                             : 'text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/5'
                         )}
                       >
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-neutral-100 dark:bg-white/10 text-neutral-800 dark:text-neutral-200">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neutral-100 dark:bg-white/10 text-neutral-800 dark:text-neutral-200">
                           <Icon className="h-4 w-4" />
                         </div>
                         <div className="flex-1 min-w-0">
