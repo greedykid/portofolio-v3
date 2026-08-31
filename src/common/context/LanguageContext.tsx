@@ -55,9 +55,13 @@ export interface Dictionary {
   projects_view_btn: string;
   projects_live_preview: string;
 
-  // Blog Section
+  // Blog Section & Page
   blog_title: string;
   blog_desc: string;
+  blog_page_desc: string;
+  blog_search_ph: string;
+  blog_not_found: string;
+  blog_views: string;
   blog_view_all: string;
   blog_min_read: string;
   blog_empty: string;
@@ -174,8 +178,12 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     projects_view_btn: 'Lihat Detail Proyek',
     projects_live_preview: 'Pratinjau Langsung',
 
-    blog_title: 'Artikel & Wawasan',
+    blog_title: 'Blog & Artikel',
     blog_desc: 'Catatan perjalanan, eksplorasi teknologi web modern, dan praktik terbaik rekayasa software.',
+    blog_page_desc: 'Kumpulan tulisan, tutorial teknis, dan wawasan seputar dunia pengembangan web.',
+    blog_search_ph: 'Cari artikel berdasarkan judul, topik, atau kata kunci...',
+    blog_not_found: 'Tidak ditemukan artikel yang sesuai dengan pencarian Anda.',
+    blog_views: 'tayangan',
     blog_view_all: 'Lihat Semua Artikel',
     blog_min_read: 'menit baca',
     blog_empty: 'Belum ada artikel yang dipublikasikan.',
@@ -283,8 +291,12 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     projects_view_btn: 'View Project Details',
     projects_live_preview: 'Live Preview',
 
-    blog_title: 'Articles & Insights',
+    blog_title: 'Blog & Articles',
     blog_desc: 'Documented explorations in modern web engineering, architecture patterns, and best practices.',
+    blog_page_desc: 'A collection of technical write-ups, engineering notes, and web development insights.',
+    blog_search_ph: 'Search articles by title, topic, or keyword...',
+    blog_not_found: 'No articles found matching your search.',
+    blog_views: 'views',
     blog_view_all: 'View All Articles',
     blog_min_read: 'min read',
     blog_empty: 'No articles published yet.',
