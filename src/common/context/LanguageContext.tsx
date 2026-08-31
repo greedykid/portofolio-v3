@@ -45,6 +45,7 @@ export interface Dictionary {
   about_p1: string;
   about_p2: string;
   about_p3: string;
+  about_more: string;
   about_more_btn: string;
 
   // Blog Section
@@ -52,6 +53,7 @@ export interface Dictionary {
   blog_desc: string;
   blog_view_all: string;
   blog_min_read: string;
+  blog_empty: string;
 
   // Statistics
   stats_title: string;
@@ -127,12 +129,14 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     about_p1: 'Halo! Saya Rizki Arbiansyah, seorang Software Engineer & Web Developer yang berfokus pada arsitektur frontend modern, performa web tingkat lanjut, dan antarmuka pengguna yang intuitif.',
     about_p2: 'Dengan pengalaman mendalam dalam ekosistem Next.js, React, TypeScript, dan full-stack development, saya memadukan estetika desain visual dengan kode yang bersih dan scalable.',
     about_p3: 'Saya senang memecahkan masalah kompleks, mengoptimalkan pengalaman pengguna, serta mewujudkan produk digital yang memberi nilai tambah nyata.',
+    about_more: 'Pelajari Lebih Lanjut',
     about_more_btn: 'Pelajari Lebih Lanjut',
 
     blog_title: 'Artikel & Wawasan',
     blog_desc: 'Catatan perjalanan, eksplorasi teknologi web modern, dan praktik terbaik rekayasa software.',
     blog_view_all: 'Lihat Semua Artikel',
     blog_min_read: 'menit baca',
+    blog_empty: 'Belum ada artikel yang dipublikasikan.',
 
     stats_title: 'Pencapaian & Angka',
     stats_desc: 'Metrik pertumbuhan dan komitmen berkelanjutan dalam membangun karya digital.',
@@ -200,12 +204,14 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     about_p1: "Hi! I'm Rizki Arbiansyah, a Software Engineer & Web Developer specialized in modern frontend architectures, cutting-edge web performance, and intuitive user experiences.",
     about_p2: 'With deep expertise across Next.js, React, TypeScript, and full-stack solutions, I blend striking visual design with clean, maintainable, and scalable code.',
     about_p3: 'I thrive on solving complex technical challenges, elevating user experiences, and delivering software that drives measurable real-world impact.',
+    about_more: 'Discover More About Me',
     about_more_btn: 'Discover More About Me',
 
     blog_title: 'Articles & Insights',
     blog_desc: 'Documented explorations in modern web engineering, architecture patterns, and best practices.',
     blog_view_all: 'View All Articles',
     blog_min_read: 'min read',
+    blog_empty: 'No articles published yet.',
 
     stats_title: 'In Numbers & Impact',
     stats_desc: 'Key growth metrics and continuous commitment to engineering excellence.',
