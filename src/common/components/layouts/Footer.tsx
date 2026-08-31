@@ -11,22 +11,22 @@ export default function Footer() {
 
   const FOOTER_LINKS = {
     pages: [
-      { label: 'Home', href: '/' },
-      { label: 'About', href: '/about' },
-      { label: 'Blog', href: '/blog' },
-      { label: 'Contact', href: '/contact' },
+      { label: t('nav_home'), href: '/' },
+      { label: t('nav_about'), href: '/about' },
+      { label: t('nav_blog'), href: '/blog' },
+      { label: t('nav_contact'), href: '/contact' },
     ],
     explore: [
-      { label: 'Portfolio', href: '/projects' },
-      { label: 'Guestbook', href: '/#guestbook' },
-      { label: 'Service Status', href: '/#status' },
-      { label: 'Di Balik Layar', href: '/#behind-the-scenes' },
+      { label: t('footer_link_portfolio'), href: '/projects' },
+      { label: t('footer_link_guestbook'), href: '/#guestbook' },
+      { label: t('footer_link_status'), href: '/#status' },
+      { label: t('footer_link_behind'), href: '/#behind-the-scenes' },
     ],
     insights: [
-      { label: 'Statistik', href: '/stats' },
-      { label: 'My Setup', href: '/#setup' },
-      { label: 'Useful Tools', href: '/#tools' },
-      { label: 'Links', href: '/links' },
+      { label: t('footer_link_stats'), href: '/stats' },
+      { label: t('footer_link_setup'), href: '/#setup' },
+      { label: t('footer_link_tools'), href: '/#tools' },
+      { label: t('footer_link_links'), href: '/links' },
     ],
   };
 

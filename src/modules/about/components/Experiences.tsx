@@ -4,10 +4,9 @@ import SectionHeading from '@/common/components/elements/SectionHeading';
 import { EXPERIENCES } from '@/common/constant/experience';
 import { useLanguage } from '@/common/context/LanguageContext';
 import { FaGraduationCap, FaStore } from 'react-icons/fa';
-import { cn } from '@/lib/utils';
 
-function formatDate(date: string | null, locale: string): string {
-  if (!date) return locale === 'id' ? 'Present' : 'Present';
+function formatDate(date: string | null, locale: string, presentText: string): string {
+  if (!date) return presentText;
   return new Date(date).toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', { year: 'numeric', month: 'short' });
 }
 
@@ -25,14 +24,14 @@ export default function Experiences() {
           <div className="flex items-center justify-between gap-4 mb-8">
             <div>
               <h3 className="text-neutral-900 dark:text-white text-xl md:text-2xl font-brak font-bold">
-                Career Timeline
+                {t('exp_timeline_title')}
               </h3>
               <p className="text-neutral-600 dark:text-neutral-400 text-xs md:text-sm mt-0.5">
-                @2022 - Present
+                {t('exp_period_label')}
               </p>
             </div>
             <span className="rounded-full bg-indigo-500/15 border border-indigo-500/30 px-3 py-1 text-xs font-bold text-indigo-600 dark:text-indigo-400">
-              3+ years
+              {t('exp_years_badge')}
             </span>
           </div>
 
@@ -54,7 +53,7 @@ export default function Experiences() {
                         {exp.role}
                       </h4>
                       <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400 shrink-0">
-                        {formatDate(exp.startDate, locale)} — {formatDate(exp.endDate, locale)}
+                        {formatDate(exp.startDate, locale, t('exp_present'))} — {formatDate(exp.endDate, locale, t('exp_present'))}
                       </span>
                     </div>
 

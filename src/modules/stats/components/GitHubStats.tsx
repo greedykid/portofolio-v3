@@ -28,7 +28,6 @@ function generateContributions(): {
   const today = new Date(2026, 8, 1); // 1 September 2026 (Tuesday)
   const todayDayOfWeek = today.getDay(); // 2 (Tuesday)
 
-  // Start date = 52 weeks ago from current week's Sunday (Aug 30, 2026 - 52*7 = Aug 31, 2025)
   const currentWeekSunday = new Date(today);
   currentWeekSunday.setDate(today.getDate() - todayDayOfWeek);
 
@@ -43,7 +42,6 @@ function generateContributions(): {
   let bestDay = 86;
   let average = 16;
 
-  // 53 columns (0 to 52)
   for (let w = 0; w < 53; w++) {
     const weekDays: ContributionDay[] = [];
     let weekMonthLabel: string | undefined = undefined;
@@ -54,16 +52,13 @@ function generateContributions(): {
 
       const isFuture = curDate > today;
 
-      // Detect start of a new month in this week column
       const curMonth = curDate.getMonth();
       if (curMonth !== lastMonth && curDate.getDate() <= 7 && !isFuture) {
         weekMonthLabel = monthNames[curMonth];
         lastMonth = curMonth;
       }
 
-      // Seeded pattern matching reference pixel-art screenshot aesthetic
       const dayIndex = w * 7 + d;
-      const isWeekend = d === 0 || d === 6;
       const isToday = curDate.getTime() === today.getTime();
 
       let count = 0;
@@ -74,13 +69,10 @@ function generateContributions(): {
           count = 18;
           level = 4;
         } else {
-          // Organic distribution with rich variance and clustered green blocks
           const noise = Math.sin(dayIndex * 12.9898 + w * 78.233) * 43758.5453;
           const rand = Math.abs(noise - Math.floor(noise));
 
-          // Stylized band mask (making top row darker and core blocks brighter)
           const isTopRow = d === 0;
-          const isBottomRow = d === 6;
 
           if (isTopRow && (w < 4 || (w > 18 && w < 24))) {
             level = 0;
@@ -158,7 +150,7 @@ interface Spark {
 }
 
 export default function GitHubStats() {
-  const { locale } = useLanguage();
+  const { t, locale } = useLanguage();
   const [hoveredDay, setHoveredDay] = useState<{ day: ContributionDay; x: number; y: number } | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -241,7 +233,6 @@ export default function GitHubStats() {
         lastRocketTime = time;
       }
 
-      // Update rockets
       for (let i = rockets.length - 1; i >= 0; i--) {
         const r = rockets[i];
         r.y += r.speedY;
@@ -260,7 +251,6 @@ export default function GitHubStats() {
         }
       }
 
-      // Update sparks
       for (let i = sparks.length - 1; i >= 0; i--) {
         const s = sparks[i];
         s.x += s.vx;
@@ -315,12 +305,10 @@ export default function GitHubStats() {
           <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 md:mb-10">
             <div>
               <h2 className="text-white text-3xl lg:text-4xl font-brak font-bold tracking-tight">
-                Contributions
+                {t('contrib_title')}
               </h2>
               <p className="mt-2 text-sm md:text-base text-neutral-400">
-                {locale === 'id'
-                  ? 'A year of commits, PRs, dan debugging sessions tengah malem '
-                  : 'A year of commits, PRs, and midnight debugging sessions '}
+                {t('contrib_desc')}{' '}
                 <a
                   href={SOCIAL_MEDIA.github}
                   target="_blank"
@@ -339,7 +327,7 @@ export default function GitHubStats() {
                   {total.toLocaleString('en-US')}
                 </span>
                 <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
-                  TOTAL
+                  {t('contrib_total')}
                 </span>
               </div>
               <div className="flex flex-col">
@@ -347,7 +335,7 @@ export default function GitHubStats() {
                   {thisWeek}
                 </span>
                 <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
-                  {locale === 'id' ? 'MINGGU INI' : 'THIS WEEK'}
+                  {t('contrib_this_week')}
                 </span>
               </div>
               <div className="flex flex-col">
@@ -355,16 +343,16 @@ export default function GitHubStats() {
                   {bestDay}
                 </span>
                 <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
-                  {locale === 'id' ? 'TERBAIK' : 'BEST DAY'}
+                  {t('contrib_best_day')}
                 </span>
               </div>
               <div className="flex flex-col">
                 <span className="text-2xl md:text-3xl font-brak font-bold text-[#22c55e]">
                   {average}{' '}
-                  <span className="text-sm font-normal text-neutral-400">/ {locale === 'id' ? 'hari' : 'day'}</span>
+                  <span className="text-sm font-normal text-neutral-400">/ {t('contrib_day_unit')}</span>
                 </span>
                 <span className="text-[11px] font-bold tracking-wider text-neutral-400 uppercase">
-                  {locale === 'id' ? 'RATA-RATA' : 'AVERAGE'}
+                  {t('contrib_average')}
                 </span>
               </div>
             </div>
@@ -426,7 +414,7 @@ export default function GitHubStats() {
 
           {/* Footer: Less ... More Legend */}
           <div className="relative z-10 flex items-center gap-2 mt-4 text-xs text-neutral-400 font-medium">
-            <span>{locale === 'id' ? 'Sedikit' : 'Less'}</span>
+            <span>{t('contrib_less')}</span>
             <div className="flex items-center gap-1">
               <span className="h-3 w-3 rounded-[2px] bg-[#222831]" />
               <span className="h-3 w-3 rounded-[2px] bg-[#9be9a8]" />
@@ -434,7 +422,7 @@ export default function GitHubStats() {
               <span className="h-3 w-3 rounded-[2px] bg-[#30a14e]" />
               <span className="h-3 w-3 rounded-[2px] bg-[#216e39]" />
             </div>
-            <span>{locale === 'id' ? 'Banyak' : 'More'}</span>
+            <span>{t('contrib_more')}</span>
           </div>
 
           {/* Tooltip */}
@@ -445,10 +433,8 @@ export default function GitHubStats() {
             >
               <p className="font-semibold text-emerald-400">
                 {hoveredDay.day.count > 0
-                  ? `${hoveredDay.day.count} ${locale === 'id' ? 'kontribusi' : 'contributions'}`
-                  : locale === 'id'
-                    ? 'Tidak ada kontribusi'
-                    : 'No contributions'}
+                  ? `${hoveredDay.day.count} ${t('contrib_count_label')}`
+                  : t('contrib_no_contributions')}
               </p>
               <p className="text-[10px] text-neutral-300">
                 {new Date(hoveredDay.day.date).toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {

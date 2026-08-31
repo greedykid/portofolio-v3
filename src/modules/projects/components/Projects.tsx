@@ -3,8 +3,11 @@
 import Link from 'next/link';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { PROJECTS, type Project } from '@/common/constant/projects';
+import { useLanguage } from '@/common/context/LanguageContext';
 
 function ProjectCard({ project }: { project: Project }) {
+  const { t } = useLanguage();
+
   return (
     <div className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#10141f] p-5 md:p-6 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[8px_8px_0px_0px_rgba(99,102,241,0.35)] hover:border-indigo-400/60">
       {/* Top Media / Thumbnail Preview */}
@@ -36,7 +39,7 @@ function ProjectCard({ project }: { project: Project }) {
                 style={{ backgroundColor: project.accentColor || '#6366f1' }}
               />
               <span className="text-[10px] font-bold text-neutral-300 truncate">
-                {project.title.split(' ')[0]} Live Preview
+                {project.title.split(' ')[0]} {t('projects_live_preview')}
               </span>
             </div>
           </div>
@@ -72,7 +75,7 @@ function ProjectCard({ project }: { project: Project }) {
             href={`/projects/${project.id}`}
             className="flex items-center justify-center gap-1.5 w-full rounded-2xl bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 py-2.5 text-xs md:text-sm font-bold shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
           >
-            <span>View Project</span>
+            <span>{t('projects_view_btn')}</span>
             <FiArrowUpRight className="h-4 w-4" />
           </Link>
         </div>

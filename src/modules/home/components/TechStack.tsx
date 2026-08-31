@@ -281,7 +281,7 @@ export default function TechStack() {
                   onClick={handleReset}
                   className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full bg-white dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 shadow-sm border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors cursor-pointer"
                 >
-                  Reset
+                  {t('tools_reset')}
                 </button>
               )}
             </div>

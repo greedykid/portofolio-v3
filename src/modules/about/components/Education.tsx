@@ -28,7 +28,9 @@ export default function Education() {
           </Card>
 
           <Card hover>
-            <h3 className="mb-4 text-xl font-semibold text-neutral-900 dark:text-white">Certificates</h3>
+            <h3 className="mb-4 text-xl font-semibold text-neutral-900 dark:text-white">
+              {t('edu_certificates_title')}
+            </h3>
             <div className="space-y-3">
               {CERTIFICATES.map((cert) => (
                 <div key={cert.credentialId} className="flex items-start justify-between gap-4">

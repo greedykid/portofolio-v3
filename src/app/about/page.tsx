@@ -223,14 +223,14 @@ export default function AboutPage() {
           <div className="lg:col-span-7 relative rounded-3xl border-2 border-indigo-300/80 dark:border-indigo-500/20 bg-indigo-50/50 dark:bg-[#0f1322] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)]">
             <div className="flex items-center justify-between gap-4 mb-1">
               <h3 className="text-neutral-900 dark:text-white text-xl md:text-2xl font-brak font-bold">
-                {locale === 'id' ? 'Career Timeline' : 'Career Timeline'}
+                {locale === 'id' ? 'Linimasa Karir' : 'Career Timeline'}
               </h3>
               <span className="rounded-full bg-indigo-500/15 border border-indigo-500/30 px-3 py-1 text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                4+ {locale === 'id' ? 'years' : 'years'}
+                4+ {locale === 'id' ? 'tahun' : 'years'}
               </span>
             </div>
             <p className="text-neutral-600 dark:text-neutral-400 text-xs md:text-sm mb-6">
-              @2022 - {locale === 'id' ? 'Present' : 'Present'}
+              @2022 - {locale === 'id' ? 'Sekarang' : 'Present'}
             </p>
 
             {/* Seamless Connected Vertical Timeline */}

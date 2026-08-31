@@ -43,10 +43,10 @@ export default function ContactForm() {
       {state === 'success' ? (
         <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center">
           <p className="text-base font-bold text-emerald-500">
-            Terima kasih! Pesan Anda telah terkirim.
+            {t('contact_success_msg')}
           </p>
           <p className="text-xs text-neutral-400 mt-1">
-            Saya akan membalas pesan Anda sesegera mungkin.
+            {t('contact_success_sub')}
           </p>
         </div>
       ) : (
@@ -108,12 +108,12 @@ export default function ContactForm() {
 
           {state === 'error' && (
             <p className="text-xs text-red-500 text-center">
-              Gagal mengirim pesan. Silakan hubungi langsung ke rizkiarbi65@gmail.com.
+              {t('contact_error_msg')}
             </p>
           )}
 
           <p className="text-center text-xs text-neutral-500 pt-1">
-            By submitting this form, you agree to be contacted via email.
+            {t('contact_privacy_note')}
           </p>
         </form>
       )}
