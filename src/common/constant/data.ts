@@ -16,7 +16,6 @@ export const PROFILE = {
   role: 'Web Developer & IT Support',
   location: 'Jakarta Barat, DKI Jakarta',
   workType: 'Open to Work',
-  phone: '(+62) 821-1261-9691',
   email: 'rizkiarbi65@gmail.com',
   greeting: 'Halo',
   tagline: 'Saya Rizki.',

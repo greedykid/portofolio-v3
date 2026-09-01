@@ -119,7 +119,7 @@ export default function AboutPage() {
                   {locale === 'id' ? 'Kontak & Email:' : 'Direct Contact:'}
                 </p>
                 <p className="font-mono text-sm sm:text-base font-bold text-primary dark:text-indigo-400 mt-0.5">
-                  rizkiarbi65@gmail.com • (+62) 821-1261-9691
+                  rizkiarbi65@gmail.com
                 </p>
               </div>
 
