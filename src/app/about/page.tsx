@@ -102,7 +102,7 @@ export default function AboutPage() {
 
         {/* 1. Main Top Card: Nice to meet you! / Profil Profesional */}
         <div className="relative rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#121622] p-6 md:p-10 lg:p-12 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] mb-8 md:mb-10 overflow-hidden">
-          <div className="relative z-10 max-w-4xl space-y-5">
+          <div className="relative z-10 w-full space-y-5">
             <h2 className="text-neutral-900 dark:text-white text-2xl md:text-3xl font-brak font-bold">
               {t('about_title')}
             </h2>
