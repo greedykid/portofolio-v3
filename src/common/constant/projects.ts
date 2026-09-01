@@ -1,6 +1,27 @@
+export interface ProjectCaseStudy {
+  overview: string;
+  background: string;
+  role: string;
+  category: string;
+  timeline: string;
+  deliverables: string[];
+  architecture: {
+    title: string;
+    description: string;
+    points: string[];
+  }[];
+  features: {
+    title: string;
+    description: string;
+  }[];
+  systemDesign: string[];
+  learnings: string[];
+}
+
 export interface Project {
   id: string;
   title: string;
+  subtitle?: string;
   description: string;
   image: string;
   stacks: string[];
@@ -9,14 +30,16 @@ export interface Project {
   githubUrl?: string;
   detail: string;
   accentColor?: string;
+  caseStudy: ProjectCaseStudy;
 }
 
 export const PROJECTS: Project[] = [
   {
     id: 'gegares',
     title: 'Platform E-Commerce "GEGARES"',
+    subtitle: 'Aplikasi E-Commerce Kuliner Tradisional & Luaran Penulisan Ilmiah',
     description:
-      'Aplikasi e-commerce fungsional produk kuliner tradisional dengan katalog interaktif, keranjang belanja, checkout, dan manajemen inventaris sebagai luaran Penulisan Ilmiah Universitas Gunadarma.',
+      'Aplikasi e-commerce fungsional produk kuliner tradisional dengan katalog interaktif, keranjang belanja, checkout, dan manajemen inventaris sebagai luaran resmi Penulisan Ilmiah Universitas Gunadarma.',
     image: '/images/gegares-live.png',
     stacks: ['Laravel 12', 'MySQL', 'Tailwind CSS', 'PHP', 'Blade'],
     isFeatured: true,
@@ -25,10 +48,81 @@ export const PROJECTS: Project[] = [
     detail:
       'GEGARES adalah platform e-commerce yang dibangun penuh sebagai implementasi dan luaran resmi proyek Penulisan Ilmiah tingkat sarjana di Universitas Gunadarma.\n\nFitur & Arsitektur:\n- Mengembangkan arsitektur backend MVC menggunakan framework Laravel dan perancangan skema database relasional MySQL.\n- Optimasi query data transaksi dan inventaris produk.\n- Antarmuka modern, interaktif, dan responsif dengan Tailwind CSS.\n- Dokumentasi perancangan sistem komprehensif meliputi Use Case Diagram, Activity Diagram, Sequence Diagram, dan Entity Relationship Diagram (ERD).',
     accentColor: '#6366f1',
+    caseStudy: {
+      overview:
+        'GEGARES adalah platform e-commerce kuliner modern yang dibangun dari tahap perancangan arsitektur hingga deployment produksi. Proyek ini memfasilitasi transaksi jual-beli kuliner secara efisien dengan alur belanja yang intuitif, pencatatan transaksi otomatis, dan manajemen inventaris real-time bagi pengelola.',
+      background:
+        'Banyak pelaku usaha kuliner lokal masih mengandalkan pencatatan manual dan pemesanan via pesan singkat yang rawan kesalahan data dan pencatatan stok. GEGARES dirancang sebagai solusi digital terintegrasi untuk mendigitalkan katalog menu, memvalidasi pesanan otomatis, dan memberikan pengalaman berbelanja modern bagi konsumen.',
+      role: 'Fullstack Web Developer & System Analyst',
+      category: 'E-Commerce Platform',
+      timeline: 'Sep 2025 – Feb 2026 (Penulisan Ilmiah Universitas Gunadarma)',
+      deliverables: [
+        'Web Application E-Commerce Fungsional',
+        'Skema Database Relasional MySQL & Optimasi Query',
+        'Dokumentasi Rekayasa Perangkat Lunak (ERD, UML, Use Case)',
+        'Antarmuka Responsif (Mobile, Tablet, Desktop) dengan Tailwind CSS',
+      ],
+      architecture: [
+        {
+          title: 'Backend Arsitektur MVC & Framework Laravel 12',
+          description:
+            'Mengimplementasikan pola Model-View-Controller untuk memisahkan logika bisnis, perutean dinamis, dan representasi data secara modular dan aman.',
+          points: [
+            'Routing RESTful dan middleware validasi keamanan form (CSRF, sanitasi input).',
+            'Eloquent ORM untuk relasi data transaksi, item pesanan, dan kategori produk.',
+            'Struktur kode terstandarisasi untuk memudahkan pemeliharaan jangka panjang.',
+          ],
+        },
+        {
+          title: 'Perancangan Database Relasional MySQL',
+          description:
+            'Merancang struktur database yang ternormalisasi (3NF) untuk menjamin integritas relasi antar tabel transaksi, detail pesanan, dan stok barang.',
+          points: [
+            'Pengindeksan kolom kunci untuk mempercepat query pencarian produk dan riwayat transaksi.',
+            'Foreign key constraints dan foreign cascade untuk konsistensi data.',
+            'Optimasi query agregat untuk pembuatan laporan penjualan.',
+          ],
+        },
+      ],
+      features: [
+        {
+          title: 'Katalog Produk & Penyaringan Kategori Dinamis',
+          description:
+            'Menampilkan menu kuliner dengan detail foto, deskripsi porsi, harga, dan filter kategori cepat tanpa lag.',
+        },
+        {
+          title: 'Keranjang Belanja & Alur Checkout Intuitif',
+          description:
+            'Sistem keranjang belanja dinamis yang menghitung subtotal, estimasi pengiriman, dan ringkasan pesanan secara real-time.',
+        },
+        {
+          title: 'Manajemen Inventaris & Dashboard Admin',
+          description:
+            'Panel administrasi untuk mengelola status ketersediaan menu, memperbarui harga, memproses pesanan masuk, dan mengunduh rekap transaksi.',
+        },
+        {
+          title: 'Desain Antarmuka Mobile-First & Responsif',
+          description:
+            'Tata letak visual yang dioptimalkan menggunakan Tailwind CSS sehingga nyaman diakses dari smartphone maupun layar monitor lebar.',
+        },
+      ],
+      systemDesign: [
+        'Use Case Diagram: Memetakan peran interaksi antara Pelanggan (Customer) dan Pengelola (Admin).',
+        'Activity Diagram: Memodelkan alur bisnis mulai dari pemilihan menu, pengisian keranjang, hingga konfirmasi pembayaran.',
+        'Sequence Diagram: Menggambarkan urutan pertukaran pesan antar objek pengendali, database, dan antarmuka.',
+        'Entity Relationship Diagram (ERD): Diagram relasi entitas tabel Users, Products, Categories, Orders, dan Order_Items.',
+      ],
+      learnings: [
+        'Memperdalam pemahaman perancangan sistem informasi berskala penuh dari tahap analisis kebutuhan hingga deployment aktif.',
+        'Menguasai optimasi query relasional MySQL dan penanganan transaksi database simultan.',
+        'Meningkatkan efisiensi arsitektur MVC Laravel dan pembuatan antarmuka modern yang cepat dan aksesibel.',
+      ],
+    },
   },
   {
     id: 'berkah-mulia',
     title: 'Website Katalog Digital "Berkah Mulia"',
+    subtitle: 'Platform Katalog Digital Aktif Produk Pakaian Bayi & Anak',
     description:
       'Website katalog digital aktif (bmberkahmulia.com) untuk produk pakaian bayi dan anak berbasis framework Laravel dan database MySQL dengan klasifikasi kategori bertingkat.',
     image: '/images/berkahmulia-live.png',
@@ -39,5 +133,74 @@ export const PROJECTS: Project[] = [
     detail:
       'Berkah Mulia adalah website katalog digital aktif yang dapat diakses publik pada domain bmberkahmulia.com.\n\nFitur & Arsitektur:\n- Merancang, membangun, dan mendeploy website katalog digital aktif untuk produk pakaian bayi dan anak berbasis framework Laravel dan database MySQL.\n- Menyusun perancangan kebutuhan sistem dan mengimplementasikan arsitektur navigasi katalog dengan klasifikasi kategori produk bertingkat.\n- Mengoptimalkan performa kecepatan loading halaman, efisiensi aset, dan responsivitas tampilan antarmuka (UI/UX) pada berbagai perangkat.\n- Manajemen repositori dan version control di GitHub (github.com/greedykid/berkahmulia).',
     accentColor: '#10b981',
+    caseStudy: {
+      overview:
+        'Berkah Mulia (bmberkahmulia.com) adalah platform katalog digital aktif untuk memamerkan dan mengorganisir ratusan varian produk pakaian bayi dan anak. Dibangun dengan fokus pada kecepatan loading, klasifikasi kategori bertingkat yang rapi, dan kemudahan calon pembeli dalam menjelajah produk sebelum bertransaksi.',
+      background:
+        'Toko konvensional pakaian anak menghadapi tantangan saat menyajikan ratusan variasi ukuran, warna, dan jenis pakaian melalui media sosial yang tercecer. Website katalog digital ini hadir sebagai pusat etalase resmi yang terstruktur, rapi, dan dapat diakses publik kapan saja dengan performa loading cepat.',
+      role: 'Web Developer & System Designer',
+      category: 'Digital Product Catalog',
+      timeline: 'Jun 2026 – Sekarang (Production Live)',
+      deliverables: [
+        'Website Katalog Digital Aktif di Domain bmberkahmulia.com',
+        'Arsitektur Navigasi & Klasifikasi Produk Bertingkat',
+        'Optimasi Aset Gambar & Performa Kecepatan Akses',
+        'Repositori GitHub Version Control (github.com/greedykid/berkahmulia)',
+      ],
+      architecture: [
+        {
+          title: 'Arsitektur Katalog & Routing Efisien dengan Laravel',
+          description:
+            'Menggunakan Laravel untuk routing yang bersih (clean URLs/SEO-friendly), rendering server-side yang cepat dengan Blade, dan pengelolaan controller terstruktur.',
+          points: [
+            'Struktur pengkategorian bertingkat (Kategori Utama & Sub-Kategori Produk).',
+            'Manajemen aset statis teroptimasi untuk memastikan waktu muat halaman di bawah 1 detik.',
+            'Integrasi database MySQL untuk kueri inventaris produk yang ringan.',
+          ],
+        },
+        {
+          title: 'Performa Visual & UI/UX Responsif',
+          description:
+            'Antarmuka dirancang dengan pendekatan Mobile-First menggunakan Tailwind CSS untuk memastikan tampilan katalog rapi di semua resolusi layar.',
+          points: [
+            'Pemuatan gambar lazy loading untuk menghemat bandwidth pengguna seluler.',
+            'Desain kartu produk yang bersih, menampilkan foto produk resolusi tinggi dan label ukuran jelas.',
+            'Tautan langsung ke saluran pemesanan resmi untuk mempermudah konversi pelanggan.',
+          ],
+        },
+      ],
+      features: [
+        {
+          title: 'Klasifikasi Kategori Produk Bertingkat',
+          description:
+            'Pengelompokan pakaian berdasarkan usia bayi/anak, jenis kelamin, dan kategori busana untuk navigasi yang teratur.',
+        },
+        {
+          title: 'Galeri Foto Produk Interaktif',
+          description:
+            'Pratinjau visual detail pakaian dengan tampilan sudut beragam dan informasi spesifikasi bahan.',
+        },
+        {
+          title: 'Navigasi Cepat & Pencarian Produk',
+          description:
+            'Pencarian produk instan yang memungkinkan calon pembeli menemukan model busana yang diinginkan secara cepat.',
+        },
+        {
+          title: 'Integrasi Saluran Kontak Langsung',
+          description:
+            'Akses langsung dari halaman produk menuju saluran komunikasi resmi untuk kemudahan konfirmasi ketersediaan stok.',
+        },
+      ],
+      systemDesign: [
+        'Analisis Kebutuhan Sistem: Mengidentifikasi alur calon pembeli dari penjelajahan katalog hingga interaksi kontak.',
+        'Hierarki Navigasi Informasi: Merancang struktur sitemap dan taksonomi kategori produk.',
+        'Skema Relasi Database: Pemodelan data produk, relasi kategori bertingkat, dan atribut varian pakaian.',
+      ],
+      learnings: [
+        'Menerapkan praktik terbaik optimasi performa web katalog dengan banyak aset gambar visual.',
+        'Meningkatkan keahlian dalam perancangan hierarki informasi dan navigasi e-catalog bertingkat.',
+        'Pengalaman langsung dalam konfigurasi domain, deployment produksi aktif, dan pemeliharaan website berbasis Laravel.',
+      ],
+    },
   },
 ];
