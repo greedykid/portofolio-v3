@@ -94,6 +94,8 @@ export default function RootLayout({
     sameAs: [
       SOCIAL_MEDIA.github,
       SOCIAL_MEDIA.linkedin,
+      SOCIAL_MEDIA.instagram,
+      SOCIAL_MEDIA.threads,
     ],
   };
 

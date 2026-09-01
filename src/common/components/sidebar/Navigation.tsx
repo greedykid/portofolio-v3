@@ -40,7 +40,7 @@ export default function Navigation() {
     { label: t('nav_portfolio'), href: '/projects', icon: FiFolder },
     { label: t('nav_blog'), href: '/blog', icon: FiFileText },
     { label: t('nav_about'), href: '/about', icon: FiUser },
-    { label: t('nav_tools'), href: '/#tools', icon: FiTool },
+    { label: t('nav_tools'), href: '/tools', icon: FiTool },
     { label: t('nav_links'), href: '/links', icon: FiLink },
     { label: t('nav_contact'), href: '/contact', icon: FiMail },
   ];

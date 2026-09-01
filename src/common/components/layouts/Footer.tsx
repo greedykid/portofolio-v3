@@ -25,7 +25,7 @@ export default function Footer() {
     insights: [
       { label: t('footer_link_stats'), href: '/stats' },
       { label: t('footer_link_setup'), href: '/setup' },
-      { label: t('footer_link_tools'), href: '/#tools' },
+      { label: t('footer_link_tools'), href: '/tools' },
       { label: t('footer_link_links'), href: '/links' },
     ],
   };

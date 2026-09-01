@@ -12,7 +12,7 @@ export const SITE = {
 export const PROFILE = {
   name: 'Rizki Arbiansyah',
   first: 'Rizki',
-  handle: '@rizkiarbiansyah',
+  handle: '@rizkiarbi_',
   role: 'Web Developer & IT Support',
   location: 'Jakarta Barat, DKI Jakarta',
   workType: 'Open to Work',
@@ -34,4 +34,6 @@ export const SOCIAL_MEDIA = {
   email: 'mailto:rizkiarbi65@gmail.com',
   github: 'https://github.com/greedykid',
   linkedin: 'https://linkedin.com/in/rizkiarbiansyah',
+  instagram: 'https://www.instagram.com/rizkiarbi_/',
+  threads: 'https://www.threads.net/@rizkiarbi_',
 } as const;
