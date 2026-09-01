@@ -16,8 +16,15 @@ interface WeekData {
   monthLabel?: string;
 }
 
-// Generate realistic 53-week contribution data ending accurately on Tuesday, September 1, 2026
-function generateContributions(): {
+function formatLocalDate(d: Date): string {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Generate realistic 53-week contribution data ending accurately on current date (real-time)
+function generateContributions(liveContributions?: Array<{ date: string; count: number; level: number }>): {
   weeks: WeekData[];
   total: number;
   thisWeek: number;
@@ -25,8 +32,9 @@ function generateContributions(): {
   average: number;
 } {
   const weeks: WeekData[] = [];
-  const today = new Date(2026, 8, 1); // 1 September 2026 (Tuesday)
-  const todayDayOfWeek = today.getDay(); // 2 (Tuesday)
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const todayDayOfWeek = today.getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
 
   const currentWeekSunday = new Date(today);
   currentWeekSunday.setDate(today.getDate() - todayDayOfWeek);
@@ -37,10 +45,16 @@ function generateContributions(): {
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   let lastMonth = -1;
 
-  let totalCount = 5891;
-  let thisWeekCount = 32;
-  let bestDay = 86;
-  let average = 16;
+  const liveMap = new Map<string, { count: number; level: number }>();
+  if (liveContributions && liveContributions.length > 0) {
+    for (const item of liveContributions) {
+      liveMap.set(item.date, { count: item.count, level: item.level });
+    }
+  }
+
+  let totalCount = 0;
+  let thisWeekCount = 0;
+  let bestDay = 0;
 
   for (let w = 0; w < 53; w++) {
     const weekDays: ContributionDay[] = [];
@@ -51,6 +65,7 @@ function generateContributions(): {
       curDate.setDate(startDate.getDate() + w * 7 + d);
 
       const isFuture = curDate > today;
+      const dateStr = formatLocalDate(curDate);
 
       const curMonth = curDate.getMonth();
       if (curMonth !== lastMonth && curDate.getDate() <= 7 && !isFuture) {
@@ -58,48 +73,62 @@ function generateContributions(): {
         lastMonth = curMonth;
       }
 
-      const dayIndex = w * 7 + d;
-      const isToday = curDate.getTime() === today.getTime();
-
       let count = 0;
       let level = 0;
 
       if (!isFuture) {
-        if (isToday) {
-          count = 18;
-          level = 4;
+        if (liveMap.has(dateStr)) {
+          const liveItem = liveMap.get(dateStr)!;
+          count = liveItem.count;
+          level = liveItem.level;
+        } else if (liveContributions && liveContributions.length > 0) {
+          count = 0;
+          level = 0;
         } else {
-          const noise = Math.sin(dayIndex * 12.9898 + w * 78.233) * 43758.5453;
-          const rand = Math.abs(noise - Math.floor(noise));
-
-          const isTopRow = d === 0;
-
-          if (isTopRow && (w < 4 || (w > 18 && w < 24))) {
-            level = 0;
-            count = 0;
-          } else if (rand > 0.15) {
-            if (rand > 0.82) {
-              level = 4;
-              count = Math.floor(24 + rand * 62);
-            } else if (rand > 0.58) {
-              level = 3;
-              count = Math.floor(14 + rand * 14);
-            } else if (rand > 0.32) {
-              level = 2;
-              count = Math.floor(6 + rand * 8);
-            } else {
-              level = 1;
-              count = Math.floor(1 + rand * 5);
-            }
+          // Synthetic fallback if live API is still loading or offline
+          const dayIndex = w * 7 + d;
+          const isToday = curDate.getTime() === today.getTime();
+          if (isToday) {
+            count = 18;
+            level = 4;
           } else {
-            level = 0;
-            count = 0;
+            const noise = Math.sin(dayIndex * 12.9898 + w * 78.233) * 43758.5453;
+            const rand = Math.abs(noise - Math.floor(noise));
+            const isTopRow = d === 0;
+
+            if (isTopRow && (w < 4 || (w > 18 && w < 24))) {
+              level = 0;
+              count = 0;
+            } else if (rand > 0.15) {
+              if (rand > 0.82) {
+                level = 4;
+                count = Math.floor(24 + rand * 62);
+              } else if (rand > 0.58) {
+                level = 3;
+                count = Math.floor(14 + rand * 14);
+              } else if (rand > 0.32) {
+                level = 2;
+                count = Math.floor(6 + rand * 8);
+              } else {
+                level = 1;
+                count = Math.floor(1 + rand * 5);
+              }
+            } else {
+              level = 0;
+              count = 0;
+            }
           }
+        }
+
+        totalCount += count;
+        if (count > bestDay) bestDay = count;
+        if (curDate >= currentWeekSunday && curDate <= today) {
+          thisWeekCount += count;
         }
       }
 
       weekDays.push({
-        date: curDate.toISOString().split('T')[0],
+        date: dateStr,
         count,
         level,
         isFuture,
@@ -112,11 +141,14 @@ function generateContributions(): {
     });
   }
 
+  const pastDaysCount = 52 * 7 + (todayDayOfWeek + 1);
+  const average = totalCount > 0 ? Math.max(1, Math.round(totalCount / pastDaysCount)) : 16;
+
   return {
     weeks,
-    total: totalCount,
+    total: totalCount || (liveContributions ? 0 : 5891),
     thisWeek: thisWeekCount,
-    bestDay: bestDay,
+    bestDay: bestDay || (liveContributions ? 0 : 86),
     average: average,
   };
 }
@@ -152,13 +184,39 @@ interface Spark {
 export default function GitHubStats() {
   const { t, locale } = useLanguage();
   const [hoveredDay, setHoveredDay] = useState<{ day: ContributionDay; x: number; y: number } | null>(null);
+  const [liveContributions, setLiveContributions] = useState<Array<{ date: string; count: number; level: number }> | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  const { weeks, total, thisWeek, bestDay, average } = useMemo(() => generateContributions(), []);
 
   const githubUsername = (SOCIAL_MEDIA.github ?? 'https://github.com/greedykid')
     .replace('https://github.com/', '')
     .replace(/\/$/, '');
+
+  // Fetch live contributions from GitHub API
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchLiveContributions() {
+      try {
+        const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${githubUsername}?y=last`);
+        if (res.ok && isMounted) {
+          const data = await res.json();
+          if (Array.isArray(data?.contributions)) {
+            setLiveContributions(data.contributions);
+          }
+        }
+      } catch (err) {
+        console.warn('Could not fetch live GitHub contributions:', err);
+      }
+    }
+    fetchLiveContributions();
+    return () => {
+      isMounted = false;
+    };
+  }, [githubUsername]);
+
+  const { weeks, total, thisWeek, bestDay, average } = useMemo(
+    () => generateContributions(liveContributions || undefined),
+    [liveContributions]
+  );
 
   // Slower, graceful fireworks animation
   useEffect(() => {
@@ -437,7 +495,7 @@ export default function GitHubStats() {
                   : t('contrib_no_contributions')}
               </p>
               <p className="text-[10px] text-neutral-300">
-                {new Date(hoveredDay.day.date).toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
+                {new Date(hoveredDay.day.date + 'T00:00:00').toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
                   weekday: 'short',
                   month: 'short',
                   day: 'numeric',
