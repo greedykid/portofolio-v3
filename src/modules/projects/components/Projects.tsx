@@ -19,26 +19,26 @@ function ProjectCard({ project }: { project: Project }) {
           }}
         >
           {/* Mockup browser top bar */}
-          <div className="w-full max-w-[240px] rounded-t-lg bg-black/60 border border-white/15 p-2 flex items-center gap-1.5">
+          <div className="w-full max-w-[280px] rounded-t-lg bg-black/60 border border-white/15 p-2 flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full bg-red-400/80" />
             <span className="h-2 w-2 rounded-full bg-yellow-400/80" />
             <span className="h-2 w-2 rounded-full bg-green-400/80" />
-            <span className="ms-2 text-[9px] text-neutral-400 truncate max-w-[120px] font-mono">
+            <span className="ms-2 text-[10px] text-neutral-400 truncate max-w-[150px] font-mono">
               {project.demoUrl ? new URL(project.demoUrl).hostname : project.id}
             </span>
           </div>
           {/* Mockup content preview */}
-          <div className="w-full max-w-[240px] h-24 rounded-b-lg bg-[#141a29]/90 border-x border-b border-white/15 p-3 flex flex-col justify-between">
-            <div className="space-y-1.5">
+          <div className="w-full max-w-[280px] h-28 rounded-b-lg bg-[#141a29]/90 border-x border-b border-white/15 p-3.5 flex flex-col justify-between">
+            <div className="space-y-2">
               <div className="h-2.5 w-3/4 rounded bg-white/20" />
               <div className="h-2 w-1/2 rounded bg-white/10" />
             </div>
             <div className="flex items-center gap-1.5">
               <span
-                className="h-2 w-2 rounded-full"
+                className="h-2.5 w-2.5 rounded-full"
                 style={{ backgroundColor: project.accentColor || '#6366f1' }}
               />
-              <span className="text-[10px] font-bold text-neutral-300 truncate">
+              <span className="text-[11px] font-bold text-neutral-300 truncate">
                 {project.title.split(' ')[0]} {t('projects_live_preview')}
               </span>
             </div>
@@ -90,7 +90,7 @@ export default function Projects({ limit }: { limit?: number }) {
   return (
     <section className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-7">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
           {displayedProjects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
