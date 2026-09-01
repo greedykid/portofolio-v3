@@ -73,14 +73,61 @@ export interface Certificate {
   issuer: string;
   credentialId: string;
   date: string;
+  pdfUrl?: string;
 }
 
 export const CERTIFICATES: Certificate[] = [
-  { title: 'Application Development Design', issuer: 'Universitas Gunadarma', credentialId: 'Nomor: 359981', date: '2025' },
-  { title: 'JavaScript Programming Language Fundamental', issuer: 'Universitas Gunadarma', credentialId: 'Nomor: 250364', date: '2025' },
-  { title: 'Wide Area Network (WAN) Using Cisco Router for Intermediate', issuer: 'Universitas Gunadarma', credentialId: 'Nomor: 949696', date: '2025' },
-  { title: 'Go-Lang for Beginner', issuer: 'Universitas Gunadarma', credentialId: 'Nomor: 561586', date: '2024' },
-  { title: 'Local Area Network (LAN) Using Cisco Router', issuer: 'Universitas Gunadarma', credentialId: 'Nomor: 519006', date: '2024' },
-  { title: 'Fundamental Web Programming', issuer: 'Universitas Gunadarma', credentialId: 'Nomor: 393074', date: '2023' },
-  { title: 'Fundamental Networking', issuer: 'Universitas Gunadarma', credentialId: 'Nomor: 661257', date: '2023' },
+  {
+    title: 'Application Implementation and Development',
+    issuer: 'Universitas Gunadarma',
+    credentialId: 'ID: 5627',
+    date: '2026',
+    pdfUrl: 'https://e-sert.gunadarma.ac.id/cert/5627/signed_9d7aff2c168960b129795b2127d35b73.pdf.pdf',
+  },
+  {
+    title: 'Application Development Design',
+    issuer: 'Universitas Gunadarma',
+    credentialId: 'ID: 5164',
+    date: '2025',
+    pdfUrl: 'https://e-sert.gunadarma.ac.id/cert/5164/signed_feca943e723ee58fa7bf52b35fb9981e.pdf.pdf',
+  },
+  {
+    title: 'JavaScript Programming Language Fundamental',
+    issuer: 'Universitas Gunadarma',
+    credentialId: 'ID: 4370',
+    date: '2025',
+    pdfUrl: 'https://e-sert.gunadarma.ac.id/cert/4370/8e98130168e399b62676ebf440250364.pdf',
+  },
+  {
+    title: 'Go-Lang for Beginner',
+    issuer: 'Universitas Gunadarma',
+    credentialId: 'ID: 2678',
+    date: '2024',
+    pdfUrl: 'https://e-sert.gunadarma.ac.id/cert/2678/signed_7edd14ee56f7a31b55a615c8bebf6bfd.pdf.pdf',
+  },
+  {
+    title: 'Fundamental Web Programming',
+    issuer: 'Universitas Gunadarma',
+    credentialId: 'ID: 2404',
+    date: '2023',
+    pdfUrl: 'https://e-sert.gunadarma.ac.id/cert/2404/signed_038d1befe2e1b1b5d7c9a53da9ad3074.pdf.pdf',
+  },
+  {
+    title: 'Wide Area Network (WAN) Using Cisco Router for Intermediate',
+    issuer: 'Universitas Gunadarma',
+    credentialId: 'Nomor: 949696',
+    date: '2025',
+  },
+  {
+    title: 'Local Area Network (LAN) Using Cisco Router',
+    issuer: 'Universitas Gunadarma',
+    credentialId: 'Nomor: 519006',
+    date: '2024',
+  },
+  {
+    title: 'Fundamental Networking',
+    issuer: 'Universitas Gunadarma',
+    credentialId: 'Nomor: 661257',
+    date: '2023',
+  },
 ];

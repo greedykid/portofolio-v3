@@ -1,12 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import SectionHeading from '@/common/components/elements/SectionHeading';
 import Card from '@/common/components/elements/Card';
-import { EDUCATION, CERTIFICATES } from '@/common/constant/experience';
+import { EDUCATION, CERTIFICATES, type Certificate } from '@/common/constant/experience';
 import { useLanguage } from '@/common/context/LanguageContext';
+import { FiEye } from 'react-icons/fi';
+import CertificateModal from '@/common/components/elements/CertificateModal';
 
 export default function Education() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const [activeCert, setActiveCert] = useState<Certificate | null>(null);
 
   return (
     <section>
@@ -33,20 +37,44 @@ export default function Education() {
             </h3>
             <div className="space-y-3">
               {CERTIFICATES.map((cert) => (
-                <div key={cert.credentialId} className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="font-medium text-neutral-800 dark:text-neutral-200">{cert.title}</p>
-                    <p className="text-sm text-neutral-500 dark:text-neutral-400">{cert.issuer}</p>
+                <div
+                  key={cert.title}
+                  className="flex items-center justify-between gap-3 p-2 rounded-xl hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-neutral-800 dark:text-neutral-200 text-sm leading-snug">
+                      {cert.title}
+                    </p>
+                    <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5">
+                      {cert.issuer} • <span className="font-mono">{cert.credentialId}</span>
+                    </p>
                   </div>
-                  <span className="shrink-0 rounded-md border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-white/5 px-2 py-0.5 text-xs font-medium text-neutral-600 dark:text-neutral-400">
-                    {cert.date}
-                  </span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="shrink-0 rounded-md border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-white/5 px-2 py-0.5 text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                      {cert.date}
+                    </span>
+                    {cert.pdfUrl && (
+                      <button
+                        onClick={() => setActiveCert(cert)}
+                        title={locale === 'id' ? 'Lihat Kredensial PDF' : 'View PDF Credential'}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-teal-500 text-white hover:bg-teal-600 dark:bg-teal-500/20 dark:text-teal-300 dark:hover:bg-teal-500/30 text-xs font-semibold transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-sm"
+                      >
+                        <FiEye className="h-3.5 w-3.5" />
+                        <span>PDF</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
           </Card>
         </div>
       </div>
+
+      <CertificateModal
+        certificate={activeCert}
+        onClose={() => setActiveCert(null)}
+      />
     </section>
   );
 }
