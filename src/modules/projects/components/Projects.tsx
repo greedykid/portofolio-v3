@@ -17,48 +17,39 @@ function ProjectCard({ project }: { project: Project }) {
         {/* Top Media / Mockup Browser Card */}
         <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#090d16] border border-neutral-200 dark:border-white/10 mb-6">
           <div
-            className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 select-none"
+            className="absolute inset-0 flex flex-col items-center justify-center p-3 sm:p-5 select-none"
             style={{
               background: `radial-gradient(circle at 50% 30%, ${project.accentColor || '#6366f1'}33 0%, #080c14 100%)`,
             }}
           >
             {/* Mockup browser top bar */}
-            <div className="w-full max-w-[320px] rounded-t-xl bg-black/70 border border-white/15 p-2 flex items-center gap-1.5 shadow-md">
+            <div className="w-full max-w-[360px] rounded-t-xl bg-black/80 border border-white/15 p-2 flex items-center gap-1.5 shadow-md">
               <span className="h-2 w-2 rounded-full bg-red-400/80" />
               <span className="h-2 w-2 rounded-full bg-yellow-400/80" />
               <span className="h-2 w-2 rounded-full bg-green-400/80" />
-              <span className="ms-2 text-[10px] text-neutral-400 truncate max-w-[180px] font-mono">
+              <span className="ms-2 text-[10px] text-neutral-400 truncate max-w-[200px] font-mono">
                 {project.demoUrl ? new URL(project.demoUrl).hostname : project.id}
               </span>
             </div>
 
-            {/* Mockup content preview */}
-            <div className="w-full max-w-[320px] h-32 rounded-b-xl bg-[#131926]/95 border-x border-b border-white/15 p-4 flex flex-col justify-between shadow-xl">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="h-2.5 w-24 rounded bg-white/25" />
-                  <span
-                    className="text-[9px] font-bold px-2 py-0.5 rounded-full"
-                    style={{ backgroundColor: `${project.accentColor}33`, color: project.accentColor }}
-                  >
-                    Verified
-                  </span>
-                </div>
-                <div className="h-2 w-3/4 rounded bg-white/10" />
-              </div>
-
-              <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                <div className="flex items-center gap-1.5">
-                  <span
-                    className="h-2 w-2 rounded-full"
-                    style={{ backgroundColor: project.accentColor || '#6366f1' }}
-                  />
-                  <span className="text-[11px] font-bold text-neutral-300 truncate">
-                    {project.title.split(' ')[0]}
-                  </span>
-                </div>
-                <span className="text-[10px] text-neutral-400 font-mono">
-                  {cs.category}
+            {/* Real Screenshot Preview inside browser window */}
+            <div className="relative w-full max-w-[360px] h-36 sm:h-40 rounded-b-xl overflow-hidden border-x border-b border-white/15 shadow-2xl bg-black">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between pointer-events-none">
+                <span className="text-[10px] font-bold text-white font-mono drop-shadow">
+                  {project.title.split(' ')[0]} • Live
+                </span>
+                <span
+                  className="text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm"
+                  style={{ backgroundColor: `${project.accentColor}cc`, color: '#ffffff' }}
+                >
+                  Production
                 </span>
               </div>
             </div>

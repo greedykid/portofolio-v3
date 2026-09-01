@@ -174,52 +174,33 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
                 }}
               >
                 {/* Mockup Browser Window Top Bar */}
-                <div className="w-full max-w-xl rounded-t-2xl bg-black/70 border border-white/20 p-3 flex items-center gap-2 shadow-2xl">
+                <div className="w-full max-w-2xl rounded-t-2xl bg-black/80 border border-white/20 p-3 flex items-center gap-2 shadow-2xl">
                   <span className="h-3 w-3 rounded-full bg-red-500/90" />
                   <span className="h-3 w-3 rounded-full bg-yellow-500/90" />
                   <span className="h-3 w-3 rounded-full bg-green-500/90" />
-                  <span className="ms-3 text-xs text-neutral-400 font-mono truncate">
+                  <span className="ms-3 text-xs text-neutral-300 font-mono truncate">
                     {project.demoUrl || `https://${project.id}.com`}
                   </span>
                 </div>
 
-                {/* Mockup Browser Screen Body */}
-                <div className="w-full max-w-xl h-44 sm:h-56 rounded-b-2xl bg-[#111726]/95 border-x border-b border-white/20 p-5 flex flex-col justify-between shadow-2xl">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="h-3 w-28 rounded bg-white/30" />
-                      <div className="flex gap-2">
-                        <div className="h-2.5 w-12 rounded bg-white/15" />
-                        <div className="h-2.5 w-12 rounded bg-white/15" />
-                      </div>
-                    </div>
-                    <div className="h-2 w-3/4 rounded bg-white/15" />
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="h-16 rounded-xl bg-white/5 border border-white/10 p-2 flex flex-col justify-between">
-                      <div className="h-2 w-10 rounded bg-white/20" />
-                      <div className="h-2 w-6 rounded bg-primary/60" />
-                    </div>
-                    <div className="h-16 rounded-xl bg-white/5 border border-white/10 p-2 flex flex-col justify-between">
-                      <div className="h-2 w-12 rounded bg-white/20" />
-                      <div className="h-2 w-8 rounded bg-primary/60" />
-                    </div>
-                    <div className="h-16 rounded-xl bg-white/5 border border-white/10 p-2 flex flex-col justify-between">
-                      <div className="h-2 w-8 rounded bg-white/20" />
-                      <div className="h-2 w-10 rounded bg-primary/60" />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2 border-t border-white/10">
-                    <span className="text-[11px] font-bold text-neutral-300 font-mono">
-                      {project.title.split(' ')[0]} • Production Deployment
+                {/* Mockup Browser Screen Body with Real Screenshot */}
+                <div className="relative w-full max-w-2xl h-52 sm:h-72 rounded-b-2xl overflow-hidden border-x border-b border-white/20 shadow-2xl bg-black">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover object-top"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none">
+                    <span className="text-xs sm:text-sm font-bold text-white font-mono drop-shadow">
+                      {project.title}
                     </span>
                     <span
-                      className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                      style={{ backgroundColor: `${project.accentColor}33`, color: project.accentColor }}
+                      className="text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md"
+                      style={{ backgroundColor: `${project.accentColor}dd`, color: '#ffffff' }}
                     >
-                      Active
+                      Production Verified
                     </span>
                   </div>
                 </div>
