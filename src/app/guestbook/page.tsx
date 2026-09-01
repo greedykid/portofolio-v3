@@ -241,7 +241,7 @@ export default function GuestbookPage() {
           avatarUrl: currentUser?.photoURL || '',
           message: finalMsg,
           avatarBg: randomBg,
-          likes: 1,
+          likes: 0,
           userId: currentUser?.uid || null,
           createdAt: serverTimestamp(),
         });
@@ -266,7 +266,7 @@ export default function GuestbookPage() {
           year: 'numeric',
         }),
         avatarBg: randomBg,
-        likes: 1,
+        likes: 0,
         userId: currentUser?.uid || undefined,
       };
       const updated = [newMsg, ...messages];
