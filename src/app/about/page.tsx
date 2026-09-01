@@ -140,19 +140,19 @@ export default function AboutPage() {
         </div>
 
         {/* 2. Side-by-Side Cards: Edukasi & Sertifikasi (Kiri) vs Karir & Pengalaman (Kanan) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 mb-8">
           {/* Left Card: Pendidikan & Sertifikasi */}
-          <div className="lg:col-span-5 relative rounded-3xl border-2 border-teal-300/80 dark:border-teal-500/20 bg-teal-50/50 dark:bg-[#0c1619] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(20,184,166,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(20,184,166,0.3)] flex flex-col justify-between">
+          <div className="lg:col-span-5 relative rounded-3xl border-2 border-teal-300/80 dark:border-teal-500/20 bg-teal-50/50 dark:bg-[#0c1619] p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(20,184,166,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(20,184,166,0.3)] flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between gap-4 mb-1">
-                <h3 className="text-neutral-900 dark:text-white text-xl md:text-2xl font-brak font-bold">
+              <div className="flex items-center justify-between gap-3 mb-1">
+                <h3 className="text-neutral-900 dark:text-white text-lg sm:text-xl md:text-2xl font-brak font-bold">
                   {t('edu_title')}
                 </h3>
-                <span className="rounded-full bg-teal-500/15 border border-teal-500/30 px-3 py-1 text-xs font-bold text-teal-600 dark:text-teal-400">
+                <span className="rounded-full bg-teal-500/15 border border-teal-500/30 px-2.5 sm:px-3 py-1 text-xs font-bold text-teal-600 dark:text-teal-400 shrink-0">
                   {locale === 'id' ? 'Akademik' : 'Academic'}
                 </span>
               </div>
-              <p className="text-neutral-600 dark:text-neutral-400 text-xs md:text-sm mb-6">
+              <p className="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm mb-5 sm:mb-6">
                 {t('edu_desc')}
               </p>
 
@@ -161,22 +161,22 @@ export default function AboutPage() {
                 {EDUCATION_DATA.map((edu, idx) => (
                   <div
                     key={idx}
-                    className="rounded-2xl border border-teal-200/80 dark:border-white/10 bg-white/95 dark:bg-[#121f24] p-4 md:p-5 shadow-sm"
+                    className="rounded-2xl border border-teal-200/80 dark:border-white/10 bg-white/95 dark:bg-[#121f24] p-3.5 sm:p-4 md:p-5 shadow-sm"
                   >
-                    <div className="flex items-start gap-3.5">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/15 text-teal-600 dark:text-teal-400 mt-0.5">
-                        <HiOutlineAcademicCap className="h-6 w-6" />
+                    <div className="flex items-start gap-3">
+                      <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/15 text-teal-600 dark:text-teal-400 mt-0.5">
+                        <HiOutlineAcademicCap className="h-5 w-5 sm:h-6 sm:w-6" />
                       </div>
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                          <h4 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">
+                          <h4 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white leading-tight">
                             {edu.institution}
                           </h4>
-                          <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                          <span className="text-[11px] sm:text-xs font-medium text-neutral-500 dark:text-neutral-400 shrink-0">
                             {edu.period}
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 mt-0.5">
+                        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1">
                           <p className="text-xs font-semibold text-teal-600 dark:text-teal-400">
                             {edu.degree}
                           </p>
@@ -185,7 +185,7 @@ export default function AboutPage() {
                             {edu.score}
                           </span>
                         </div>
-                        <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-2 leading-relaxed">
+                        <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-2 leading-relaxed break-words">
                           {edu.major}
                         </p>
                       </div>
@@ -210,31 +210,35 @@ export default function AboutPage() {
                   {displayedCerts.map((cert) => (
                     <div
                       key={cert.title}
-                      className="group flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 rounded-2xl bg-white/90 dark:bg-white/5 border border-teal-200/60 dark:border-white/5 hover:border-teal-400/50 dark:hover:border-teal-500/30 p-3 transition-all duration-200 shadow-sm hover:shadow-md"
+                      className="group flex flex-col gap-2 rounded-2xl bg-white/95 dark:bg-white/5 border border-teal-200/60 dark:border-white/5 hover:border-teal-400/50 dark:hover:border-teal-500/30 p-3 sm:p-3.5 transition-all duration-200 shadow-sm hover:shadow-md"
                     >
                       <div className="min-w-0 flex-1">
-                        <p className="font-semibold text-neutral-800 dark:text-neutral-200 text-xs sm:text-sm leading-snug">
+                        <p className="font-semibold text-neutral-800 dark:text-neutral-200 text-xs sm:text-sm leading-snug break-words">
                           {cert.title}
                         </p>
-                        <p className="text-[11px] text-neutral-500 dark:text-neutral-400 truncate mt-0.5">
-                          {cert.issuer} • <span className="font-mono">{cert.credentialId}</span>
+                        <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1">
+                          {cert.issuer} • <span className="font-mono font-medium">{cert.credentialId}</span>
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                      <div className="flex items-center justify-between gap-2 pt-2 border-t border-neutral-100 dark:border-white/5">
                         <span className="rounded-md bg-teal-500/10 px-2 py-0.5 font-mono text-[11px] font-bold text-teal-600 dark:text-teal-400">
                           {cert.date}
                         </span>
 
-                        {cert.pdfUrl && (
+                        {cert.pdfUrl ? (
                           <button
                             onClick={() => setActiveCert(cert)}
                             title={locale === 'id' ? 'Lihat Kredensial PDF' : 'View PDF Credential'}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-teal-500 text-white hover:bg-teal-600 dark:bg-teal-500/20 dark:text-teal-300 dark:hover:bg-teal-500/30 border border-teal-500/30 text-[11px] font-bold transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-sm"
+                            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-teal-500 text-white hover:bg-teal-600 active:scale-95 dark:bg-teal-500/20 dark:text-teal-300 dark:hover:bg-teal-500/30 border border-teal-500/30 text-xs font-bold transition-all cursor-pointer shadow-sm"
                           >
                             <FiEye className="h-3.5 w-3.5" />
                             <span>{locale === 'id' ? 'Lihat PDF' : 'View PDF'}</span>
                           </button>
+                        ) : (
+                          <span className="text-[10px] text-neutral-400 italic">
+                            {locale === 'id' ? 'Terverifikasi' : 'Verified'}
+                          </span>
                         )}
                       </div>
                     </div>
@@ -263,42 +267,42 @@ export default function AboutPage() {
           </div>
 
           {/* Right Card: Pengalaman Proyek & Karir */}
-          <div className="lg:col-span-7 relative rounded-3xl border-2 border-indigo-300/80 dark:border-indigo-500/20 bg-indigo-50/50 dark:bg-[#0f1322] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)]">
-            <div className="flex items-center justify-between gap-4 mb-1">
-              <h3 className="text-neutral-900 dark:text-white text-xl md:text-2xl font-brak font-bold">
+          <div className="lg:col-span-7 relative rounded-3xl border-2 border-indigo-300/80 dark:border-indigo-500/20 bg-indigo-50/50 dark:bg-[#0f1322] p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)]">
+            <div className="flex items-center justify-between gap-3 mb-1">
+              <h3 className="text-neutral-900 dark:text-white text-lg sm:text-xl md:text-2xl font-brak font-bold">
                 {t('exp_timeline_title')}
               </h3>
-              <span className="rounded-full bg-indigo-500/15 border border-indigo-500/30 px-3 py-1 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+              <span className="rounded-full bg-indigo-500/15 border border-indigo-500/30 px-2.5 sm:px-3 py-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 shrink-0">
                 {t('exp_years_badge')}
               </span>
             </div>
-            <p className="text-neutral-600 dark:text-neutral-400 text-xs md:text-sm mb-6">
+            <p className="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm mb-5 sm:mb-6">
               {t('exp_period_label')}
             </p>
 
             {/* Seamless Connected Vertical Timeline */}
-            <div className="relative space-y-4 before:absolute before:left-[22px] before:top-6 before:bottom-6 before:w-[2px] before:bg-indigo-500/30 dark:before:bg-indigo-500/25">
+            <div className="relative space-y-4 before:absolute before:left-[20px] sm:before:left-[22px] before:top-6 before:bottom-6 before:w-[2px] before:bg-indigo-500/30 dark:before:bg-indigo-500/25">
               {displayedCareer.map((career, idx) => {
                 const Icon = career.icon;
                 return (
-                  <div key={idx} className="relative flex items-center gap-4 group">
+                  <div key={idx} className="relative flex items-center gap-3 sm:gap-4 group">
                     {/* Centered Node Avatar Badge */}
                     <div
                       className={cn(
-                        'relative z-10 flex h-11 w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-2xl border shadow-sm transition-transform duration-200 group-hover:scale-105',
+                        'relative z-10 flex h-10 w-10 sm:h-11 sm:w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-2xl border shadow-sm transition-transform duration-200 group-hover:scale-105',
                         career.iconBg
                       )}
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                     </div>
 
                     {/* Timeline Content Card */}
-                    <div className="flex-1 rounded-2xl border border-neutral-200/90 dark:border-white/10 bg-white/95 dark:bg-[#161b2a] p-4 md:p-5 shadow-sm transition-all duration-200 hover:border-indigo-400/50 hover:shadow-md">
+                    <div className="flex-1 min-w-0 rounded-2xl border border-neutral-200/90 dark:border-white/10 bg-white/95 dark:bg-[#161b2a] p-3.5 sm:p-4 md:p-5 shadow-sm transition-all duration-200 hover:border-indigo-400/50 hover:shadow-md">
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                        <h4 className="text-sm md:text-base font-bold text-neutral-900 dark:text-white leading-tight">
+                        <h4 className="text-sm md:text-base font-bold text-neutral-900 dark:text-white leading-tight break-words">
                           {career.role}
                         </h4>
-                        <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400 shrink-0">
+                        <span className="text-[11px] sm:text-xs font-medium text-neutral-500 dark:text-neutral-400 shrink-0">
                           {career.period}
                         </span>
                       </div>
@@ -307,7 +311,7 @@ export default function AboutPage() {
                         {career.company}
                       </p>
 
-                      <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] text-neutral-500 dark:text-neutral-400">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1 text-[11px] text-neutral-500 dark:text-neutral-400">
                         <span>{career.legalCompany}</span>
                         <span>•</span>
                         <span>{career.type}</span>
