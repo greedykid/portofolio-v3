@@ -12,6 +12,7 @@
     "@vercel/analytics": "^1.4.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "firebase": "^12.18.0",
     "gray-matter": "^4.0.3",
     "next": "15.5.24",
     "react": "^18.3.1",
