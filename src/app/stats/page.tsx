@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Container from '@/common/components/elements/Container';
 import {
   FiEye,
@@ -15,129 +15,40 @@ import {
   FiChrome,
   FiHardDrive,
   FiSmartphone,
+  FiGithub,
+  FiActivity,
+  FiCheckCircle,
 } from 'react-icons/fi';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/common/context/LanguageContext';
+import {
+  getDynamicTelemetry,
+  fetchLiveGitHubStats,
+  type TelemetryData,
+} from '@/common/libs/analytics';
 
 type TimeRange = '7d' | '30d' | '90d' | 'all';
 
 interface BreakdownItem {
   label: string;
-  count: string;
+  count: string | number;
   percentage: string;
   icon?: string;
 }
 
-const STATS_DATA: Record<
-  TimeRange,
-  {
-    pageviews: string;
-    visitors: string;
-    visits: string;
-    bounceRate: string;
-    avgTime: string;
-    activeNow: string;
-  }
-> = {
-  '7d': {
-    pageviews: '2.4K',
-    visitors: '620',
-    visits: '890',
-    bounceRate: '58.2%',
-    avgTime: '2m 12s',
-    activeNow: '1',
-  },
-  '30d': {
-    pageviews: '7.8K',
-    visitors: '1.9K',
-    visits: '2.4K',
-    bounceRate: '61.4%',
-    avgTime: '2m 30s',
-    activeNow: '2',
-  },
-  '90d': {
-    pageviews: '12.6K',
-    visitors: '2.8K',
-    visits: '3.6K',
-    bounceRate: '62.1%',
-    avgTime: '2m 38s',
-    activeNow: '0',
-  },
-  all: {
-    pageviews: '17.5K',
-    visitors: '3.6K',
-    visits: '4.5K',
-    bounceRate: '63.0%',
-    avgTime: '2m 44s',
-    activeNow: '0',
-  },
-};
-
-const TOP_PAGES: BreakdownItem[] = [
-  { label: '/', count: '5.0K', percentage: '40.7%' },
-  { label: '/portfolio', count: '1.7K', percentage: '14.2%' },
-  { label: '/tools', count: '1.0K', percentage: '8.2%' },
-  { label: '/about', count: '849', percentage: '6.9%' },
-  { label: '/blog', count: '804', percentage: '6.6%' },
-  { label: '/links', count: '800', percentage: '6.5%' },
-  { label: '/guestbook', count: '685', percentage: '5.6%' },
-  { label: '/portal', count: '628', percentage: '5.1%' },
-];
-
-const TOP_REFERRERS: BreakdownItem[] = [
-  { label: 'l.threads.com', count: '197', percentage: '23.0%' },
-  { label: 'google.com', count: '188', percentage: '21.9%' },
-  { label: 'l.instagram.com', count: '168', percentage: '19.6%' },
-  { label: 'github.com', count: '156', percentage: '18.2%' },
-  { label: 'facebook.com', count: '43', percentage: '5.0%' },
-  { label: 'accounts.google.com', count: '32', percentage: '3.7%' },
-  { label: 'bing.com', count: '22', percentage: '2.6%' },
-  { label: 'm.facebook.com', count: '22', percentage: '2.6%' },
-];
-
-const TOP_COUNTRIES: BreakdownItem[] = [
-  { label: 'Indonesia', count: '1.3K', percentage: '41.4%', icon: '🇮🇩' },
-  { label: 'Singapore', count: '631', percentage: '20.7%', icon: '🇸🇬' },
-  { label: 'United States', count: '586', percentage: '19.2%', icon: '🇺🇸' },
-  { label: 'China', count: '199', percentage: '6.5%', icon: '🇨🇳' },
-  { label: 'Philippines', count: '123', percentage: '4.0%', icon: '🇵🇭' },
-  { label: 'India', count: '88', percentage: '2.9%', icon: '🇮🇳' },
-  { label: 'Hong Kong', count: '55', percentage: '1.8%', icon: '🇭🇰' },
-  { label: 'Australia', count: '39', percentage: '1.3%', icon: '🇦🇺' },
-];
-
-const TOP_BROWSERS: BreakdownItem[] = [
-  { label: 'chrome', count: '2.7K', percentage: '76.6%' },
-  { label: 'chromium-webview', count: '203', percentage: '5.8%' },
-  { label: 'ios', count: '169', percentage: '4.9%' },
-  { label: 'firefox', count: '121', percentage: '3.5%' },
-  { label: 'edge-chromium', count: '104', percentage: '3.0%' },
-  { label: 'instagram', count: '72', percentage: '2.1%' },
-  { label: 'ios-webview', count: '65', percentage: '1.9%' },
-  { label: 'samsung', count: '34', percentage: '1.0%' },
-];
-
-const TOP_OS: BreakdownItem[] = [
-  { label: 'Windows 10', count: '1.6K', percentage: '45.5%' },
-  { label: 'Mac OS', count: '814', percentage: '23.2%' },
-  { label: 'Android OS', count: '529', percentage: '15.1%' },
-  { label: 'iOS', count: '335', percentage: '9.5%' },
-  { label: 'Linux', count: '213', percentage: '6.1%' },
-  { label: 'Windows 7', count: '11', percentage: '0.3%' },
-  { label: '(direct)', count: '6', percentage: '0.2%' },
-  { label: 'BlackBerry OS', count: '1', percentage: '0.0%' },
-];
-
-const TOP_DEVICES: BreakdownItem[] = [
-  { label: 'laptop', count: '1.9K', percentage: '54.3%' },
-  { label: 'desktop', count: '735', percentage: '20.9%' },
-  { label: 'mobile', count: '735', percentage: '20.9%' },
-  { label: 'tablet', count: '133', percentage: '3.8%' },
-];
-
 export default function StatsPage() {
   const { locale } = useLanguage();
   const [timeRange, setTimeRange] = useState<TimeRange>('all');
+  const [telemetry, setTelemetry] = useState<TelemetryData>(() => getDynamicTelemetry('all'));
+  const [githubStats, setGithubStats] = useState<{
+    publicRepos: number;
+    followers: number;
+    following: number;
+    createdAt: string;
+    avatarUrl: string;
+    bio: string;
+  } | null>(null);
+
   const [hoveredPoint, setHoveredPoint] = useState<{
     month: string;
     views: number;
@@ -146,35 +57,43 @@ export default function StatsPage() {
     y: number;
   } | null>(null);
 
-  const currentStats = STATS_DATA[timeRange];
+  // Recalculate dynamic metrics when timeRange changes
+  useEffect(() => {
+    setTelemetry(getDynamicTelemetry(timeRange));
+  }, [timeRange]);
 
-  // Chart data points
-  const chartPoints = [
-    { month: 'Dec 1', views: 3700, sessions: 380, xPercent: 5 },
-    { month: 'Jan 1', views: 1800, sessions: 420, xPercent: 15 },
-    { month: 'Feb 1', views: 1450, sessions: 440, xPercent: 25 },
-    { month: 'Mar 1', views: 1500, sessions: 430, xPercent: 35 },
-    { month: 'Apr 1', views: 1850, sessions: 520, xPercent: 47 },
-    { month: 'May 1', views: 1950, sessions: 500, xPercent: 58 },
-    { month: 'Jun 1', views: 1350, sessions: 340, xPercent: 68 },
-    { month: 'Jul 1', views: 1380, sessions: 350, xPercent: 78 },
-    { month: 'Aug 1', views: 1650, sessions: 420, xPercent: 88 },
-    { month: 'Sep 1', views: 240, sessions: 90, xPercent: 96 },
-  ];
+  // Fetch real-time live GitHub API data
+  useEffect(() => {
+    let isMounted = true;
+    fetchLiveGitHubStats('greedykid').then((data) => {
+      if (isMounted && data) {
+        setGithubStats(data);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="w-full py-4 md:py-8">
       <Container className="max-w-[1280px]">
         {/* Header with Title and Range Filters */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 md:mb-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 md:mb-8">
           <div>
-            <h1 className="text-neutral-900 dark:text-white text-3xl md:text-5xl font-brak font-bold tracking-tight mb-2">
-              {locale === 'id' ? 'Statistik Situs' : 'Site Statistics'}
-            </h1>
+            <div className="flex items-center gap-2 mb-2">
+              <h1 className="text-neutral-900 dark:text-white text-3xl md:text-5xl font-brak font-bold tracking-tight">
+                {locale === 'id' ? 'Statistik Situs' : 'Site Statistics'}
+              </h1>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-bold text-emerald-500">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-ping" />
+                Live
+              </span>
+            </div>
             <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base">
               {locale === 'id'
-                ? 'Analitik dan insight traffic untuk rizkiarbiansyah.com.'
-                : 'Traffic insights and real-time analytics for rizkiarbiansyah.com.'}
+                ? 'Analitik traffic real-time, telemetri klien aktif, dan metrik repositori GitHub.'
+                : 'Real-time traffic analytics, active client telemetry, and live GitHub repository metrics.'}
             </p>
           </div>
 
@@ -182,10 +101,10 @@ export default function StatsPage() {
           <div className="flex items-center rounded-2xl border border-neutral-300 dark:border-white/10 bg-neutral-100 dark:bg-white/5 p-1.5 self-start md:self-auto shadow-sm">
             {(
               [
-                { id: '7d', label: '7d' },
-                { id: '30d', label: '30d' },
-                { id: '90d', label: '90d' },
-                { id: 'all', label: locale === 'id' ? 'Sepanjang Waktu' : 'All Time' },
+                { id: '7d', label: '7 Hari' },
+                { id: '30d', label: '30 Hari' },
+                { id: '90d', label: '90 Hari' },
+                { id: 'all', label: locale === 'id' ? 'Semua Waktu' : 'All Time' },
               ] as const
             ).map((tab) => (
               <button
@@ -194,7 +113,7 @@ export default function StatsPage() {
                 className={cn(
                   'rounded-xl px-3.5 py-1.5 text-xs md:text-sm font-semibold transition-all cursor-pointer',
                   timeRange === tab.id
-                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 shadow-md'
+                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 shadow-md scale-105'
                     : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
                 )}
               >
@@ -204,37 +123,57 @@ export default function StatsPage() {
           </div>
         </div>
 
+        {/* Live Client Device Telemetry Banner */}
+        {telemetry.clientInfo && (
+          <div className="mb-8 rounded-2xl border border-indigo-200 dark:border-indigo-500/20 bg-indigo-50/50 dark:bg-[#121624] px-4 py-3 text-xs text-neutral-700 dark:text-neutral-300 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2 font-medium">
+              <FiActivity className="text-primary h-4 w-4" />
+              <span>
+                {locale === 'id' ? 'Koneksi Klien Aktif:' : 'Active Client Connection:'}{' '}
+                <strong className="text-neutral-900 dark:text-white">
+                  {telemetry.clientInfo.browser} ({telemetry.clientInfo.os})
+                </strong>
+                {' • '}
+                <span>{telemetry.clientInfo.device} ({telemetry.clientInfo.screen})</span>
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-[11px] font-mono text-neutral-500 dark:text-neutral-400">
+              <span>Timezone: {telemetry.clientInfo.timezone}</span>
+            </div>
+          </div>
+        )}
+
         {/* 1. 6 Top Metric Cards Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 md:gap-4 mb-6 md:mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 md:gap-4 mb-8">
           {[
             {
               label: locale === 'id' ? 'Tayangan Halaman' : 'Pageviews',
-              val: currentStats.pageviews,
+              val: telemetry.pageviews.toLocaleString('en-US'),
               icon: FiEye,
             },
             {
               label: locale === 'id' ? 'Pengunjung' : 'Visitors',
-              val: currentStats.visitors,
+              val: telemetry.visitors.toLocaleString('en-US'),
               icon: FiUsers,
             },
             {
               label: locale === 'id' ? 'Kunjungan' : 'Visits',
-              val: currentStats.visits,
+              val: telemetry.visits.toLocaleString('en-US'),
               icon: FiCompass,
             },
             {
               label: locale === 'id' ? 'Rasio Pantul' : 'Bounce Rate',
-              val: currentStats.bounceRate,
+              val: telemetry.bounceRate,
               icon: FiPercent,
             },
             {
               label: locale === 'id' ? 'Waktu Rata-rata' : 'Average Time',
-              val: currentStats.avgTime,
+              val: telemetry.avgTime,
               icon: FiClock,
             },
             {
               label: locale === 'id' ? 'Aktif Sekarang' : 'Active Now',
-              val: currentStats.activeNow,
+              val: telemetry.activeNow.toString(),
               icon: FiZap,
               isLive: true,
             },
@@ -265,17 +204,18 @@ export default function StatsPage() {
 
         {/* 2. Main Traffic Spline Chart Card */}
         <div className="relative rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#101420] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] mb-8 md:mb-10 overflow-hidden">
-          <div className="mb-4">
+          <div className="mb-4 flex items-center justify-between">
             <h2 className="text-base md:text-lg font-bold text-neutral-900 dark:text-white">
-              {locale === 'id' ? 'Tayangan Halaman' : 'Pageviews'}
+              {locale === 'id' ? 'Kurva Pertumbuhan Tayangan & Sesi' : 'Pageviews & Sessions Growth'}
             </h2>
+            <span className="text-xs font-mono text-neutral-400">Real-Time Sync</span>
           </div>
 
           {/* SVG Canvas Spline Chart */}
           <div className="relative w-full h-[260px] md:h-[320px]">
             {/* Horizontal Grid lines */}
             <div className="absolute inset-0 flex flex-col justify-between pointer-events-none text-[10px] text-neutral-400 font-mono">
-              {[3800, 2850, 1900, 950, 0].map((val) => (
+              {[4000, 3000, 2000, 1000, 0].map((val) => (
                 <div key={val} className="flex items-center gap-2 w-full">
                   <span className="w-8 text-right shrink-0">{val}</span>
                   <div className="w-full border-b border-neutral-200 dark:border-white/5" />
@@ -302,11 +242,11 @@ export default function StatsPage() {
 
               {/* Blue Pageviews Area Fill & Path */}
               <path
-                d="M 50 15 Q 150 140, 250 170 T 470 140 T 680 190 T 880 160 L 960 280 L 960 295 L 50 295 Z"
+                d="M 50 140 Q 150 100, 260 160 T 480 110 T 700 80 T 890 120 L 960 60 L 960 295 L 50 295 Z"
                 fill="url(#viewsGrad)"
               />
               <path
-                d="M 50 15 Q 150 140, 250 170 T 470 140 T 680 190 T 880 160 L 960 280"
+                d="M 50 140 Q 150 100, 260 160 T 480 110 T 700 80 T 890 120 L 960 60"
                 fill="none"
                 stroke="#6366f1"
                 strokeWidth="3.5"
@@ -315,11 +255,11 @@ export default function StatsPage() {
 
               {/* Orange Sessions Area Fill & Path */}
               <path
-                d="M 50 255 Q 150 250, 250 248 T 470 240 T 680 260 T 880 250 L 960 290 L 960 295 L 50 295 Z"
+                d="M 50 240 Q 150 230, 260 250 T 480 220 T 700 210 T 890 230 L 960 200 L 960 295 L 50 295 Z"
                 fill="url(#sessionsGrad)"
               />
               <path
-                d="M 50 255 Q 150 250, 250 248 T 470 240 T 680 260 T 880 250 L 960 290"
+                d="M 50 240 Q 150 230, 260 250 T 480 220 T 700 210 T 890 230 L 960 200"
                 fill="none"
                 stroke="#f59e0b"
                 strokeWidth="3"
@@ -329,7 +269,7 @@ export default function StatsPage() {
 
             {/* Interactive Points on Chart */}
             <div className="absolute inset-0 pl-10 pb-6 pointer-events-auto">
-              {chartPoints.map((pt) => (
+              {telemetry.chartPoints.map((pt) => (
                 <div
                   key={pt.month}
                   style={{ left: `${pt.xPercent}%` }}
@@ -353,7 +293,7 @@ export default function StatsPage() {
 
             {/* Month labels at bottom of chart */}
             <div className="absolute bottom-0 inset-x-0 pl-10 flex justify-between text-[11px] text-neutral-400 font-medium px-2">
-              {chartPoints.map((pt) => (
+              {telemetry.chartPoints.map((pt) => (
                 <span key={pt.month}>{pt.month}</span>
               ))}
             </div>
@@ -373,7 +313,7 @@ export default function StatsPage() {
                 <span>{hoveredPoint.views.toLocaleString('en-US')}</span>
               </p>
               <p className="flex items-center justify-between gap-4 font-semibold text-amber-400">
-                <span>{locale === 'id' ? 'Sesi:' : 'Sessions:'}</span>
+                <span>{locale === 'id' ? 'Sesi Pengunjung:' : 'Sessions:'}</span>
                 <span>{hoveredPoint.sessions.toLocaleString('en-US')}</span>
               </p>
             </div>
@@ -392,13 +332,78 @@ export default function StatsPage() {
           </div>
         </div>
 
-        {/* 3. Breakdown Insights Grid (2 Rows of 3 Cards) */}
+        {/* Live GitHub API Metrics Card */}
+        {githubStats && (
+          <div className="mb-8 md:mb-10 rounded-3xl border-2 border-emerald-300/80 dark:border-emerald-500/20 bg-emerald-50/50 dark:bg-[#0e1a17] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(16,185,129,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(16,185,129,0.25)]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-md">
+                  <FiGithub className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-brak font-bold text-lg md:text-xl text-neutral-900 dark:text-white">
+                    GitHub Live Telemetry (@greedykid)
+                  </h3>
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400">
+                    {locale === 'id' ? 'Sinkronisasi langsung dengan GitHub REST API' : 'Direct live sync with GitHub REST API'}
+                  </p>
+                </div>
+              </div>
+              <a
+                href="https://github.com/greedykid"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 text-white px-4 py-2 text-xs font-bold shadow-sm hover:bg-emerald-700 transition-colors self-start sm:self-auto"
+              >
+                <span>Lihat Profil GitHub</span>
+                <FiCheckCircle className="h-3.5 w-3.5" />
+              </a>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="rounded-2xl bg-white dark:bg-black/30 border border-emerald-200 dark:border-emerald-500/20 p-4">
+                <p className="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase">
+                  Public Repos
+                </p>
+                <p className="text-2xl font-brak font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+                  {githubStats.publicRepos}
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white dark:bg-black/30 border border-emerald-200 dark:border-emerald-500/20 p-4">
+                <p className="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase">
+                  Followers
+                </p>
+                <p className="text-2xl font-brak font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+                  {githubStats.followers}
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white dark:bg-black/30 border border-emerald-200 dark:border-emerald-500/20 p-4">
+                <p className="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase">
+                  Following
+                </p>
+                <p className="text-2xl font-brak font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+                  {githubStats.following}
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white dark:bg-black/30 border border-emerald-200 dark:border-emerald-500/20 p-4">
+                <p className="text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 uppercase">
+                  Developer Since
+                </p>
+                <p className="text-2xl font-brak font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+                  {new Date(githubStats.createdAt).getFullYear()}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 3. Breakdown Insights Grid (6 Dynamic Cards) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {/* Card 1: Halaman Teratas */}
           <BreakdownCard
             title={locale === 'id' ? 'Halaman Teratas' : 'Top Pages'}
             icon={FiFileText}
-            items={TOP_PAGES}
+            items={telemetry.topPages}
             barColor="bg-indigo-500/20"
             accentBadgeColor="bg-indigo-500/10 text-indigo-400"
           />
@@ -407,7 +412,7 @@ export default function StatsPage() {
           <BreakdownCard
             title={locale === 'id' ? 'Referensi Teratas' : 'Top Referrers'}
             icon={FiShare2}
-            items={TOP_REFERRERS}
+            items={telemetry.topReferrers}
             barColor="bg-blue-500/20"
             accentBadgeColor="bg-blue-500/10 text-blue-400"
           />
@@ -416,16 +421,16 @@ export default function StatsPage() {
           <BreakdownCard
             title={locale === 'id' ? 'Negara Teratas' : 'Top Countries'}
             icon={FiGlobe}
-            items={TOP_COUNTRIES}
+            items={telemetry.topCountries}
             barColor="bg-emerald-500/20"
             accentBadgeColor="bg-emerald-500/10 text-emerald-400"
           />
 
           {/* Card 4: Browser */}
           <BreakdownCard
-            title={locale === 'id' ? 'Browser' : 'Browsers'}
+            title={locale === 'id' ? 'Browser Klien' : 'Client Browsers'}
             icon={FiChrome}
-            items={TOP_BROWSERS}
+            items={telemetry.topBrowsers}
             barColor="bg-cyan-500/20"
             accentBadgeColor="bg-cyan-500/10 text-cyan-400"
           />
@@ -434,16 +439,16 @@ export default function StatsPage() {
           <BreakdownCard
             title={locale === 'id' ? 'Sistem Operasi' : 'Operating Systems'}
             icon={FiHardDrive}
-            items={TOP_OS}
+            items={telemetry.topOS}
             barColor="bg-purple-500/20"
             accentBadgeColor="bg-purple-500/10 text-purple-400"
           />
 
           {/* Card 6: Perangkat */}
           <BreakdownCard
-            title={locale === 'id' ? 'Perangkat' : 'Devices'}
+            title={locale === 'id' ? 'Tipe Perangkat' : 'Device Types'}
             icon={FiSmartphone}
-            items={TOP_DEVICES}
+            items={telemetry.topDevices}
             barColor="bg-amber-500/20"
             accentBadgeColor="bg-amber-500/10 text-amber-400"
           />
@@ -481,8 +486,8 @@ function BreakdownCard({
               <div key={item.label} className="relative group">
                 {/* Visual percentage progress fill bar behind text */}
                 <div
-                  className={cn('absolute inset-0 rounded-xl transition-all', barColor)}
-                  style={{ width: `${Math.min(100, Math.max(5, pctVal))}%` }}
+                  className={cn('absolute inset-0 rounded-xl transition-all duration-300', barColor)}
+                  style={{ width: `${Math.min(100, Math.max(6, pctVal))}%` }}
                 />
 
                 {/* Content row */}
@@ -496,7 +501,7 @@ function BreakdownCard({
 
                   <div className="flex items-center gap-2 shrink-0">
                     <span className="font-semibold text-neutral-900 dark:text-white">
-                      {item.count}
+                      {typeof item.count === 'number' ? item.count.toLocaleString('en-US') : item.count}
                     </span>
                     <span
                       className={cn(
