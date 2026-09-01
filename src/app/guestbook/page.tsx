@@ -116,6 +116,11 @@ export default function GuestbookPage() {
 
   // Monitor Auth state
   useEffect(() => {
+    if (!isFirebaseConfigured) {
+      setAuthLoading(false);
+      return;
+    }
+
     try {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         setCurrentUser(user);
