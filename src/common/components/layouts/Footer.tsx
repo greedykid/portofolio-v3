@@ -18,13 +18,13 @@ export default function Footer() {
     ],
     explore: [
       { label: t('footer_link_portfolio'), href: '/projects' },
-      { label: t('footer_link_guestbook'), href: '/#guestbook' },
-      { label: t('footer_link_status'), href: '/#status' },
-      { label: t('footer_link_behind'), href: '/#behind-the-scenes' },
+      { label: t('footer_link_guestbook'), href: '/guestbook' },
+      { label: t('footer_link_status'), href: '/behind-the-scenes' },
+      { label: t('footer_link_behind'), href: '/behind-the-scenes' },
     ],
     insights: [
       { label: t('footer_link_stats'), href: '/stats' },
-      { label: t('footer_link_setup'), href: '/#setup' },
+      { label: t('footer_link_setup'), href: '/setup' },
       { label: t('footer_link_tools'), href: '/#tools' },
       { label: t('footer_link_links'), href: '/links' },
     ],

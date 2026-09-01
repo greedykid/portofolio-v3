@@ -47,9 +47,9 @@ export default function Navigation() {
 
   const MORE_NAVIGATION = [
     { label: t('nav_stats'), href: '/stats', icon: FiBarChart2, desc: t('nav_stats_desc') },
-    { label: t('nav_setup'), href: '/#setup', icon: FiMonitor, desc: t('nav_setup_desc') },
-    { label: t('nav_guestbook'), href: '/#guestbook', icon: FiBook, desc: t('nav_guestbook_desc') },
-    { label: t('nav_behind'), href: '/#behind-the-scenes', icon: FiFilm, desc: t('nav_behind_desc') },
+    { label: t('nav_setup'), href: '/setup', icon: FiMonitor, desc: t('nav_setup_desc') },
+    { label: t('nav_guestbook'), href: '/guestbook', icon: FiBook, desc: t('nav_guestbook_desc') },
+    { label: t('nav_behind'), href: '/behind-the-scenes', icon: FiFilm, desc: t('nav_behind_desc') },
   ];
 
   const isActive = (href: string) => {
