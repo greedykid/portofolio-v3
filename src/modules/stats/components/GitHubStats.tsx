@@ -416,9 +416,9 @@ export default function GitHubStats() {
             </div>
           </div>
 
-          {/* Contributions Heatmap Grid Container spanning full width with zero right-side gap */}
-          <div className="relative z-10 overflow-x-auto pb-4 pt-2">
-            <div className="w-full min-w-[760px]">
+          {/* Contributions Heatmap Grid Container with safe padding to prevent hover scale clipping and scrollbars */}
+          <div className="relative z-10 overflow-x-auto pb-3 pt-2">
+            <div className="w-full min-w-[760px] p-2">
               {/* Synchronized Month Labels across 53 full width columns */}
               <div className="flex w-full justify-between text-[11px] font-medium text-neutral-400 mb-2 h-4 select-none">
                 {weeks.map((week, idx) => (
@@ -458,7 +458,7 @@ export default function GitHubStats() {
                             });
                           }}
                           onMouseLeave={() => setHoveredDay(null)}
-                          className={`w-full aspect-square rounded-[2px] sm:rounded-[3px] transition-transform duration-150 hover:scale-125 cursor-pointer ${
+                          className={`w-full aspect-square rounded-[2px] sm:rounded-[3px] transition-transform duration-150 origin-center hover:scale-125 relative hover:z-20 cursor-pointer ${
                             LEVEL_COLORS[day.level]
                           }`}
                         />
