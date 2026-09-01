@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Container from '@/common/components/elements/Container';
 import { useLanguage } from '@/common/context/LanguageContext';
 import { FiSend, FiMessageSquare, FiHeart, FiUser } from 'react-icons/fi';
+import { cn } from '@/lib/utils';
 
 interface GuestMessage {
   id: string;
