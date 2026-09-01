@@ -45,33 +45,42 @@ interface ToolItem {
   icon: IconType | React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   iconColor: string;
   borderColor: string;
+  shadowColor: string;
   initialRotate: number;
+  offsetX?: number;
+  offsetY?: number;
 }
 
+// Exactly ordered and styled to match reference scattered overlapping badge pile
 const TOOLS_DATA: ToolItem[] = [
-  { id: 'firebase', name: 'Firebase', icon: SiFirebase, iconColor: '#FFA611', borderColor: 'hover:border-amber-400', initialRotate: -4 },
-  { id: 'zustand', name: 'Zustand', icon: SiRedux, iconColor: '#764ABC', borderColor: 'hover:border-purple-400', initialRotate: 3 },
-  { id: 'nginx', name: 'Nginx', icon: SiNginx, iconColor: '#009639', borderColor: 'hover:border-emerald-400', initialRotate: -2 },
-  { id: 'postgres', name: 'Postgre', icon: SiPostgresql, iconColor: '#4169E1', borderColor: 'hover:border-blue-400', initialRotate: 5 },
-  { id: 'reactnative', name: 'React Native', icon: SiReact, iconColor: '#00D8FF', borderColor: 'hover:border-cyan-400', initialRotate: -3 },
-  { id: 'tanstack', name: 'Tanstack', icon: SiReactquery, iconColor: '#FF4154', borderColor: 'hover:border-rose-400', initialRotate: 4 },
-  { id: 'ai', name: 'AI', icon: AIIcon, iconColor: '#10A37F', borderColor: 'hover:border-emerald-400', initialRotate: -5 },
-  { id: 'vue', name: 'Vue.js', icon: SiVuedotjs, iconColor: '#42B883', borderColor: 'hover:border-emerald-400', initialRotate: 2 },
-  { id: 'laravel', name: 'Laravel', icon: SiLaravel, iconColor: '#FF2D20', borderColor: 'hover:border-red-400', initialRotate: -6 },
-  { id: 'python', name: 'Python', icon: SiPython, iconColor: '#3776AB', borderColor: 'hover:border-blue-400', initialRotate: 3 },
-  { id: 'jest', name: 'Jest', icon: SiJest, iconColor: '#C21325', borderColor: 'hover:border-rose-400', initialRotate: -2 },
-  { id: 'vite', name: 'Vite', icon: SiVite, iconColor: '#646CFF', borderColor: 'hover:border-indigo-400', initialRotate: 5 },
-  { id: 'express', name: 'Express', icon: SiExpress, iconColor: '#6b7280', borderColor: 'hover:border-neutral-400', initialRotate: -4 },
-  { id: 'nestjs', name: 'NestJS', icon: SiNestjs, iconColor: '#E0234E', borderColor: 'hover:border-red-400', initialRotate: 3 },
-  { id: 'prisma', name: 'Prisma', icon: SiPrisma, iconColor: '#2D3748', borderColor: 'hover:border-neutral-400', initialRotate: -3 },
-  { id: 'react', name: 'React', icon: SiReact, iconColor: '#61DAFB', borderColor: 'hover:border-cyan-400', initialRotate: 4 },
-  { id: 'nextjs', name: 'Next.js', icon: SiNextdotjs, iconColor: '#000000', borderColor: 'hover:border-neutral-500', initialRotate: -2 },
-  { id: 'typescript', name: 'TypeScript', icon: SiTypescript, iconColor: '#3178C6', borderColor: 'hover:border-blue-400', initialRotate: 6 },
-  { id: 'nodejs', name: 'Node.js', icon: SiNodedotjs, iconColor: '#5FA04E', borderColor: 'hover:border-emerald-400', initialRotate: -5 },
-  { id: 'tailwindcss', name: 'TailwindCSS', icon: SiTailwindcss, iconColor: '#06B6D4', borderColor: 'hover:border-cyan-400', initialRotate: 2 },
-  { id: 'graphql', name: 'GraphQL', icon: SiGraphql, iconColor: '#E10098', borderColor: 'hover:border-pink-400', initialRotate: -4 },
-  { id: 'docker', name: 'Docker', icon: SiDocker, iconColor: '#2496ED', borderColor: 'hover:border-blue-400', initialRotate: 3 },
-  { id: 'git', name: 'Git', icon: SiGit, iconColor: '#F05032', borderColor: 'hover:border-orange-400', initialRotate: 5 },
+  // Layer 1
+  { id: 'firebase', name: 'Firebase', icon: SiFirebase, iconColor: '#FFA611', borderColor: 'border-amber-300 dark:border-amber-500/30', shadowColor: 'shadow-amber-500/10', initialRotate: -6, offsetX: 0, offsetY: 0 },
+  { id: 'zustand', name: 'Zustand', icon: SiRedux, iconColor: '#764ABC', borderColor: 'border-purple-300 dark:border-purple-500/30', shadowColor: 'shadow-purple-500/10', initialRotate: 4, offsetX: -6, offsetY: 2 },
+  { id: 'nginx', name: 'Nginx', icon: SiNginx, iconColor: '#009639', borderColor: 'border-emerald-300 dark:border-emerald-500/30', shadowColor: 'shadow-emerald-500/10', initialRotate: -3, offsetX: -4, offsetY: -3 },
+  { id: 'postgres', name: 'Postgre', icon: SiPostgresql, iconColor: '#4169E1', borderColor: 'border-blue-300 dark:border-blue-500/30', shadowColor: 'shadow-blue-500/10', initialRotate: 5, offsetX: -8, offsetY: 4 },
+  { id: 'reactnative', name: 'React Native', icon: SiReact, iconColor: '#00D8FF', borderColor: 'border-cyan-300 dark:border-cyan-500/30', shadowColor: 'shadow-cyan-500/10', initialRotate: -4, offsetX: -2, offsetY: -2 },
+  { id: 'tanstack', name: 'Tanstack', icon: SiReactquery, iconColor: '#FF4154', borderColor: 'border-rose-300 dark:border-rose-500/30', shadowColor: 'shadow-rose-500/10', initialRotate: 6, offsetX: -6, offsetY: 3 },
+  { id: 'ai', name: 'AI', icon: AIIcon, iconColor: '#10A37F', borderColor: 'border-teal-300 dark:border-teal-500/30', shadowColor: 'shadow-teal-500/10', initialRotate: -5, offsetX: -4, offsetY: -1 },
+
+  // Layer 2
+  { id: 'vue', name: 'Vue.js', icon: SiVuedotjs, iconColor: '#42B883', borderColor: 'border-emerald-300 dark:border-emerald-500/30', shadowColor: 'shadow-emerald-500/10', initialRotate: 3, offsetX: 4, offsetY: -6 },
+  { id: 'laravel', name: 'Laravel', icon: SiLaravel, iconColor: '#FF2D20', borderColor: 'border-red-300 dark:border-red-500/30', shadowColor: 'shadow-red-500/10', initialRotate: -7, offsetX: -8, offsetY: 5 },
+  { id: 'python', name: 'Python', icon: SiPython, iconColor: '#3776AB', borderColor: 'border-blue-300 dark:border-blue-500/30', shadowColor: 'shadow-blue-500/10', initialRotate: 5, offsetX: -4, offsetY: -4 },
+  { id: 'jest', name: 'Jest', icon: SiJest, iconColor: '#C21325', borderColor: 'border-rose-300 dark:border-rose-500/30', shadowColor: 'shadow-rose-500/10', initialRotate: -3, offsetX: -6, offsetY: 2 },
+  { id: 'vite', name: 'Vite', icon: SiVite, iconColor: '#646CFF', borderColor: 'border-indigo-300 dark:border-indigo-500/30', shadowColor: 'shadow-indigo-500/10', initialRotate: 7, offsetX: -4, offsetY: -5 },
+  { id: 'express', name: 'Express', icon: SiExpress, iconColor: '#6b7280', borderColor: 'border-neutral-300 dark:border-neutral-600', shadowColor: 'shadow-neutral-500/10', initialRotate: -4, offsetX: -6, offsetY: 3 },
+  { id: 'nestjs', name: 'NestJS', icon: SiNestjs, iconColor: '#E0234E', borderColor: 'border-red-300 dark:border-red-500/30', shadowColor: 'shadow-red-500/10', initialRotate: 5, offsetX: -8, offsetY: -3 },
+  { id: 'prisma', name: 'Prisma', icon: SiPrisma, iconColor: '#2D3748', borderColor: 'border-neutral-300 dark:border-neutral-600', shadowColor: 'shadow-neutral-500/10', initialRotate: -6, offsetX: -4, offsetY: 4 },
+
+  // Layer 3
+  { id: 'react', name: 'React', icon: SiReact, iconColor: '#61DAFB', borderColor: 'border-cyan-300 dark:border-cyan-500/30', shadowColor: 'shadow-cyan-500/10', initialRotate: 4, offsetX: 2, offsetY: -4 },
+  { id: 'nextjs', name: 'Next.js', icon: SiNextdotjs, iconColor: '#000000', borderColor: 'border-neutral-400 dark:border-white/20', shadowColor: 'shadow-neutral-500/10', initialRotate: -5, offsetX: -6, offsetY: 4 },
+  { id: 'typescript', name: 'TypeScript', icon: SiTypescript, iconColor: '#3178C6', borderColor: 'border-blue-300 dark:border-blue-500/30', shadowColor: 'shadow-blue-500/10', initialRotate: 6, offsetX: -8, offsetY: -3 },
+  { id: 'nodejs', name: 'Node.js', icon: SiNodedotjs, iconColor: '#5FA04E', borderColor: 'border-emerald-300 dark:border-emerald-500/30', shadowColor: 'shadow-emerald-500/10', initialRotate: -6, offsetX: -4, offsetY: 5 },
+  { id: 'tailwindcss', name: 'TailwindCSS', icon: SiTailwindcss, iconColor: '#06B6D4', borderColor: 'border-cyan-300 dark:border-cyan-500/30', shadowColor: 'shadow-cyan-500/10', initialRotate: 3, offsetX: -6, offsetY: -2 },
+  { id: 'graphql', name: 'GraphQL', icon: SiGraphql, iconColor: '#E10098', borderColor: 'border-pink-300 dark:border-pink-500/30', shadowColor: 'shadow-pink-500/10', initialRotate: -5, offsetX: -4, offsetY: 4 },
+  { id: 'docker', name: 'Docker', icon: SiDocker, iconColor: '#2496ED', borderColor: 'border-blue-300 dark:border-blue-500/30', shadowColor: 'shadow-blue-500/10', initialRotate: 4, offsetX: -8, offsetY: -3 },
+  { id: 'git', name: 'Git', icon: SiGit, iconColor: '#F05032', borderColor: 'border-orange-300 dark:border-orange-500/30', shadowColor: 'shadow-orange-500/10', initialRotate: 6, offsetX: -4, offsetY: 2 },
 ];
 
 // Interactive Web Audio Sound Synthesizer
@@ -190,7 +199,6 @@ export default function TechStack() {
         [id]: { x: newOffsetX, y: newOffsetY },
       };
 
-      // Collision repulsion calculation
       const activeEl = itemRefs.current[id];
       if (activeEl) {
         const activeRect = activeEl.getBoundingClientRect();
@@ -216,7 +224,6 @@ export default function TechStack() {
           const dy = otherCenter.y - activeCenter.y;
           const dist = Math.hypot(dx, dy);
 
-          // Threshold for collision based on badge radii
           const minDist = (activeRect.width + otherRect.width) / 2.6;
 
           if (dist < minDist && dist > 0) {
@@ -266,7 +273,7 @@ export default function TechStack() {
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
         <div className="relative rounded-3xl border-2 border-indigo-200/80 dark:border-indigo-900/40 bg-[#edf2fe] dark:bg-[#0f1422] p-6 md:p-10 lg:p-12 shadow-[6px_6px_0px_0px_rgba(79,70,229,0.25)] dark:shadow-[6px_6px_0px_0px_rgba(79,70,229,0.4)] overflow-hidden select-none">
           {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-8 md:mb-12">
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6 md:mb-8">
             <div>
               <h2 className="text-neutral-900 dark:text-white tracking-tight text-3xl lg:text-4xl font-brak font-bold">
                 {t('tools_title')}
@@ -287,9 +294,9 @@ export default function TechStack() {
             </div>
           </div>
 
-          {/* Interactive Badges Cloud */}
+          {/* Organic Scattered Overlapping Badges Pile (Matching Screenshot 3) */}
           <div
-            className="relative flex flex-wrap items-center justify-center gap-3 md:gap-4 py-4 min-h-[220px]"
+            className="relative flex flex-wrap items-center justify-center -space-x-2 sm:-space-x-3 -space-y-1.5 sm:-space-y-2 py-6 min-h-[260px] md:min-h-[290px] px-2"
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
@@ -307,22 +314,23 @@ export default function TechStack() {
                   }}
                   onPointerDown={(e) => handlePointerDown(tool.id, e)}
                   style={{
-                    transform: `translate(${offset.x}px, ${offset.y}px) rotate(${isDragging ? 0 : tool.initialRotate}deg) scale(${isDragging ? 1.08 : 1})`,
-                    zIndex: isDragging ? 50 : 1,
+                    transform: `translate(${offset.x + (tool.offsetX || 0)}px, ${offset.y + (tool.offsetY || 0)}px) rotate(${isDragging ? 0 : tool.initialRotate}deg) scale(${isDragging ? 1.12 : 1})`,
+                    zIndex: isDragging ? 60 : 10,
                     touchAction: 'none',
-                    transition: isDragging ? 'none' : 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s',
+                    transition: isDragging ? 'none' : 'transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s',
                   }}
                   className={cn(
-                    'group flex items-center gap-2.5 rounded-full border border-neutral-200/80 dark:border-white/10 bg-white dark:bg-neutral-900/90 px-4 md:px-5 py-2 md:py-2.5 shadow-[0_4px_12px_rgba(0,0,0,0.06)] dark:shadow-[0_4px_12px_rgba(0,0,0,0.3)] cursor-grab active:cursor-grabbing hover:shadow-md transition-colors',
+                    'group relative inline-flex items-center gap-2 rounded-full border-2 bg-white dark:bg-[#151a28] px-4 md:px-5 py-2 md:py-2.5 shadow-[0_6px_16px_rgba(0,0,0,0.08)] dark:shadow-[0_6px_20px_rgba(0,0,0,0.4)] cursor-grab active:cursor-grabbing hover:scale-105 hover:z-40 transition-all select-none',
                     tool.borderColor,
-                    isDragging && 'shadow-2xl ring-2 ring-indigo-500/40'
+                    tool.shadowColor,
+                    isDragging && 'shadow-2xl ring-2 ring-indigo-500/50 scale-110 z-50'
                   )}
                 >
                   <Icon
-                    className="h-4 w-4 md:h-5 md:w-5 shrink-0 transition-transform duration-200 group-hover:scale-110"
+                    className="h-4 w-4 md:h-5 md:w-5 shrink-0 transition-transform duration-200 group-hover:scale-115"
                     style={{ color: tool.iconColor }}
                   />
-                  <span className="text-xs md:text-sm font-semibold text-neutral-800 dark:text-neutral-100 whitespace-nowrap">
+                  <span className="text-xs md:text-sm font-bold text-neutral-800 dark:text-neutral-100 whitespace-nowrap">
                     {tool.name}
                   </span>
                 </div>

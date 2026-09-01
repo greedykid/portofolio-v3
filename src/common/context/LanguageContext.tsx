@@ -192,7 +192,7 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     stats_desc: 'Metrik pertumbuhan dan komitmen berkelanjutan dalam membangun karya digital.',
 
     contrib_title: 'Kontribusi GitHub',
-    contrib_desc: 'Aktivitas commit, pull request, dan eksplorasi kode harian @greedykid',
+    contrib_desc: 'Aktivitas commit, pull request, dan eksplorasi kode harian',
     contrib_total: 'TOTAL',
     contrib_this_week: 'MINGGU INI',
     contrib_best_day: 'TERBAIK',
@@ -305,7 +305,7 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     stats_desc: 'Key growth metrics and continuous commitment to engineering excellence.',
 
     contrib_title: 'Contributions',
-    contrib_desc: 'A year of commits, PRs, and midnight debugging sessions @greedykid',
+    contrib_desc: 'A year of commits, PRs, and midnight debugging sessions',
     contrib_total: 'TOTAL',
     contrib_this_week: 'THIS WEEK',
     contrib_best_day: 'BEST DAY',

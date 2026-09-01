@@ -17,8 +17,14 @@ export default function BlogSection({ posts }: BlogSectionProps) {
 
   const scroll = (direction: 'left' | 'right') => {
     if (!sliderRef.current) return;
-    const offset = direction === 'left' ? -380 : 380;
-    sliderRef.current.scrollBy({ left: offset, behavior: 'smooth' });
+    const container = sliderRef.current;
+    const firstCard = container.querySelector('.snap-start') as HTMLElement | null;
+    const step = firstCard ? firstCard.offsetWidth + 24 : 360;
+    
+    container.scrollBy({
+      left: direction === 'left' ? -step : step,
+      behavior: 'smooth',
+    });
   };
 
   return (
@@ -32,7 +38,7 @@ export default function BlogSection({ posts }: BlogSectionProps) {
             </h2>
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 md:px-5 py-2 text-xs md:text-sm font-bold text-neutral-950 shadow-md transition-all duration-200 hover:bg-neutral-100 hover:scale-105 active:scale-95"
+              className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 md:px-5 py-2 text-xs md:text-sm font-bold text-neutral-950 shadow-md transition-all duration-200 hover:bg-neutral-100 hover:scale-105 active:scale-95 cursor-pointer"
             >
               {t('blog_view_all')} <FiChevronRight className="h-4 w-4" />
             </Link>
@@ -43,10 +49,10 @@ export default function BlogSection({ posts }: BlogSectionProps) {
             <p className="text-neutral-400 py-8 text-center">{t('blog_empty')}</p>
           ) : (
             <>
-              {/* Static / Manual Carousel Container */}
+              {/* Carousel Container with Smooth Snapping */}
               <div
                 ref={sliderRef}
-                className="flex items-stretch gap-6 overflow-x-auto pt-6 pb-6 px-1 scrollbar-none snap-x snap-mandatory scroll-smooth"
+                className="flex items-stretch gap-6 overflow-x-auto pt-4 pb-6 px-1 scrollbar-none snap-x snap-mandatory scroll-smooth"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {posts.map((post, idx) => (

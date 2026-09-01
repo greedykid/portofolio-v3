@@ -129,7 +129,7 @@ const LEVEL_COLORS: Record<number, string> = {
   4: 'bg-[#216e39] hover:bg-[#2c8a49]',
 };
 
-// Fireworks particle simulation
+// Calmer & Slower Fireworks Particle Simulation
 interface Rocket {
   x: number;
   y: number;
@@ -160,7 +160,7 @@ export default function GitHubStats() {
     .replace('https://github.com/', '')
     .replace(/\/$/, '');
 
-  // Fireworks Animation
+  // Slower, graceful fireworks animation
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -192,21 +192,21 @@ export default function GitHubStats() {
 
     const createRocket = () => {
       const x = Math.random() * (canvas.width - 80) + 40;
-      const targetY = Math.random() * (canvas.height * 0.55) + 30;
+      const targetY = Math.random() * (canvas.height * 0.5) + 35;
       rockets.push({
         x,
         y: canvas.height,
         targetY,
-        speedY: -(Math.random() * 5 + 8),
+        speedY: -(Math.random() * 1.4 + 2.2), // Slow, smooth ascent
         color: colors[Math.floor(Math.random() * colors.length)],
       });
     };
 
     const explode = (x: number, y: number, color: string) => {
-      const count = 45 + Math.floor(Math.random() * 35);
+      const count = 35 + Math.floor(Math.random() * 25);
       for (let i = 0; i < count; i++) {
-        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
-        const speed = Math.random() * 4.2 + 1.4;
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
+        const speed = Math.random() * 1.5 + 0.6; // Gentle drifting sparks
         sparks.push({
           x,
           y,
@@ -214,8 +214,8 @@ export default function GitHubStats() {
           vy: Math.sin(angle) * speed,
           alpha: 1,
           color,
-          size: Math.random() * 2.5 + 1.5,
-          decay: Math.random() * 0.022 + 0.012,
+          size: Math.random() * 2.2 + 1.2,
+          decay: Math.random() * 0.007 + 0.004, // Lingering glow
         });
       }
     };
@@ -225,23 +225,22 @@ export default function GitHubStats() {
     const render = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (time - lastRocketTime > 380) {
+      // Relaxed interval (1.6s between launches)
+      if (time - lastRocketTime > 1600) {
         createRocket();
-        if (Math.random() > 0.4) {
-          setTimeout(createRocket, 100);
-        }
         lastRocketTime = time;
       }
 
+      // Update rockets
       for (let i = rockets.length - 1; i >= 0; i--) {
         const r = rockets[i];
         r.y += r.speedY;
 
         ctx.beginPath();
-        ctx.arc(r.x, r.y, 2.5, 0, Math.PI * 2);
+        ctx.arc(r.x, r.y, 2, 0, Math.PI * 2);
         ctx.fillStyle = r.color;
         ctx.shadowColor = r.color;
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = 10;
         ctx.fill();
         ctx.shadowBlur = 0;
 
@@ -251,11 +250,12 @@ export default function GitHubStats() {
         }
       }
 
+      // Update sparks
       for (let i = sparks.length - 1; i >= 0; i--) {
         const s = sparks[i];
         s.x += s.vx;
         s.y += s.vy;
-        s.vy += 0.045;
+        s.vy += 0.016; // Soft gravity
         s.alpha -= s.decay;
 
         if (s.alpha <= 0) {
@@ -269,7 +269,7 @@ export default function GitHubStats() {
         ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
         ctx.fillStyle = s.color;
         ctx.shadowColor = s.color;
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 6;
         ctx.fill();
         ctx.restore();
       }
@@ -358,15 +358,15 @@ export default function GitHubStats() {
             </div>
           </div>
 
-          {/* Contributions Heatmap Grid Container */}
+          {/* Contributions Heatmap Grid Container spanning full width with zero right-side gap */}
           <div className="relative z-10 overflow-x-auto pb-4 pt-2">
-            <div className="min-w-[800px]">
-              {/* Synchronized Month Labels directly on 53 Columns */}
-              <div className="flex gap-[4.5px] text-[11px] font-medium text-neutral-400 mb-2 h-4 select-none">
+            <div className="w-full min-w-[760px]">
+              {/* Synchronized Month Labels across 53 full width columns */}
+              <div className="flex w-full justify-between text-[11px] font-medium text-neutral-400 mb-2 h-4 select-none">
                 {weeks.map((week, idx) => (
-                  <div key={idx} className="w-[13px] sm:w-[14px] shrink-0 text-left">
+                  <div key={idx} className="flex-1 text-left min-w-0">
                     {week.monthLabel && (
-                      <span className="whitespace-nowrap -translate-x-1 block font-mono">
+                      <span className="whitespace-nowrap -translate-x-1 block font-mono text-[10px] sm:text-[11px]">
                         {week.monthLabel}
                       </span>
                     )}
@@ -374,16 +374,16 @@ export default function GitHubStats() {
                 ))}
               </div>
 
-              {/* 53 Columns x 7 Rows Grid */}
-              <div className="flex gap-[4.5px]">
+              {/* 53 Columns x 7 Rows Grid spanning 100% of card */}
+              <div className="flex w-full justify-between items-center gap-[2px] sm:gap-[3px] md:gap-[4px]">
                 {weeks.map((week, wIdx) => (
-                  <div key={wIdx} className="flex flex-col gap-[4.5px]">
+                  <div key={wIdx} className="flex-1 flex flex-col gap-[2px] sm:gap-[3px] md:gap-[4px] min-w-0">
                     {week.days.map((day, dIdx) => {
                       if (day.isFuture) {
                         return (
                           <div
                             key={dIdx}
-                            className="h-[13px] w-[13px] sm:h-[14px] sm:w-[14px] invisible"
+                            className="w-full aspect-square rounded-[2px] sm:rounded-[3px] invisible"
                           />
                         );
                       }
@@ -400,7 +400,7 @@ export default function GitHubStats() {
                             });
                           }}
                           onMouseLeave={() => setHoveredDay(null)}
-                          className={`h-[13px] w-[13px] sm:h-[14px] sm:w-[14px] rounded-[3px] transition-transform duration-150 hover:scale-125 cursor-pointer ${
+                          className={`w-full aspect-square rounded-[2px] sm:rounded-[3px] transition-transform duration-150 hover:scale-125 cursor-pointer ${
                             LEVEL_COLORS[day.level]
                           }`}
                         />
