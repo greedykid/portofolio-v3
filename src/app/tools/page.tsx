@@ -22,15 +22,15 @@ import {
   SiTypescript,
   SiJavascript,
   SiHtml5,
-  SiCss3,
+  SiCss,
   SiGit,
   SiGithub,
   SiPostman,
   SiCisco,
   SiLinux,
-  SiWindows11,
   SiNodedotjs,
 } from 'react-icons/si';
+import { FaWindows } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 
 interface ToolItem {
@@ -113,7 +113,7 @@ const TOOLS_DATA: ToolItem[] = [
     category: 'webdev',
     role: 'Styling & Grid/Flexbox Systems',
     proficiency: 'Expert',
-    icon: SiCss3,
+    icon: SiCss,
     description: 'Flexbox, CSS Grid, keyframes animation, CSS variables, dan estetika visual modern.',
     tags: ['Styling', 'Flexbox', 'Grid'],
   },
@@ -133,7 +133,7 @@ const TOOLS_DATA: ToolItem[] = [
     category: 'itsupport',
     role: 'Windows & Linux Installation',
     proficiency: 'Expert',
-    icon: SiWindows11,
+    icon: FaWindows,
     description: 'Instalasi, konfigurasi, partisi drive, dan penyesuaian sistem operasi (Windows 10/11, Ubuntu/Debian Linux) untuk produktivitas optimal.',
     tags: ['OS', 'Windows', 'Linux', 'Setup'],
   },
