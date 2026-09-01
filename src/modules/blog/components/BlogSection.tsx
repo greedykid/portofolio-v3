@@ -56,7 +56,7 @@ export default function BlogSection({ posts }: BlogSectionProps) {
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {posts.map((post, idx) => (
-                  <div key={post.slug} className="snap-start shrink-0">
+                  <div key={post.slug} className="snap-start shrink-0 w-[270px] sm:w-[310px] md:w-[340px]">
                     <BlogCard post={post} index={idx} />
                   </div>
                 ))}

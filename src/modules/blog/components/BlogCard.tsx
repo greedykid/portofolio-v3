@@ -47,7 +47,7 @@ export default function BlogCard({ post, index = 0 }: BlogCardProps) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#0e131b] p-5 md:p-6 min-h-[230px] w-full shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)] transition-all duration-300 hover:-translate-y-1.5 hover:border-indigo-400/60 hover:shadow-[8px_8px_0px_0px_rgba(99,102,241,0.35)] select-none cursor-pointer"
+      className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#0e131b] p-5 md:p-6 min-h-[220px] w-full shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)] transition-all duration-300 hover:-translate-y-1.5 hover:border-indigo-400/60 hover:shadow-[8px_8px_0px_0px_rgba(99,102,241,0.35)] select-none cursor-pointer"
     >
       {/* Decorative Background Graphics */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
