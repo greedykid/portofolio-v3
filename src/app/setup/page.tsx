@@ -12,6 +12,10 @@ import {
   FiDatabase,
   FiHeadphones,
   FiLayers,
+  FiCamera,
+  FiVolume2,
+  FiShield,
+  FiGitBranch,
 } from 'react-icons/fi';
 import { cn } from '@/lib/utils';
 
@@ -22,93 +26,164 @@ interface SetupItem {
   description: string;
   icon: React.ComponentType<{ className?: string }>;
   tag: string;
+  badgeColor?: string;
 }
 
 const SETUP_ITEMS: SetupItem[] = [
-  // Hardware
+  // 1. Hardware
   {
     category: 'hardware',
-    name: 'Workstation Laptop',
-    role: 'Primary Dev Machine',
-    description: 'Intel Core i5, 16GB Dual-Channel RAM, 512GB NVMe M.2 SSD untuk multitasking dan kompilasi Next.js & Laravel yang cepat.',
+    name: 'Custom Desktop PC (DESKTOP-IT0EF0A)',
+    role: 'Primary Workstation',
+    description:
+      'Intel Core i5-3470 @ 3.20GHz (Up to 3.60 GHz), 16.0 GB RAM, NVIDIA GeForce GTX 750 Ti (2 GB VRAM), Triple SSD: ADATA SU650 (112 GB) + SSD (238 GB) + Msft Virtual Disk.',
     icon: FiCpu,
-    tag: 'Hardware',
+    tag: 'Desktop PC',
+    badgeColor: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200 dark:border-indigo-500/20',
   },
   {
     category: 'hardware',
-    name: 'Secondary Monitor 24" IPS FHD',
-    role: 'Display & Multitasking',
-    description: 'Monitor IPS 75Hz dengan color calibration akurat untuk preview UI/UX, database inspection, dan split terminal.',
+    name: 'Lenovo ThinkPad T430',
+    role: 'Secondary & Mobile Machine',
+    description:
+      'Laptop tangguh seri ThinkPad dengan keyboard legendaris dan durabilitas tinggi untuk pengujian sistem operasi Linux, mobile development, dan remote debugging.',
+    icon: FiCpu,
+    tag: 'Laptop',
+    badgeColor: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 border-blue-200 dark:border-blue-500/20',
+  },
+  {
+    category: 'hardware',
+    name: 'AOC 24V2H (24" IPS FHD)',
+    role: 'Primary Display Monitor',
+    description:
+      'Monitor frameless 23.8 inci panel IPS Full HD (1920x1080) dengan refresh rate 75Hz dan sudut pandang 178° untuk visual tajam dan multitasking yang nyaman.',
     icon: FiMonitor,
-    tag: 'Hardware',
+    tag: 'Monitor',
+    badgeColor: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-500/20',
   },
   {
     category: 'hardware',
-    name: 'External Storage & Backup',
-    role: 'Data Redundancy',
-    description: '1TB External SSD & High-Speed MicroSD untuk backup database lokal, environment docker, dan dokumen proyek.',
-    icon: FiHardDrive,
-    tag: 'Hardware',
+    name: 'Hikvision Web Camera',
+    role: 'Video Conference & Meetings',
+    description:
+      'Kamera video HD jernih untuk meeting daring, presentasi proyek, technical discussions, dan video call profesional.',
+    icon: FiCamera,
+    tag: 'Webcam',
+    badgeColor: 'text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/40 border-cyan-200 dark:border-cyan-500/20',
   },
 
-  // Peripherals
+  // 2. Peripherals
   {
     category: 'peripherals',
-    name: 'Mechanical Keyboard 75%',
-    role: 'Typing Comfort',
-    description: 'Custom lubed linear switches (Gateron Yellow) dengan PBT keycaps untuk pengalaman mengetik kode yang presisi dan empuk.',
+    name: 'Royal Kludge RK71',
+    role: 'Mechanical Keyboard (71-Keys)',
+    description:
+      'Keyboard mekanikal layout ringkas 71-keys dengan konektivitas ganda dan tactile switches untuk kenyamanan mengetik kode berjam-jam.',
     icon: FiLayers,
-    tag: 'Peripherals',
+    tag: 'Keyboard',
+    badgeColor: 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/40 border-purple-200 dark:border-purple-500/20',
   },
   {
     category: 'peripherals',
-    name: 'Wireless Ergonomic Mouse',
-    role: 'Navigation',
-    description: 'Mouse nirkabel presisi tinggi dengan thumb rest dan tombol makro untuk efisiensi navigasi window.',
+    name: 'RYUNIX Zero MX0',
+    role: 'Ergonomic Precision Mouse',
+    description:
+      'Mouse nirkabel responsif dan ergonomis dengan bobot ringan untuk navigasi workspace dan code editor yang presisi.',
     icon: FiLayers,
-    tag: 'Peripherals',
+    tag: 'Mouse',
+    badgeColor: 'text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/40 border-pink-200 dark:border-pink-500/20',
   },
   {
     category: 'peripherals',
-    name: 'ANC Wireless Headset & TWS',
-    role: 'Focus & Meetings',
-    description: 'Active Noise Cancellation untuk menjaga fokus saat sesi deep work dan meeting kolaborasi online.',
+    name: 'Logitech Z120 Stereo Speakers',
+    role: 'Desk Audio System',
+    description:
+      'Speaker stereo ringkas bertenaga USB dengan audio output jernih untuk kebutuhan multimedia dan audio setup harian.',
+    icon: FiVolume2,
+    tag: 'Speaker',
+    badgeColor: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-500/20',
+  },
+  {
+    category: 'peripherals',
+    name: 'QCY ArcBuds Lite',
+    role: 'Wireless TWS Earbuds',
+    description:
+      'TWS nirkabel dengan low latency dan isolasi suara optimal untuk sesi deep work dan fokus mendengarkan musik saat ngoding.',
     icon: FiHeadphones,
-    tag: 'Peripherals',
+    tag: 'TWS Earbuds',
+    badgeColor: 'text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/40 border-teal-200 dark:border-teal-500/20',
   },
 
-  // Software & Tools
+  // 3. Software & Dev Tools
+  {
+    category: 'software',
+    name: 'Windows 10 Pro (Atlas Tweak)',
+    role: 'Optimized Operating System',
+    description:
+      'Sistem operasi 64-bit yang dioptimasi khusus dengan AtlasOS tweak untuk latensi rendah, efisiensi konsumsi CPU & RAM, serta performa komputasi maksimal.',
+    icon: FiHardDrive,
+    tag: 'Operating System',
+    badgeColor: 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 border-blue-200 dark:border-blue-500/20',
+  },
+  {
+    category: 'software',
+    name: 'Antigravity IDE',
+    role: 'Next-Gen Agentic AI Workspace',
+    description:
+      'IDE modern dengan integrasi AI mutakhir untuk pair-programming, otomasi workflow, dan akselerasi pengembangan software tingkat lanjut.',
+    icon: FiCode,
+    tag: 'AI IDE',
+    badgeColor: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200 dark:border-indigo-500/20',
+  },
   {
     category: 'software',
     name: 'Visual Studio Code',
     role: 'Primary Code Editor',
-    description: 'Tema Catppuccin Mocha / One Dark Pro, font JetBrains Mono with Ligatures, ESLint, Tailwind CSS IntelliSense, Prettier.',
+    description:
+      'Editor utama untuk ekosistem React, Next.js, TypeScript, Tailwind CSS, dan PHP dengan konfigurasi ekstensi produktivitas lengkap.',
     icon: FiCode,
     tag: 'Editor',
+    badgeColor: 'text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40 border-sky-200 dark:border-sky-500/20',
+  },
+  {
+    category: 'software',
+    name: 'XAMPP Server Stack',
+    role: 'Local Web & MySQL Database',
+    description:
+      'Paket server lokal (Apache, MySQL/MariaDB, PHP) untuk mengelola basis data relasional dan mengembangkan proyek Laravel (GEGARES & Berkah Mulia).',
+    icon: FiDatabase,
+    tag: 'Server & DB',
+    badgeColor: 'text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/40 border-orange-200 dark:border-orange-500/20',
   },
   {
     category: 'software',
     name: 'Windows Terminal + PowerShell 7',
     role: 'CLI & Shell Environment',
-    description: 'Dikonfigurasi dengan Starship prompt, git integration, zoxide, dan WSL2 Ubuntu environment.',
+    description:
+      'Terminal modern multi-tab dengan PowerShell 7, Starship prompt, dan integrasi perintah CLI untuk produktivitas baris perintah.',
     icon: FiTerminal,
     tag: 'Terminal',
+    badgeColor: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-500/20',
   },
   {
     category: 'software',
-    name: 'MySQL Workbench & DBeaver',
-    role: 'Database Management',
-    description: 'Tools visual untuk manajemen query relasional, visualisasi ERD schema, dan benchmarking performa database.',
-    icon: FiDatabase,
-    tag: 'Database',
+    name: 'Tailscale',
+    role: 'Mesh VPN & Secure Remote Bridge',
+    description:
+      'Jaringan mesh VPN zero-config berbasis WireGuard untuk koneksi remote aman antar perangkat (PC, Laptop, dan staging environment).',
+    icon: FiShield,
+    tag: 'Networking',
+    badgeColor: 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-950/40 border-violet-200 dark:border-violet-500/20',
   },
   {
     category: 'software',
-    name: 'Postman & Insomnia',
-    role: 'API Development & Testing',
-    description: 'Pengujian endpoint RESTful API, validasi request payload, dan dokumentasi API schema.',
-    icon: FiCode,
-    tag: 'API Tool',
+    name: 'Git Bash',
+    role: 'Version Control Environment',
+    description:
+      'CLI berbasis Unix untuk version control Git, manajemen branching, commit, dan kolaborasi repositori GitHub.',
+    icon: FiGitBranch,
+    tag: 'VCS Tool',
+    badgeColor: 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-500/20',
   },
 ];
 
@@ -128,8 +203,8 @@ export default function SetupPage() {
           </h1>
           <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base max-w-xl">
             {locale === 'id'
-              ? 'Daftar perangkat keras (hardware), software, dan tools harian yang saya andalkan untuk produktivitas.'
-              : 'The hardware, software, and development tools I use daily for engineering and productivity.'}
+              ? 'Spesifikasi perangkat keras (hardware), peripherals, dan software yang saya gunakan sehari-hari untuk rekayasa perangkat lunak & IT Support.'
+              : 'The exact hardware specifications, peripherals, and software tools I rely on daily for software engineering & IT Support.'}
           </p>
         </div>
 
@@ -147,7 +222,7 @@ export default function SetupPage() {
               className={cn(
                 'rounded-2xl px-4 py-2 text-xs md:text-sm font-bold transition-all shadow-sm cursor-pointer',
                 filter === key
-                  ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 scale-105'
+                  ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 scale-105 shadow-md'
                   : 'bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border border-neutral-300/80 dark:border-white/10 hover:bg-neutral-100 dark:hover:bg-white/10'
               )}
             >
@@ -170,7 +245,12 @@ export default function SetupPage() {
                     <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-500/20 text-primary dark:text-indigo-400 shadow-sm transition-transform group-hover:scale-110">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <span className="rounded-lg bg-neutral-100 dark:bg-white/10 px-2.5 py-0.5 font-mono text-[11px] font-semibold text-neutral-600 dark:text-neutral-300">
+                    <span
+                      className={cn(
+                        'rounded-lg border px-2.5 py-0.5 font-mono text-[11px] font-bold',
+                        item.badgeColor || 'bg-neutral-100 dark:bg-white/10 text-neutral-600 dark:text-neutral-300 border-neutral-200 dark:border-white/10'
+                      )}
+                    >
                       {item.tag}
                     </span>
                   </div>
