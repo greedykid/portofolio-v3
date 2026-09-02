@@ -172,10 +172,14 @@ export default function Projects({ limit }: { limit?: number }) {
                 id: 'web',
                 label: locale === 'id' ? `Web Application (${webCount})` : `Web Applications (${webCount})`,
               },
-              {
-                id: 'it-support',
-                label: locale === 'id' ? `IT Support & Networking (${itCount})` : `IT Support & Networks (${itCount})`,
-              },
+              ...(itCount > 0
+                ? [
+                    {
+                      id: 'it-support',
+                      label: locale === 'id' ? `IT Support & Networking (${itCount})` : `IT Support & Networks (${itCount})`,
+                    },
+                  ]
+                : []),
             ].map((tab) => (
               <button
                 key={tab.id}

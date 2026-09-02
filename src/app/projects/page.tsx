@@ -23,8 +23,8 @@ export default function ProjectsPage() {
           </div>
           <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base max-w-2xl">
             {locale === 'id'
-              ? 'Koleksi studi kasus aplikasi web berbasis Laravel dan implementasi infrastruktur IT Support & Jaringan yang saya kembangkan.'
-              : 'Curated case studies of web applications and IT infrastructure & support implementations.'}
+              ? 'Koleksi studi kasus aplikasi web berbasis Laravel dan database MySQL yang telah saya kembangkan.'
+              : 'Curated case studies of web applications built with Laravel and MySQL.'}
           </p>
         </div>
 
