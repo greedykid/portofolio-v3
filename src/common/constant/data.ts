@@ -23,7 +23,7 @@ export const PROFILE = {
     'Lulusan S1 Sistem Informasi Universitas Gunadarma dengan kompetensi di bidang IT Support serta keahlian dalam pengembangan aplikasi web berbasis Laravel, MySQL, dan Tailwind CSS. Menguasai troubleshooting hardware/software, instalasi sistem operasi, pemeliharaan perangkat komputer/printer, serta pemahaman dasar konektivitas jaringan (LAN/Wi-Fi).',
   aboutParagraphs: [
     'Saya adalah lulusan Sarjana (S1) Sistem Informasi Universitas Gunadarma (IPK 3.58 / 4.00) dengan kompetensi di bidang IT Support serta keahlian dalam pengembangan aplikasi web berbasis Laravel, MySQL, dan Tailwind CSS.',
-    'Menguasai troubleshooting hardware/software, instalasi sistem operasi (Windows/Linux), pemeliharaan perangkat komputer & printer, serta pemahaman dasar konektivitas jaringan (LAN/Wi-Fi & Cisco Router).',
+    'Menguasai troubleshooting hardware/software, instalasi sistem operasi (Windows/Linux), pemeliharaan perangkat komputer & printer, serta pemahaman dasar mengenai konektivitas jaringan lokal (LAN & Wi-Fi).',
     'Berpengalaman membangun platform e-commerce "GEGARES" dan website katalog digital aktif "Berkah Mulia" (bmberkahmulia.com), menganalisis kebutuhan sistem (ERD/UML), serta mengelola database relasional. Memiliki komunikasi teknis yang baik, teliti, disiplin, adaptif, dan siap memberikan dukungan teknis optimal.',
   ],
   quote: 'the only way to do great work is to love what you do.',

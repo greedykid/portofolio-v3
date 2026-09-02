@@ -70,9 +70,9 @@ const CAREER_DATA: CareerItem[] = [
     iconColor: '#10b981',
   },
   {
-    role: 'IT Support & Jaringan Komputer',
-    company: 'Troubleshooting & Konfigurasi Jaringan',
-    legalCompany: 'Universitas Gunadarma & Layanan Mandiri',
+    role: 'IT Support & Pemeliharaan Komputer',
+    company: 'Troubleshooting PC & Dasar Jaringan',
+    legalCompany: 'Layanan Mandiri & Praktik Akademik',
     location: 'Jakarta, Indonesia',
     period: '2023 - 2025',
     type: 'Practical & Project-based',

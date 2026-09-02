@@ -149,31 +149,22 @@ const TOOLS_DATA: ToolItem[] = [
 
   // 3. Networking & Infrastructure
   {
-    name: 'Jaringan Komputer (LAN/Wi-Fi)',
+    name: 'Dasar Jaringan Lokal (LAN & Wi-Fi)',
     category: 'networking',
-    role: 'Network Setup & Crimping',
-    proficiency: 'Expert',
+    role: 'Konektivitas Dasar & Pengkabelan LAN',
+    proficiency: 'Proficient',
     icon: FiWifi,
-    description: 'Pemasangan kabel UTP (crimping RJ-45 Straight/Cross T568B), konfigurasi access point/router Wi-Fi, dan pembagian IP Address.',
-    tags: ['LAN', 'Cabling', 'Wi-Fi', 'TCP/IP'],
+    description: 'Pemahaman dasar konektivitas jaringan lokal, crimping kabel UTP RJ-45 (Straight/Cross), serta pengaturan koneksi Wi-Fi dan IP Address dasar untuk kebutuhan kantor/rumah.',
+    tags: ['Dasar Jaringan', 'LAN', 'Wi-Fi', 'Kabel UTP'],
   },
   {
-    name: 'Cisco Router Configuration',
+    name: 'Simulasi Jaringan Cisco (Akademik)',
     category: 'networking',
-    role: 'Routing & Subnetting Basics',
+    role: 'Praktikum Cisco Packet Tracer',
     proficiency: 'Proficient',
     icon: SiCisco,
-    description: 'Konfigurasi dasar Cisco Router CLI, subnetting IPv4 (VLSM/CIDR), routing static/default, dan simulasi topologi jaringan Cisco Packet Tracer.',
-    tags: ['Cisco', 'Routing', 'Subnetting', 'CLI'],
-  },
-  {
-    name: 'Tailscale & WireGuard VPN',
-    category: 'networking',
-    role: 'Zero-Config Mesh Networking',
-    proficiency: 'Advanced',
-    icon: FiWifi,
-    description: 'Konfigurasi jaringan mesh VPN aman untuk koneksi remote antar komputer lokal, server staging, dan workstation tanpa port forwarding.',
-    tags: ['VPN', 'Remote Access', 'Mesh'],
+    description: 'Pengenalan dasar konsep routing dan subnetting sederhana menggunakan Cisco Packet Tracer melalui modul praktikum laboratorium perkuliahan.',
+    tags: ['Dasar Jaringan', 'Packet Tracer', 'Praktikum'],
   },
 
   // 4. Dev Tools & Terminal
@@ -257,7 +248,7 @@ export default function ToolsPage() {
     { id: 'webdev', label: 'Web Development', count: TOOLS_DATA.filter((t) => t.category === 'webdev').length },
     { id: 'database', label: 'Database & Data', count: TOOLS_DATA.filter((t) => t.category === 'database').length },
     { id: 'itsupport', label: 'IT Support & Hardware', count: TOOLS_DATA.filter((t) => t.category === 'itsupport').length },
-    { id: 'networking', label: 'Jaringan & Network', count: TOOLS_DATA.filter((t) => t.category === 'networking').length },
+    { id: 'networking', label: locale === 'id' ? 'Dasar Jaringan' : 'Basic Networking', count: TOOLS_DATA.filter((t) => t.category === 'networking').length },
     { id: 'devtools', label: 'Dev Tools & Terminal', count: TOOLS_DATA.filter((t) => t.category === 'devtools').length },
   ];
 
@@ -276,8 +267,8 @@ export default function ToolsPage() {
           </div>
           <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base max-w-2xl">
             {locale === 'id'
-              ? 'Daftar teknologi pengembangan web (Laravel, PHP, MySQL, Tailwind CSS) dan perangkat kerja IT Support, Troubleshooting, serta Jaringan yang saya andalkan.'
-              : 'Web development stacks (Laravel, PHP, MySQL, Tailwind CSS) alongside IT Support, Hardware Troubleshooting & Networking competencies.'}
+              ? 'Daftar teknologi pengembangan web (Laravel, PHP, MySQL, Tailwind CSS), perangkat kerja IT Support, serta dasar-dasar jaringan komputer yang saya pelajari.'
+              : 'Web development stacks (Laravel, PHP, MySQL, Tailwind CSS), IT Support tools, and computer networking fundamentals.'}
           </p>
         </div>
 

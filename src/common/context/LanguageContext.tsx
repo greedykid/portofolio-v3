@@ -167,14 +167,14 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     hero_projects_btn: 'Lihat Proyek',
 
     tools_title: 'Tools & Keahlian Teknis',
-    tools_desc: 'Teknologi pengembangan web (Laravel, PHP, MySQL, Tailwind CSS) dan kompetensi IT Support & Jaringan yang saya kuasai.',
+    tools_desc: 'Teknologi pengembangan web (Laravel, PHP, MySQL, Tailwind CSS) dan kompetensi IT Support serta dasar jaringan yang saya kuasai.',
     tools_reset: 'Reset Posisi',
 
     about_badge: 'Tentang Saya',
     about_title: 'Pengembangan Web Modern & IT Support Berdedikasi',
     about_desc: 'Mengenal profil profesional, kompetensi teknis, dan portofolio proyek sistem informasi saya.',
     about_p1: 'Saya adalah lulusan Sarjana (S1) Sistem Informasi Universitas Gunadarma (IPK: 3.58 / 4.00) dengan kompetensi di bidang IT Support serta keahlian dalam pengembangan aplikasi web berbasis Laravel, MySQL, dan Tailwind CSS.',
-    about_p2: 'Menguasai troubleshooting hardware/software, instalasi sistem operasi (Windows/Linux), pemeliharaan perangkat komputer/printer, serta pemahaman dasar konektivitas jaringan (LAN/Wi-Fi & Cisco Router). Berpengalaman membangun platform e-commerce "GEGARES" dan website katalog digital aktif "Berkah Mulia" (bmberkahmulia.com).',
+    about_p2: 'Menguasai troubleshooting hardware/software, instalasi sistem operasi (Windows/Linux), pemeliharaan perangkat komputer/printer, serta pemahaman dasar konektivitas jaringan lokal (LAN & Wi-Fi). Berpengalaman membangun platform e-commerce "GEGARES" dan website katalog digital aktif "Berkah Mulia" (bmberkahmulia.com).',
     about_p3: 'Terbiasa menganalisis kebutuhan sistem (ERD/UML), mengelola database relasional, serta memiliki komunikasi teknis yang baik, teliti, disiplin, adaptif, dan siap memberikan dukungan teknis optimal.',
     about_more: 'Pelajari Lebih Lanjut',
     about_more_btn: 'Pelajari Lebih Lanjut',
@@ -185,8 +185,8 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     projects_live_preview: 'Pratinjau Langsung',
 
     blog_title: 'Blog & Catatan Teknis',
-    blog_desc: 'Catatan teknis seputar web development Laravel, troubleshooting IT Support, dan konfigurasi jaringan.',
-    blog_page_desc: 'Kumpulan tulisan, tutorial teknis, dan panduan seputar pengembangan web, IT Support, dan sistem jaringan.',
+    blog_desc: 'Catatan teknis seputar web development Laravel, troubleshooting IT Support, dan dasar jaringan.',
+    blog_page_desc: 'Kumpulan tulisan, tutorial teknis, dan panduan seputar pengembangan web, IT Support, dan dasar jaringan komputer.',
     blog_search_ph: 'Cari artikel berdasarkan judul, topik, atau kata kunci...',
     blog_not_found: 'Tidak ditemukan artikel yang sesuai dengan pencarian Anda.',
     blog_views: 'tayangan',
@@ -221,7 +221,7 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     edu_certificates_title: 'Sertifikasi & Lisensi',
 
     services_title: 'Layanan & Keahlian',
-    services_desc: 'Solusi pengembangan aplikasi web (Laravel/MySQL), IT Support & Helpdesk, serta pemeliharaan hardware & jaringan.',
+    services_desc: 'Solusi pengembangan aplikasi web (Laravel/MySQL), IT Support & Helpdesk, serta pemeliharaan hardware PC & dasar jaringan.',
 
     contact_title: 'Mari Terhubung',
     contact_desc: 'Punya kebutuhan pengembangan aplikasi web, posisi kerja IT Support/Web Developer, atau peluang kolaborasi? Pintu saya selalu terbuka.',
@@ -283,14 +283,14 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     hero_projects_btn: 'View Projects',
 
     tools_title: 'Tools & Technical Competencies',
-    tools_desc: 'Web development stack (Laravel, PHP, MySQL, Tailwind CSS) alongside IT Support, Hardware Troubleshooting & Networking skills.',
+    tools_desc: 'Web development stack (Laravel, PHP, MySQL, Tailwind CSS) alongside IT Support, Hardware Troubleshooting & basic networking.',
     tools_reset: 'Reset Layout',
 
     about_badge: 'About Me',
     about_title: 'Modern Web Engineering & Dedicated IT Support',
     about_desc: 'Discover my professional profile, technical competencies, and project engineering background.',
     about_p1: 'I am an Information Systems graduate from Universitas Gunadarma (GPA: 3.58 / 4.00) with strong competencies in IT Support and modern web application development using Laravel, MySQL, and Tailwind CSS.',
-    about_p2: 'Proficient in hardware/software troubleshooting, OS installation (Windows/Linux), PC & printer maintenance, and networking fundamentals (LAN/Wi-Fi & Cisco Router). Experienced in building the "GEGARES" e-commerce platform and the live "Berkah Mulia" digital catalog (bmberkahmulia.com).',
+    about_p2: 'Proficient in hardware/software troubleshooting, OS installation (Windows/Linux), PC & printer maintenance, and local network fundamentals (LAN/Wi-Fi). Experienced in building the "GEGARES" e-commerce platform and the live "Berkah Mulia" digital catalog (bmberkahmulia.com).',
     about_p3: 'Skilled in analyzing system requirements (ERD/UML), managing relational databases, with strong technical communication, discipline, precision, and adaptability to deliver optimal technical impact.',
     about_more: 'Discover More About Me',
     about_more_btn: 'Discover More About Me',
@@ -301,8 +301,8 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     projects_live_preview: 'Live Preview',
 
     blog_title: 'Blog & Technical Notes',
-    blog_desc: 'Technical write-ups on Laravel web development, IT Support troubleshooting, and network setup.',
-    blog_page_desc: 'A curated collection of technical notes, tutorials, and practical guides on web engineering, IT Support, and networking.',
+    blog_desc: 'Technical write-ups on Laravel web development, IT Support troubleshooting, and basic networking.',
+    blog_page_desc: 'A curated collection of technical notes, tutorials, and practical guides on web engineering, IT Support, and computer networking basics.',
     blog_search_ph: 'Search articles by title, topic, or keyword...',
     blog_not_found: 'No articles found matching your search.',
     blog_views: 'views',
@@ -337,7 +337,7 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     edu_certificates_title: 'Certificates & Credentials',
 
     services_title: 'Services & Capabilities',
-    services_desc: 'End-to-end web application development (Laravel/MySQL), IT Support & Helpdesk, plus hardware & network maintenance.',
+    services_desc: 'End-to-end web application development (Laravel/MySQL), IT Support & Helpdesk, plus hardware & basic network troubleshooting.',
 
     contact_title: "Let's Connect",
     contact_desc: 'Looking for a dedicated Web Developer or IT Support Engineer? My inbox is always open for opportunities and collaborations.',

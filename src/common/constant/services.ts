@@ -36,7 +36,7 @@ export const SERVICES: ServiceItem[] = [
   {
     title: 'IT Support & Troubleshooting',
     description:
-      'Perawatan hardware/software, instalasi OS (Windows/Linux), konfigurasi jaringan LAN/Wi-Fi, dan dukungan helpdesk yang responsif.',
+      'Perawatan hardware/software PC, instalasi OS (Windows/Linux), pemeliharaan printer, serta dukungan konektivitas dasar jaringan lokal (LAN & Wi-Fi).',
     icon: FiServer,
   },
 ];
@@ -49,11 +49,11 @@ export const TECH_STACK = [
   { name: 'Bootstrap', level: 80, category: 'Web' },
   { name: 'JavaScript', level: 80, category: 'Web' },
   { name: 'Git & GitHub', level: 86, category: 'Tools' },
-  { name: 'Docker', level: 65, category: 'Tools' },
-  { name: 'Figma', level: 72, category: 'Tools' },
+  { name: 'Hardware PC', level: 86, category: 'IT' },
   { name: 'Linux', level: 78, category: 'IT' },
-  { name: 'Cisco', level: 85, category: 'IT' },
-  { name: 'Go-Lang', level: 60, category: 'Tools' },
+  { name: 'Basic Network', level: 60, category: 'IT' },
+  { name: 'Figma', level: 72, category: 'Tools' },
+  { name: 'Docker', level: 65, category: 'Tools' },
 ] as const;
 
 export const STATS = [
@@ -98,19 +98,19 @@ export const SKILL_CATEGORIES = [
       'Instalasi OS (Windows/Linux)',
       'Perawatan PC & Printer',
       'IT Helpdesk & User Support',
-      'LAN & Wi-Fi Configuration',
+      'Konektivitas Dasar LAN & Wi-Fi',
     ],
   },
   {
-    category: 'Jaringan & Tools',
+    category: 'Tools & Produktivitas',
     icon: FiCloud,
     skills: [
-      'Cisco Router LAN/WAN',
       'Git & GitHub',
-      'Docker',
       'Postman',
-      'Go-Lang',
+      'Dasar Jaringan Komputer',
+      'Docker (Dasar)',
       'Microsoft Office',
+      'Figma (UI/UX)',
     ],
   },
 ] as const;
