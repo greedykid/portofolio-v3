@@ -30,12 +30,23 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
 
   const [loading, setLoading] = useState(true);
   const [zoom, setZoom] = useState(100);
+  const [isPinching, setIsPinching] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [containerWidth, setContainerWidth] = useState<number>(0);
 
   const pdfUrl = '/documents/CV_Rizki_Arbiansyah.pdf';
   const previewWebp = '/documents/cv-preview.webp';
   const previewPng = '/documents/cv-preview.png';
+
+  // Refs for multi-touch pinch-to-zoom calculation
+  const touchStartDistRef = useRef<number | null>(null);
+  const touchStartZoomRef = useRef<number>(100);
+  const zoomRef = useRef(zoom);
+  const lastTapRef = useRef<number>(0);
+
+  useEffect(() => {
+    zoomRef.current = zoom;
+  }, [zoom]);
 
   // Track container width to calculate responsive zoom on both mobile and desktop
   useEffect(() => {
@@ -68,6 +79,72 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
     };
   }, []);
 
+  // Multi-touch pinch-to-zoom and desktop Ctrl + Wheel zoom handler
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container || !isOpen) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+        touchStartDistRef.current = dist;
+        touchStartZoomRef.current = zoomRef.current;
+        setIsPinching(true);
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (
+        e.touches.length === 2 &&
+        touchStartDistRef.current !== null &&
+        touchStartDistRef.current > 0
+      ) {
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+        const t1 = e.touches[0];
+        const t2 = e.touches[1];
+        const currentDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+
+        const factor = currentDist / touchStartDistRef.current;
+        const targetZoom = Math.round(touchStartZoomRef.current * factor);
+        const clampedZoom = Math.max(50, Math.min(250, targetZoom));
+        setZoom(clampedZoom);
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) {
+        touchStartDistRef.current = null;
+        setIsPinching(false);
+      }
+    };
+
+    const handleWheel = (e: WheelEvent) => {
+      if (e.ctrlKey) {
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 15 : -15;
+        setZoom((prev) => Math.max(50, Math.min(250, prev + delta)));
+      }
+    };
+
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchmove', handleTouchMove, { passive: false });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
+    container.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+    container.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchmove', handleTouchMove);
+      container.removeEventListener('touchend', handleTouchEnd);
+      container.removeEventListener('touchcancel', handleTouchEnd);
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, [isOpen]);
+
   // Handle ESC and keyboard shortcuts for zoom / fullscreen
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -79,7 +156,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
           onClose();
         }
       } else if (e.key === '+' || e.key === '=') {
-        setZoom((prev) => Math.min(prev + 25, 200));
+        setZoom((prev) => Math.min(prev + 25, 250));
       } else if (e.key === '-' || e.key === '_') {
         setZoom((prev) => Math.max(prev - 25, 50));
       } else if (e.key === '0') {
@@ -105,9 +182,22 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
     window.open(pdfUrl, '_blank');
   };
 
-  const handleZoomIn = () => setZoom((prev) => Math.min(prev + 25, 200));
+  const handleZoomIn = () => setZoom((prev) => Math.min(prev + 25, 250));
   const handleZoomOut = () => setZoom((prev) => Math.max(prev - 25, 50));
   const handleResetZoom = () => setZoom(100);
+
+  // Mobile double-tap gesture to toggle zoom between 100% and 160%
+  const handleSheetTouchEnd = (e: React.TouchEvent) => {
+    if (e.changedTouches.length === 1 && !isPinching) {
+      const now = Date.now();
+      if (now - lastTapRef.current < 300) {
+        setZoom((prev) => (prev <= 100 ? 160 : 100));
+        lastTapRef.current = 0;
+      } else {
+        lastTapRef.current = now;
+      }
+    }
+  };
 
   const toggleFullscreen = async () => {
     try {
@@ -251,7 +341,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
           </div>
         </div>
 
-        {/* Modal Body - High Resolution Document Preview with Responsive Scaling */}
+        {/* Modal Body - High Resolution Document Preview with Responsive Scaling & Multi-touch Pinch */}
         <div
           ref={scrollContainerRef}
           className="relative flex-1 w-full bg-neutral-200/80 dark:bg-[#0c0f17] overflow-auto min-h-0 touch-pan-x touch-pan-y flex flex-col justify-between"
@@ -268,7 +358,11 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
           {/* Document Sheet Display Container */}
           <div className="min-w-full w-max flex justify-center py-4 px-2 sm:px-6 my-auto">
             <div
-              className="transition-all duration-200 ease-out origin-top shrink-0 shadow-2xl rounded-lg sm:rounded-xl overflow-hidden border border-neutral-300/80 dark:border-white/15 bg-white"
+              onTouchEnd={handleSheetTouchEnd}
+              className={cn(
+                'origin-top shrink-0 shadow-2xl rounded-lg sm:rounded-xl overflow-hidden border border-neutral-300/80 dark:border-white/15 bg-white select-none',
+                isPinching ? 'transition-none' : 'transition-all duration-200 ease-out'
+              )}
               style={{
                 width: calculatedWidth ? `${calculatedWidth}px` : '100%',
                 maxWidth: calculatedWidth ? undefined : '740px',
@@ -281,6 +375,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                   alt={`Curriculum Vitae — ${PROFILE.name}`}
                   width={1836}
                   height={2376}
+                  draggable={false}
                   className="w-full h-auto block select-none pointer-events-auto"
                   onLoad={() => setLoading(false)}
                   loading="eager"
@@ -312,7 +407,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
 
               <button
                 onClick={handleZoomIn}
-                disabled={zoom >= 200}
+                disabled={zoom >= 250}
                 title={locale === 'id' ? 'Perbesar (+)' : 'Zoom In (+)'}
                 aria-label="Zoom in"
                 className="p-1.5 rounded-full hover:bg-white/20 disabled:opacity-30 transition-colors cursor-pointer"
