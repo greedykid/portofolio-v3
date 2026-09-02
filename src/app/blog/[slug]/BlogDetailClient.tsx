@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Container from '@/common/components/elements/Container';
 import type { Post, PostMeta } from '@/common/libs/blog';
 import { useLanguage } from '@/common/context/LanguageContext';
-import { FiArrowLeft, FiClock, FiEye, FiCalendar, FiShare2, FiCheck } from 'react-icons/fi';
+import { FiArrowLeft, FiClock, FiEye, FiCalendar, FiShare2, FiCheck, FiLink } from 'react-icons/fi';
+import { FaLinkedin, FaTwitter, FaWhatsapp } from 'react-icons/fa';
 import BlogCard from '@/modules/blog/components/BlogCard';
 
 interface BlogDetailClientProps {
@@ -27,7 +28,6 @@ function formatDate(dateStr: string, locale: string): string {
   }
 }
 
-// Generate consistent synthetic view count
 function getViewsCount(slug: string): string {
   let hash = 0;
   for (let i = 0; i < slug.length; i++) {
@@ -41,6 +41,13 @@ function getViewsCount(slug: string): string {
 export default function BlogDetailClient({ post, morePosts }: BlogDetailClientProps) {
   const { t, locale } = useLanguage();
   const [copied, setCopied] = useState(false);
+  const [pageUrl, setPageUrl] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setPageUrl(window.location.href);
+    }
+  }, []);
 
   const formattedDate = formatDate(post.date, locale);
   const views = getViewsCount(post.slug);
@@ -49,9 +56,14 @@ export default function BlogDetailClient({ post, morePosts }: BlogDetailClientPr
     if (typeof window !== 'undefined') {
       navigator.clipboard.writeText(window.location.href);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), 2500);
     }
   };
+
+  const shareText = `${post.title} — oleh Rizki Arbiansyah`;
+  const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`;
+  const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(pageUrl)}`;
+  const whatsappShareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + ' ' + pageUrl)}`;
 
   return (
     <div className="w-full py-6 md:py-10">
@@ -127,25 +139,73 @@ export default function BlogDetailClient({ post, morePosts }: BlogDetailClientPr
                 <FiEye className="h-3.5 w-3.5" />
                 <span>{views} {t('blog_views')}</span>
               </div>
-              <button
-                onClick={handleCopyLink}
-                title="Bagikan artikel"
-                className="flex items-center gap-1.5 rounded-xl border border-neutral-300 dark:border-white/15 bg-neutral-100 dark:bg-white/5 px-2.5 py-1 text-xs font-semibold text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-white/10 transition-colors cursor-pointer"
-              >
-                {copied ? <FiCheck className="h-3.5 w-3.5 text-emerald-400" /> : <FiShare2 className="h-3.5 w-3.5" />}
-                <span>{copied ? (locale === 'id' ? 'Disalin!' : 'Copied!') : (locale === 'id' ? 'Bagikan' : 'Share')}</span>
-              </button>
             </div>
           </div>
 
           {/* Article Markdown Prose Content */}
           <div
-            className="blog-prose relative z-10"
+            className="blog-prose relative z-10 mb-10"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
 
+          {/* Social Share Bar */}
+          <div className="relative z-10 border-t border-neutral-200/80 dark:border-white/10 pt-6 mt-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-neutral-50 dark:bg-white/5 border border-neutral-200/80 dark:border-white/10">
+              <div className="flex items-center gap-2">
+                <FiShare2 className="h-4 w-4 text-indigo-500" />
+                <span className="text-xs sm:text-sm font-bold text-neutral-900 dark:text-white">
+                  {locale === 'id' ? 'Bagikan artikel ini:' : 'Share this article:'}
+                </span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href={linkedinShareUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  title="Share to LinkedIn"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-neutral-300 dark:border-white/15 bg-white dark:bg-white/10 hover:bg-[#0077b5] hover:text-white hover:border-[#0077b5] text-xs font-bold transition-all shadow-sm cursor-pointer"
+                >
+                  <FaLinkedin className="h-3.5 w-3.5 text-[#0077b5] group-hover:text-white" />
+                  <span>LinkedIn</span>
+                </a>
+
+                <a
+                  href={twitterShareUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  title="Share to X (Twitter)"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-neutral-300 dark:border-white/15 bg-white dark:bg-white/10 hover:bg-black hover:text-white text-xs font-bold transition-all shadow-sm cursor-pointer"
+                >
+                  <FaTwitter className="h-3.5 w-3.5 text-sky-400" />
+                  <span>X / Twitter</span>
+                </a>
+
+                <a
+                  href={whatsappShareUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  title="Share to WhatsApp"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-neutral-300 dark:border-white/15 bg-white dark:bg-white/10 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                >
+                  <FaWhatsapp className="h-3.5 w-3.5 text-emerald-500" />
+                  <span>WhatsApp</span>
+                </a>
+
+                <button
+                  onClick={handleCopyLink}
+                  title="Copy link to clipboard"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-neutral-300 dark:border-white/15 bg-white dark:bg-white/10 hover:bg-neutral-200 dark:hover:bg-white/20 text-xs font-bold transition-all shadow-sm cursor-pointer"
+                >
+                  {copied ? <FiCheck className="h-3.5 w-3.5 text-emerald-500" /> : <FiLink className="h-3.5 w-3.5 text-neutral-500" />}
+                  <span>{copied ? (locale === 'id' ? 'Tersalin!' : 'Copied!') : (locale === 'id' ? 'Salin Link' : 'Copy Link')}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
           {/* Author Footer Bio Card */}
-          <div className="relative z-10 mt-12 rounded-2xl border-2 border-indigo-200/80 dark:border-white/10 bg-indigo-50/50 dark:bg-[#151a28] p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="relative z-10 mt-8 rounded-2xl border-2 border-indigo-200/80 dark:border-white/10 bg-indigo-50/50 dark:bg-[#151a28] p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 font-brak font-bold text-lg text-white shadow-md">
                 R

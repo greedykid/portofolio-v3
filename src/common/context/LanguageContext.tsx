@@ -33,6 +33,9 @@ export interface Dictionary {
   hero_headline_2: string;
   hero_location: string;
   hero_work: string;
+  hero_download_cv: string;
+  hero_contact_btn: string;
+  hero_projects_btn: string;
 
   // Tech Stack
   tools_title: string;
@@ -159,6 +162,9 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     hero_headline_2: ' berbasis Laravel, MySQL, dan Tailwind CSS. Lulusan S1 Sistem Informasi dengan kompetensi pengembangan web, IT Support, dan pemeliharaan sistem.',
     hero_location: 'Jakarta Barat, DKI Jakarta',
     hero_work: 'Terbuka untuk Peluang Kerja (Web Dev & IT Support)',
+    hero_download_cv: 'Unduh CV (PDF)',
+    hero_contact_btn: 'Hubungi Saya',
+    hero_projects_btn: 'Lihat Proyek',
 
     tools_title: 'Tools & Keahlian Teknis',
     tools_desc: 'Teknologi pengembangan web (Laravel, PHP, MySQL, Tailwind CSS) dan kompetensi IT Support & Jaringan yang saya kuasai.',
@@ -272,6 +278,9 @@ const DICTIONARY: Record<Locale, Dictionary> = {
     hero_headline_2: ' powered by Laravel, MySQL, and Tailwind CSS. Information Systems graduate skilled in web development, IT Support, and systems maintenance.',
     hero_location: 'West Jakarta, DKI Jakarta',
     hero_work: 'Open to Roles (Web Dev & IT Support)',
+    hero_download_cv: 'Download Resume (PDF)',
+    hero_contact_btn: 'Get in Touch',
+    hero_projects_btn: 'View Projects',
 
     tools_title: 'Tools & Technical Competencies',
     tools_desc: 'Web development stack (Laravel, PHP, MySQL, Tailwind CSS) alongside IT Support, Hardware Troubleshooting & Networking skills.',

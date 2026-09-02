@@ -26,6 +26,8 @@ export interface Project {
   image: string;
   stacks: string[];
   isFeatured: boolean;
+  categoryType: 'web' | 'it-support' | 'ecommerce';
+  impactHighlights: string[];
   demoUrl?: string;
   githubUrl?: string;
   detail: string;
@@ -43,6 +45,8 @@ export const PROJECTS: Project[] = [
     image: '/images/gegares-live.png',
     stacks: ['Laravel 12', 'MySQL', 'Tailwind CSS', 'PHP', 'Blade'],
     isFeatured: true,
+    categoryType: 'ecommerce',
+    impactHighlights: ['Full-Stack Laravel 12', 'Optimasi Query MySQL', 'Dokumentasi UML/ERD'],
     demoUrl: 'https://gegares.shop',
     githubUrl: 'https://github.com/greedykid',
     detail:
@@ -128,6 +132,8 @@ export const PROJECTS: Project[] = [
     image: '/images/berkahmulia-live.png',
     stacks: ['Laravel', 'MySQL', 'Tailwind CSS', 'Blade'],
     isFeatured: true,
+    categoryType: 'web',
+    impactHighlights: ['Live Production', 'Katalog Bertingkat', '100% Responsif Mobile'],
     demoUrl: 'https://bmberkahmulia.com',
     githubUrl: 'https://github.com/greedykid/berkahmulia',
     detail:
@@ -200,6 +206,91 @@ export const PROJECTS: Project[] = [
         'Menerapkan praktik terbaik optimasi performa web katalog dengan banyak aset gambar visual.',
         'Meningkatkan keahlian dalam perancangan hierarki informasi dan navigasi e-catalog bertingkat.',
         'Pengalaman langsung dalam konfigurasi domain, deployment produksi aktif, dan pemeliharaan website berbasis Laravel.',
+      ],
+    },
+  },
+  {
+    id: 'it-network-infrastructure',
+    title: 'Infrastruktur Jaringan LAN/WAN & Troubleshooting PC',
+    subtitle: 'Simulasi Cisco Router, Subnetting, dan Pemeliharaan Sistem Komputer',
+    description:
+      'Dokumentasi teknis perancangan topologi jaringan Cisco Router, konfigurasi routing RIP/OSPF, subnetting IP address, serta pemecahan masalah perangkat keras, instalasi OS, dan pemeliharaan perangkat kantor.',
+    image: '/images/gegares-live.png',
+    stacks: ['Cisco Packet Tracer', 'Routing LAN/WAN', 'Hardware Diagnostics', 'Windows/Linux OS'],
+    isFeatured: true,
+    categoryType: 'it-support',
+    impactHighlights: ['Konfigurasi Cisco Router', 'Subnetting VLSM', 'Troubleshooting Hardware'],
+    githubUrl: 'https://github.com/greedykid',
+    detail:
+      'Implementasi praktis infrastruktur jaringan dan dukungan teknis TI meliputi konfigurasi router jaringan, analisis konektivitas LAN/WAN, pemecahan masalah hardware, instalasi sistem operasi, dan pemeliharaan periferal.',
+    accentColor: '#06b6d4',
+    caseStudy: {
+      overview:
+        'Proyek ini merangkum perancangan topologi jaringan komputer berbasis Cisco Router (LAN & WAN) dan prosedur standar penanganan kendala teknis perangkat keras dan lunak (IT Support) untuk lingkungan kerja operasional.',
+      background:
+        'Kelancaran operasional kerja memerlukan infrastruktur jaringan yang stabil, pengalamatan IP yang terstruktur rapi, serta pemeliharaan preventif dan kuratif terhadap perangkat PC, laptop, dan printer pengguna.',
+      role: 'IT Support Specialist & Network Administrator',
+      category: 'IT Support & Networking',
+      timeline: '2023 – 2025 (Laboratorium & Praktik Mandiri)',
+      deliverables: [
+        'Topologi Jaringan LAN & WAN Menggunakan Cisco Packet Tracer',
+        'Tabel Pengalamatan IP Subnetting (VLSM / CIDR)',
+        'SOP Troubleshooting Perangkat Keras & Instalasi Sistem Operasi',
+        'Dokumentasi Pemeliharaan Printer & Periferal Kantor',
+      ],
+      architecture: [
+        {
+          title: 'Perancangan Topologi Jaringan & Protokol Routing',
+          description:
+            'Merancang arsitektur jaringan bertingkat menghubungkan beberapa subnet kantor cabang menggunakan Cisco Router.',
+          points: [
+            'Konfigurasi routing statis dan dinamis (RIP / OSPF) pada Cisco IOS.',
+            'Segmentasi jaringan lokal (LAN) dan alokasi gateway untuk keamanan lalu lintas data.',
+            'Pengujian latensi, packet loss, dan troubleshooting konektivitas menggunakan ping & traceroute.',
+          ],
+        },
+        {
+          title: 'Pemeliharaan Hardware & Sistem Operasi',
+          description:
+            'Prosedur penanganan insiden perangkat komputer untuk memastikan downtime operasional minimal.',
+          points: [
+            'Diagnosa komponen hardware (RAM, storage SSD/HDD, power supply, thermal paste).',
+            'Instalasi bersih (clean install) sistem operasi Windows 11 dan Linux Ubuntu.',
+            'Manajemen driver, sharing printer lokal, dan konfigurasi keamanan endpoint.',
+          ],
+        },
+      ],
+      features: [
+        {
+          title: 'Konfigurasi Cisco Router & Pengalamatan IP',
+          description:
+            'Pengaturan antarmuka Serial & FastEthernet pada router, penetapan IP address, subnet mask, dan default gateway.',
+        },
+        {
+          title: 'Troubleshooting Hardware & Software Cepat',
+          description:
+            'Metodologi eliminasi bertahap untuk mengidentifikasi penyebab error BSOD, sistem lambat, atau kegagalan booting.',
+        },
+        {
+          title: 'Pengaturan Jaringan Nirkabel & Sharing Sumber Daya',
+          description:
+            'Konfigurasi access point Wi-Fi kantor dan sharing folder jaringan terotentikasi.',
+        },
+        {
+          title: 'Pemeliharaan Preventif Perangkat Keras',
+          description:
+            'Pembersihan berkala debu sistem pendingin, pembaruan patch keamanan OS, dan backup data penting.',
+        },
+      ],
+      systemDesign: [
+        'Diagram Topologi LAN/WAN: Pemetaan visual router, switch, access point, dan end-user PC.',
+        'Tabel Subnetting IP: Alokasi network address, usable host range, dan broadcast address.',
+        'Flowchart Penanganan Masalah: Diagram alur pemecahan masalah jaringan dan kegagalan sistem operasional.',
+      ],
+      learnings: [
+        'Menguasai sintaks command-line interface (CLI) Cisco IOS untuk manajemen router jaringan.',
+        'Meningkatkan efisiensi dan ketelitian dalam mendiagnosa kerusakan hardware dan komponen PC.',
+        'Memahami pentingnya dokumentasi jaringan terstruktur untuk memudahkan proses troubleshooting tim TI.',
       ],
     },
   },

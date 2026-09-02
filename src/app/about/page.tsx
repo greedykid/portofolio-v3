@@ -2,13 +2,14 @@
 
 import { useState } from 'react';
 import Container from '@/common/components/elements/Container';
-import { FiChevronDown, FiChevronUp, FiEye, FiAward, FiFileText } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp, FiEye, FiAward, FiFileText, FiDownload } from 'react-icons/fi';
 import { HiOutlineAcademicCap } from 'react-icons/hi2';
 import { FaStore, FaGraduationCap, FaServer, FaCode } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/common/context/LanguageContext';
 import { CERTIFICATES, type Certificate } from '@/common/constant/experience';
 import CertificateModal from '@/common/components/elements/CertificateModal';
+import ResumeModal from '@/common/components/elements/ResumeModal';
 
 interface EducationItem {
   institution: string;
@@ -87,6 +88,7 @@ export default function AboutPage() {
   const [showAllCareer, setShowAllCareer] = useState(false);
   const [showAllCerts, setShowAllCerts] = useState(false);
   const [activeCert, setActiveCert] = useState<Certificate | null>(null);
+  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   const displayedCareer = showAllCareer ? CAREER_DATA : CAREER_DATA.slice(0, 3);
   const displayedCerts = showAllCerts ? CERTIFICATES : CERTIFICATES.slice(0, 5);
@@ -95,13 +97,23 @@ export default function AboutPage() {
     <div className="w-full py-4 md:py-8">
       <Container className="max-w-[1280px]">
         {/* Header */}
-        <div className="mb-8 md:mb-10">
-          <h1 className="text-neutral-900 dark:text-white text-3xl md:text-5xl font-brak font-bold tracking-tight mb-2">
-            {t('about_badge')}
-          </h1>
-          <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base">
-            {t('about_desc')}
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 md:mb-10">
+          <div>
+            <h1 className="text-neutral-900 dark:text-white text-3xl md:text-5xl font-brak font-bold tracking-tight mb-2">
+              {t('about_badge')}
+            </h1>
+            <p className="text-neutral-600 dark:text-neutral-400 text-sm md:text-base">
+              {t('about_desc')}
+            </p>
+          </div>
+
+          <button
+            onClick={() => setIsResumeOpen(true)}
+            className="self-start sm:self-center inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs sm:text-sm shadow-[4px_4px_0px_0px_rgba(99,102,241,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer shrink-0"
+          >
+            <FiDownload className="h-4 w-4" />
+            <span>{locale === 'id' ? 'Unduh CV / Resume' : 'Download CV / Resume'}</span>
+          </button>
         </div>
 
         {/* 1. Main Top Card: Nice to meet you! / Profil Profesional */}
@@ -353,6 +365,12 @@ export default function AboutPage() {
       <CertificateModal
         certificate={activeCert}
         onClose={() => setActiveCert(null)}
+      />
+
+      {/* Interactive Resume Modal */}
+      <ResumeModal
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
       />
     </div>
   );

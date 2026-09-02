@@ -8,14 +8,14 @@ import { useLanguage } from '@/common/context/LanguageContext';
 import { cn } from '@/lib/utils';
 
 function ProjectCard({ project }: { project: Project }) {
-  const { t, locale } = useLanguage();
+  const { locale } = useLanguage();
   const cs = project.caseStudy;
 
   return (
-    <div className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#10141f] p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[8px_8px_0px_0px_rgba(99,102,241,0.35)] hover:border-indigo-400/60">
+    <div className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#10141f] p-5 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[8px_8px_0px_0px_rgba(99,102,241,0.35)] hover:border-indigo-400/60">
       <div>
         {/* Top Media / Mockup Browser Card */}
-        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#090d16] border border-neutral-200 dark:border-white/10 mb-6">
+        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#090d16] border border-neutral-200 dark:border-white/10 mb-5 sm:mb-6">
           <div
             className="absolute inset-0 flex flex-col items-center justify-center p-3 sm:p-5 select-none"
             style={{
@@ -28,28 +28,28 @@ function ProjectCard({ project }: { project: Project }) {
               <span className="h-2 w-2 rounded-full bg-yellow-400/80" />
               <span className="h-2 w-2 rounded-full bg-green-400/80" />
               <span className="ms-2 text-[10px] text-neutral-400 truncate max-w-[200px] font-mono">
-                {project.demoUrl ? new URL(project.demoUrl).hostname : project.id}
+                {project.demoUrl ? new URL(project.demoUrl).hostname : `${project.id}.local`}
               </span>
             </div>
 
             {/* Real Screenshot Preview inside browser window */}
-            <div className="relative w-full max-w-[360px] h-36 sm:h-40 rounded-b-xl overflow-hidden border-x border-b border-white/15 shadow-2xl bg-black">
+            <div className="relative w-full max-w-[360px] h-32 sm:h-36 md:h-40 rounded-b-xl overflow-hidden border-x border-b border-white/15 shadow-2xl bg-black">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between pointer-events-none">
-                <span className="text-[10px] font-bold text-white font-mono drop-shadow">
-                  {project.title.split(' ')[0]} • Live
+                <span className="text-[10px] font-bold text-white font-mono drop-shadow truncate mr-2">
+                  {project.title.split(' ')[0]}
                 </span>
                 <span
-                  className="text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm"
+                  className="text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm shrink-0"
                   style={{ backgroundColor: `${project.accentColor}cc`, color: '#ffffff' }}
                 >
-                  Production
+                  {project.categoryType === 'it-support' ? 'Infrastructure' : 'Production'}
                 </span>
               </div>
             </div>
@@ -57,24 +57,39 @@ function ProjectCard({ project }: { project: Project }) {
         </div>
 
         {/* Category & Status Badge */}
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex flex-wrap items-center gap-2 mb-3">
           <span className="rounded-md bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-500/20 px-2.5 py-0.5 text-[11px] font-bold text-primary dark:text-indigo-400">
             {cs.category}
           </span>
-          <span className="text-xs text-neutral-500 dark:text-neutral-400 font-mono">
+          <span className="text-[11px] text-neutral-500 dark:text-neutral-400 font-mono">
             {cs.timeline.split('(')[0]}
           </span>
         </div>
 
         {/* Title */}
-        <h3 className="text-xl md:text-2xl font-bold text-neutral-900 dark:text-white transition-colors group-hover:text-primary mb-2">
+        <h3 className="text-lg sm:text-xl md:text-2xl font-brak font-bold text-neutral-900 dark:text-white transition-colors group-hover:text-primary mb-2 leading-tight">
           {project.title}
         </h3>
 
         {/* Description */}
-        <p className="text-xs md:text-sm text-neutral-600 dark:text-neutral-400 line-clamp-3 leading-relaxed mb-6">
+        <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 line-clamp-3 leading-relaxed mb-4">
           {project.description}
         </p>
+
+        {/* Key Impact Highlights Pills */}
+        {project.impactHighlights && project.impactHighlights.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {project.impactHighlights.map((highlight) => (
+              <span
+                key={highlight}
+                className="inline-flex items-center gap-1 rounded-md bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400"
+              >
+                <FiCheckCircle className="h-3 w-3 shrink-0" />
+                <span>{highlight}</span>
+              </span>
+            ))}
+          </div>
+        )}
 
         {/* Stacks tags */}
         <div className="flex flex-wrap gap-1.5 mb-6">
@@ -90,10 +105,10 @@ function ProjectCard({ project }: { project: Project }) {
       </div>
 
       {/* Action CTA Buttons */}
-      <div className="border-t border-neutral-200 dark:border-white/10 pt-5 flex items-center gap-3">
+      <div className="border-t border-neutral-200 dark:border-white/10 pt-4 sm:pt-5 flex items-center gap-2.5">
         <Link
           href={`/projects/${project.id}`}
-          className="flex-1 flex items-center justify-center gap-1.5 rounded-2xl bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 py-2.5 text-xs md:text-sm font-bold shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+          className="flex-1 flex items-center justify-center gap-1.5 rounded-2xl bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 py-2.5 text-xs sm:text-sm font-bold shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
         >
           <span>{locale === 'id' ? 'Lihat Studi Kasus' : 'View Case Study'}</span>
           <FiArrowUpRight className="h-4 w-4" />
@@ -105,7 +120,7 @@ function ProjectCard({ project }: { project: Project }) {
             target="_blank"
             rel="noreferrer"
             title="Buka Website Langsung"
-            className="flex h-10 w-10 items-center justify-center rounded-2xl border-2 border-neutral-300/80 dark:border-white/15 bg-neutral-100 dark:bg-white/5 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-white/10 transition-colors cursor-pointer"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border-2 border-neutral-300/80 dark:border-white/15 bg-neutral-100 dark:bg-white/5 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
             <FiExternalLink className="h-4 w-4" />
           </a>
@@ -117,7 +132,7 @@ function ProjectCard({ project }: { project: Project }) {
             target="_blank"
             rel="noreferrer"
             title="Lihat Repositori GitHub"
-            className="flex h-10 w-10 items-center justify-center rounded-2xl border-2 border-neutral-300/80 dark:border-white/15 bg-neutral-100 dark:bg-white/5 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-white/10 transition-colors cursor-pointer"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border-2 border-neutral-300/80 dark:border-white/15 bg-neutral-100 dark:bg-white/5 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-200 dark:hover:bg-white/10 transition-colors cursor-pointer"
           >
             <FiGithub className="h-4 w-4" />
           </a>
@@ -128,25 +143,39 @@ function ProjectCard({ project }: { project: Project }) {
 }
 
 export default function Projects({ limit }: { limit?: number }) {
+  const { locale } = useLanguage();
+  const [activeFilter, setActiveFilter] = useState<'all' | 'web' | 'it-support'>('all');
+
   const displayedProjects = limit ? PROJECTS.slice(0, limit) : PROJECTS;
-  const [activeFilter, setActiveFilter] = useState<'all' | 'ecommerce' | 'catalog'>('all');
 
   const filtered = activeFilter === 'all'
     ? displayedProjects
-    : activeFilter === 'ecommerce'
-    ? displayedProjects.filter((p) => p.id === 'gegares')
-    : displayedProjects.filter((p) => p.id === 'berkah-mulia');
+    : activeFilter === 'web'
+    ? displayedProjects.filter((p) => p.categoryType === 'web' || p.categoryType === 'ecommerce')
+    : displayedProjects.filter((p) => p.categoryType === 'it-support');
+
+  const webCount = displayedProjects.filter((p) => p.categoryType === 'web' || p.categoryType === 'ecommerce').length;
+  const itCount = displayedProjects.filter((p) => p.categoryType === 'it-support').length;
 
   return (
     <section className="w-full">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6">
-        {/* Category Filters (rendered only on full page, not when limited on home) */}
+        {/* Category Filters */}
         {!limit && (
           <div className="flex flex-wrap items-center gap-2 mb-8">
             {[
-              { id: 'all', label: 'Semua Proyek (2)' },
-              { id: 'ecommerce', label: 'Platform E-Commerce' },
-              { id: 'catalog', label: 'Katalog Digital' },
+              {
+                id: 'all',
+                label: locale === 'id' ? `Semua Proyek (${displayedProjects.length})` : `All Projects (${displayedProjects.length})`,
+              },
+              {
+                id: 'web',
+                label: locale === 'id' ? `Web Application (${webCount})` : `Web Applications (${webCount})`,
+              },
+              {
+                id: 'it-support',
+                label: locale === 'id' ? `IT Support & Networking (${itCount})` : `IT Support & Networks (${itCount})`,
+              },
             ].map((tab) => (
               <button
                 key={tab.id}
