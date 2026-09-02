@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { FiMapPin, FiBriefcase, FiDownload, FiMail, FiArrowUpRight } from 'react-icons/fi';
+import { FiMapPin, FiBriefcase, FiDownload, FiMail } from 'react-icons/fi';
 import { useLanguage } from '@/common/context/LanguageContext';
 import ResumeModal from '@/common/components/elements/ResumeModal';
 
@@ -84,16 +84,8 @@ export default function Introduction() {
               </button>
 
               <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-sm sm:text-base transition-all hover:-translate-y-0.5 active:translate-y-0"
-              >
-                <span>{t('hero_projects_btn')}</span>
-                <FiArrowUpRight className="h-4 w-4" />
-              </Link>
-
-              <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/5 hover:bg-white/15 text-neutral-300 hover:text-white border border-white/10 font-bold text-sm sm:text-base transition-all hover:-translate-y-0.5 active:translate-y-0"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-sm sm:text-base transition-all hover:-translate-y-0.5 active:translate-y-0"
               >
                 <FiMail className="h-4 w-4" />
                 <span>{t('hero_contact_btn')}</span>

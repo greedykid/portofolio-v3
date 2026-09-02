@@ -14,46 +14,15 @@ function ProjectCard({ project }: { project: Project }) {
   return (
     <div className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-white dark:bg-[#10141f] p-5 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.3)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[8px_8px_0px_0px_rgba(99,102,241,0.35)] hover:border-indigo-400/60">
       <div>
-        {/* Top Media / Mockup Browser Card */}
-        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#090d16] border border-neutral-200 dark:border-white/10 mb-5 sm:mb-6">
-          <div
-            className="absolute inset-0 flex flex-col items-center justify-center p-3 sm:p-5 select-none"
-            style={{
-              background: `radial-gradient(circle at 50% 30%, ${project.accentColor || '#6366f1'}33 0%, #080c14 100%)`,
-            }}
-          >
-            {/* Mockup browser top bar */}
-            <div className="w-full max-w-[360px] rounded-t-xl bg-black/80 border border-white/15 p-2 flex items-center gap-1.5 shadow-md">
-              <span className="h-2 w-2 rounded-full bg-red-400/80" />
-              <span className="h-2 w-2 rounded-full bg-yellow-400/80" />
-              <span className="h-2 w-2 rounded-full bg-green-400/80" />
-              <span className="ms-2 text-[10px] text-neutral-400 truncate max-w-[200px] font-mono">
-                {project.demoUrl ? new URL(project.demoUrl).hostname : `${project.id}.local`}
-              </span>
-            </div>
-
-            {/* Real Screenshot Preview inside browser window */}
-            <div className="relative w-full max-w-[360px] h-32 sm:h-36 md:h-40 rounded-b-xl overflow-hidden border-x border-b border-white/15 shadow-2xl bg-black">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-2 left-3 right-3 flex items-center justify-between pointer-events-none">
-                <span className="text-[10px] font-bold text-white font-mono drop-shadow truncate mr-2">
-                  {project.title.split(' ')[0]}
-                </span>
-                <span
-                  className="text-[9px] font-bold px-2 py-0.5 rounded-full backdrop-blur-sm shrink-0"
-                  style={{ backgroundColor: `${project.accentColor}cc`, color: '#ffffff' }}
-                >
-                  {project.categoryType === 'it-support' ? 'Infrastructure' : 'Production'}
-                </span>
-              </div>
-            </div>
-          </div>
+        {/* Project Thumbnail Image */}
+        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-neutral-900 mb-5 sm:mb-6 shadow-sm">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
         </div>
 
         {/* Category & Status Badge */}

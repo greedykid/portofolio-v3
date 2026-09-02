@@ -165,46 +165,14 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
 
           {/* Right Column: Case Study Narrative (approx 67% width on desktop) */}
           <div className="lg:col-span-8 space-y-8">
-            {/* Top Media / Mockup Hero Card */}
-            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-[#0b0e14] shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.35)]">
-              <div
-                className="absolute inset-0 flex flex-col items-center justify-center p-6 md:p-10 select-none"
-                style={{
-                  background: `radial-gradient(circle at 50% 35%, ${project.accentColor || '#6366f1'}44 0%, #06090f 100%)`,
-                }}
-              >
-                {/* Mockup Browser Window Top Bar */}
-                <div className="w-full max-w-2xl rounded-t-2xl bg-black/80 border border-white/20 p-3 flex items-center gap-2 shadow-2xl">
-                  <span className="h-3 w-3 rounded-full bg-red-500/90" />
-                  <span className="h-3 w-3 rounded-full bg-yellow-500/90" />
-                  <span className="h-3 w-3 rounded-full bg-green-500/90" />
-                  <span className="ms-3 text-xs text-neutral-300 font-mono truncate">
-                    {project.demoUrl || `https://${project.id}.com`}
-                  </span>
-                </div>
-
-                {/* Mockup Browser Screen Body with Real Screenshot */}
-                <div className="relative w-full max-w-2xl h-52 sm:h-72 rounded-b-2xl overflow-hidden border-x border-b border-white/20 shadow-2xl bg-black">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover object-top"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-                  <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between pointer-events-none">
-                    <span className="text-xs sm:text-sm font-bold text-white font-mono drop-shadow">
-                      {project.title}
-                    </span>
-                    <span
-                      className="text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md"
-                      style={{ backgroundColor: `${project.accentColor}dd`, color: '#ffffff' }}
-                    >
-                      Production Verified
-                    </span>
-                  </div>
-                </div>
-              </div>
+            {/* Top Media / Project Image Hero */}
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border-2 border-neutral-300/80 dark:border-white/10 bg-neutral-100 dark:bg-neutral-900 shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.35)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover object-top"
+              />
             </div>
 
             {/* Section 1: Overview */}
