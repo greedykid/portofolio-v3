@@ -77,7 +77,7 @@ export default function Introduction() {
             <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
               <button
                 onClick={() => setIsResumeOpen(true)}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm sm:text-base shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm sm:text-base border border-indigo-400/30 shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
                 <FiDownload className="h-4 w-4" />
                 <span>{t('hero_download_cv')}</span>
@@ -85,7 +85,7 @@ export default function Introduction() {
 
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-sm sm:text-base transition-all hover:-translate-y-0.5 active:translate-y-0"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-neutral-800/90 hover:bg-neutral-700 text-white border border-white/20 font-bold text-sm sm:text-base shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
                 <FiMail className="h-4 w-4" />
                 <span>{t('hero_contact_btn')}</span>
