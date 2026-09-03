@@ -76,14 +76,17 @@ function formatCodeBlocks(html: string): string {
       return `<div class="code-window my-7 rounded-2xl overflow-hidden border-2 border-neutral-300/80 dark:border-white/15 bg-[#090d16] shadow-[6px_6px_0px_0px_rgba(99,102,241,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(99,102,241,0.25)]">
   <div class="code-window-header flex items-center justify-between px-4 py-2.5 bg-neutral-900 border-b border-white/10 select-none">
     <div class="flex items-center gap-2">
-      <span class="h-2.5 w-2.5 rounded-full bg-[#ff5f56] inline-block shadow-sm"></span>
-      <span class="h-2.5 w-2.5 rounded-full bg-[#ffbd2e] inline-block shadow-sm"></span>
-      <span class="h-2.5 w-2.5 rounded-full bg-[#27c93f] inline-block shadow-sm"></span>
-      <span class="ms-2 font-mono text-[11px] font-bold text-neutral-400 tracking-wider">${displayLang}</span>
+      <svg class="h-3.5 w-3.5 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      </svg>
+      <span class="font-mono text-[11px] font-bold text-neutral-300 tracking-wider">${displayLang}</span>
     </div>
     <button type="button" class="copy-code-btn flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 active:scale-95 text-neutral-300 hover:text-white text-xs font-mono font-medium border border-white/15 transition-all cursor-pointer">
-      <svg class="h-3.5 w-3.5 copy-icon shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <svg class="copy-icon h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+      </svg>
+      <svg class="check-icon hidden h-3.5 w-3.5 shrink-0 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
       </svg>
       <span class="copy-label">Copy</span>
     </button>

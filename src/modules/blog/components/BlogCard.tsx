@@ -1,5 +1,5 @@
 'use client';
-
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FiEye, FiClock } from 'react-icons/fi';
 import type { PostMeta } from '@/common/libs/blog';
@@ -8,17 +8,6 @@ import { useLanguage } from '@/common/context/LanguageContext';
 interface BlogCardProps {
   post: PostMeta;
   index?: number;
-}
-
-// Generate consistent synthetic view count based on slug
-function getViewsCount(slug: string): string {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash << 5) - hash + slug.charCodeAt(i);
-    hash |= 0;
-  }
-  const count = 800 + Math.abs(hash % 1800);
-  return count.toLocaleString('en-US');
 }
 
 function formatDate(dateStr: string, locale: string): string {
@@ -37,7 +26,20 @@ function formatDate(dateStr: string, locale: string): string {
 
 export default function BlogCard({ post, index = 0 }: BlogCardProps) {
   const { t, locale } = useLanguage();
-  const views = getViewsCount(post.slug);
+  const baseHash = Math.abs(
+    post.slug.split('').reduce((acc, char) => (acc << 5) - acc + char.charCodeAt(0), 0)
+  );
+  const initialViews = 280 + (baseHash % 340);
+  const [views, setViews] = useState<number>(initialViews);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const localStored = parseInt(localStorage.getItem(`blog_views_${post.slug}`) || '0', 10);
+    if (localStored > 0) {
+      setViews(initialViews + localStored);
+    }
+  }, [post.slug, initialViews]);
+
   const formattedDate = formatDate(post.date, locale);
 
   const isStorage = post.tags?.some((t) => /database|mysql|storage|sql/i.test(t)) || index % 4 === 1;

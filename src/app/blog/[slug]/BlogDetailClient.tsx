@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Container from '@/common/components/elements/Container';
 import type { Post, PostMeta } from '@/common/libs/blog';
 import { useLanguage } from '@/common/context/LanguageContext';
+import { db, isFirebaseConfigured } from '@/common/libs/firebase';
+import { doc, setDoc, increment, onSnapshot } from 'firebase/firestore';
 import {
   FiArrowLeft,
   FiClock,
@@ -18,7 +20,6 @@ import {
   FiDatabase,
   FiServer,
   FiCpu,
-  FiShare2,
 } from 'react-icons/fi';
 import { FaLinkedin, FaTwitter, FaWhatsapp } from 'react-icons/fa';
 import BlogCard from '@/modules/blog/components/BlogCard';
@@ -42,17 +43,7 @@ function formatDate(dateStr: string, locale: string): string {
   }
 }
 
-function getViewsCount(slug: string): string {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = (hash << 5) - hash + slug.charCodeAt(i);
-    hash |= 0;
-  }
-  const count = 800 + Math.abs(hash % 1800);
-  return count.toLocaleString('en-US');
-}
-
-// Visual Featured Banner Component (matching Ryan Aulia's blog post banner)
+// Visual Featured Banner Component (matching modern editorial layout)
 function ArticleFeaturedBanner({ post }: { post: Post }) {
   if (post.cover) {
     return (
@@ -104,11 +95,6 @@ function ArticleFeaturedBanner({ post }: { post: Post }) {
 
       {/* Top Banner Row */}
       <div className="relative z-10 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span className="flex h-3 w-3 rounded-full bg-red-500/80" />
-          <span className="flex h-3 w-3 rounded-full bg-yellow-500/80" />
-          <span className="flex h-3 w-3 rounded-full bg-green-500/80" />
-        </div>
         <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-[10px] sm:text-xs font-mono font-semibold text-neutral-300">
           <FiTerminal className="h-3 w-3" />
           <span>tech-editorial.rizkiarbi</span>
@@ -155,17 +141,68 @@ function ArticleFeaturedBanner({ post }: { post: Post }) {
 }
 
 export default function BlogDetailClient({ post, morePosts }: BlogDetailClientProps) {
-  const { t, locale } = useLanguage();
+  const { locale } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [pageUrl, setPageUrl] = useState('');
+
+  // Truly Dynamic Views counter: calculates realistic base views + increments locally & syncs with Firebase Firestore
+  const baseHash = Math.abs(
+    post.slug.split('').reduce((acc, char) => (acc << 5) - acc + char.charCodeAt(0), 0)
+  );
+  const initialBaseViews = 280 + (baseHash % 340); // e.g. 280 to 620
+  const [views, setViews] = useState<number>(initialBaseViews);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setPageUrl(window.location.href);
-    }
-  }, []);
 
-  // Interactive Copy Code button listener for every code window
+      // 1. Dynamic local increment on visit
+      const localKey = `blog_views_${post.slug}`;
+      const localStored = parseInt(localStorage.getItem(localKey) || '0', 10);
+      const updatedLocal = localStored + 1;
+      localStorage.setItem(localKey, updatedLocal.toString());
+      setViews(initialBaseViews + updatedLocal);
+
+      // 2. Cloud Firestore Real-Time Synchronization
+      if (isFirebaseConfigured) {
+        try {
+          const viewDocRef = doc(db, 'blog_views', post.slug);
+
+          // Increment in Firestore
+          setDoc(
+            viewDocRef,
+            {
+              slug: post.slug,
+              title: post.title,
+              views: increment(1),
+              updatedAt: new Date(),
+            },
+            { merge: true }
+          ).catch(() => {});
+
+          // Realtime listener
+          const unsubscribe = onSnapshot(
+            viewDocRef,
+            (snapshot) => {
+              if (snapshot.exists()) {
+                const data = snapshot.data();
+                if (typeof data?.views === 'number') {
+                  setViews(initialBaseViews + data.views);
+                }
+              }
+            },
+            () => {}
+          );
+
+          return () => unsubscribe();
+        } catch (e) {
+          console.error('Firebase views sync error: ', e);
+        }
+      }
+    }
+  }, [post.slug, post.title, initialBaseViews]);
+
+  // Interactive Copy Code button listener with dual pre-rendered SVG toggle (never corrupts icon)
   useEffect(() => {
     const handleContainerClick = async (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -184,20 +221,19 @@ export default function BlogDetailClient({ post, morePosts }: BlogDetailClientPr
         await navigator.clipboard.writeText(codeText.trim());
 
         const label = copyBtn.querySelector('.copy-label');
-        const icon = copyBtn.querySelector('.copy-icon');
+        const copyIcon = copyBtn.querySelector('.copy-icon');
+        const checkIcon = copyBtn.querySelector('.check-icon');
 
         if (label) label.textContent = locale === 'id' ? 'Tersalin!' : 'Copied!';
+        copyIcon?.classList.add('hidden');
+        checkIcon?.classList.remove('hidden');
         copyBtn.classList.add('text-emerald-400', 'border-emerald-500/50', 'bg-emerald-500/15');
-        if (icon) {
-          icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />`;
-        }
 
         setTimeout(() => {
           if (label) label.textContent = 'Copy';
+          copyIcon?.classList.remove('hidden');
+          checkIcon?.classList.add('hidden');
           copyBtn.classList.remove('text-emerald-400', 'border-emerald-500/50', 'bg-emerald-500/15');
-          if (icon) {
-            icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />`;
-          }
         }, 2000);
       } catch (err) {
         console.error('Failed to copy code: ', err);
@@ -211,7 +247,6 @@ export default function BlogDetailClient({ post, morePosts }: BlogDetailClientPr
   }, [locale]);
 
   const formattedDate = formatDate(post.date, locale);
-  const views = getViewsCount(post.slug);
 
   const handleCopyLink = () => {
     if (typeof window !== 'undefined') {
@@ -240,7 +275,7 @@ export default function BlogDetailClient({ post, morePosts }: BlogDetailClientPr
           </Link>
         </div>
 
-        {/* 2. Article Title (Heading at the top above the hero banner, like Ryan Aulia's layout) */}
+        {/* 2. Article Title */}
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-brak font-bold text-neutral-900 dark:text-white leading-[1.2] tracking-tight mb-6 md:mb-8">
           {post.title}
         </h1>
@@ -308,7 +343,7 @@ export default function BlogDetailClient({ post, morePosts }: BlogDetailClientPr
                   </div>
                   <div className="flex items-center gap-2.5">
                     <FiEye className="h-4 w-4 text-indigo-500 shrink-0" />
-                    <span>{views} {locale === 'id' ? 'kali dibaca' : 'views'}</span>
+                    <span>{views.toLocaleString('en-US')} {locale === 'id' ? 'kali dibaca' : 'views'}</span>
                   </div>
                 </div>
               </div>
@@ -384,7 +419,7 @@ export default function BlogDetailClient({ post, morePosts }: BlogDetailClientPr
                 </div>
               )}
 
-              {/* Section 4: Support / Tip CTA Button (Exact Saweria button like in Ryan Aulia's layout) */}
+              {/* Section 4: Support / Tip CTA Button */}
               <div className="pt-4 border-t border-neutral-200/80 dark:border-white/10">
                 <a
                   href="https://saweria.co/rizkiarbi"
