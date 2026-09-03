@@ -33,7 +33,7 @@ const SETUP_ITEMS: SetupItem[] = [
   // 1. Hardware
   {
     category: 'hardware',
-    name: 'Custom Desktop PC (DESKTOP-IT0EF0A)',
+    name: 'Custom Desktop PC',
     role: 'Primary Workstation',
     description:
       'Intel Core i5-3470 @ 3.20GHz (Up to 3.60 GHz), 16.0 GB RAM, NVIDIA GeForce GTX 750 Ti (2 GB VRAM), Triple SSD: ADATA SU650 (112 GB) + SSD (238 GB) + Msft Virtual Disk.',
