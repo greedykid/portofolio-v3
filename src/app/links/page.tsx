@@ -116,13 +116,22 @@ export default function LinksPage() {
         <div className="relative h-36 md:h-40 w-full bg-gradient-to-br from-teal-800/40 via-indigo-900/60 to-slate-900 p-4 flex items-start justify-between">
           <button
             onClick={toggleTheme}
-            aria-label="Toggle theme"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-amber-400 backdrop-blur-md border border-white/10 hover:bg-black/60 transition-all cursor-pointer"
+            aria-label={theme === 'dark' ? 'Mode Gelap' : 'Mode Terang'}
+            title={
+              theme === 'dark'
+                ? locale === 'id'
+                  ? 'Mode Gelap (Klik untuk beralih ke Mode Terang)'
+                  : 'Dark Mode (Click to switch to Light)'
+                : locale === 'id'
+                ? 'Mode Terang (Klik untuk beralih ke Mode Gelap)'
+                : 'Light Mode (Click to switch to Dark)'
+            }
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 backdrop-blur-md border border-white/10 hover:bg-black/60 hover:scale-110 active:scale-95 transition-all cursor-pointer shadow-sm"
           >
             {theme === 'dark' ? (
-              <FiSun className="h-4 w-4" />
+              <FiMoon className="h-4 w-4 text-indigo-400" />
             ) : (
-              <FiMoon className="h-4 w-4 text-neutral-200" />
+              <FiSun className="h-4 w-4 text-amber-400" />
             )}
           </button>
           <button
