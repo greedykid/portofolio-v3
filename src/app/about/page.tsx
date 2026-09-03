@@ -28,6 +28,11 @@ interface CareerItem {
   period: string;
   type: string;
   workplace: string;
+  description: {
+    id: string;
+    en: string;
+  };
+  skills: string[];
   icon: React.ComponentType<{ className?: string }>;
   iconBg: string;
   iconColor: string;
@@ -53,6 +58,11 @@ const CAREER_DATA: CareerItem[] = [
     period: 'Sep 2025 - Feb 2026',
     type: 'Academic Project',
     workplace: 'On-site',
+    description: {
+      id: 'Merancang dan mengimplementasikan arsitektur aplikasi e-commerce kuliner berbasis MVC Laravel 12, relasi database MySQL, sistem keranjang belanja & checkout, serta penyusunan dokumen analisis sistem (ERD & UML).',
+      en: 'Designed and implemented MVC culinary e-commerce application architecture using Laravel 12, MySQL relational database, shopping cart & checkout flow, and system analysis documentation (ERD & UML).',
+    },
+    skills: ['Laravel 12', 'MySQL', 'Tailwind CSS', 'UML / ERD'],
     icon: FaGraduationCap,
     iconBg: 'bg-[#181d2a] border-indigo-500/30 text-indigo-400',
     iconColor: '#6366f1',
@@ -65,6 +75,11 @@ const CAREER_DATA: CareerItem[] = [
     period: 'Jun 2026 - Sekarang',
     type: 'Freelance',
     workplace: 'Remote',
+    description: {
+      id: 'Mengembangkan website katalog digital UMKM bmberkahmulia.com dengan antarmuka responsif, integrasi kontak pesanan langsung, serta pengoptimalan kecepatan akses dan SEO lokal.',
+      en: 'Developed responsive digital MSME product catalog website bmberkahmulia.com with direct order contact integration, load speed optimization, and local SEO.',
+    },
+    skills: ['Laravel', 'Blade', 'Tailwind CSS', 'Responsive UI'],
     icon: FaStore,
     iconBg: 'bg-[#181d2a] border-emerald-500/30 text-emerald-400',
     iconColor: '#10b981',
@@ -77,6 +92,11 @@ const CAREER_DATA: CareerItem[] = [
     period: '2023 - 2025',
     type: 'Practical & Project-based',
     workplace: 'On-site / Hybrid',
+    description: {
+      id: 'Melakukan perakitan dan pemeliharaan perangkat keras (hardware) PC/laptop, instalasi & konfigurasi sistem operasi (Windows/Linux), perawatan printer, serta penanganan konektivitas dasar LAN & Wi-Fi.',
+      en: 'Conducted PC/laptop hardware assembly and maintenance, operating system installation & setup (Windows/Linux), printer care, and basic local network connectivity setup (LAN & Wi-Fi).',
+    },
+    skills: ['Hardware PC', 'Windows & Linux', 'Dasar Jaringan', 'Troubleshooting'],
     icon: FaServer,
     iconBg: 'bg-[#181d2a] border-cyan-500/30 text-cyan-400',
     iconColor: '#06b6d4',
@@ -91,7 +111,7 @@ export default function AboutPage() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   const displayedCareer = showAllCareer ? CAREER_DATA : CAREER_DATA.slice(0, 3);
-  const displayedCerts = showAllCerts ? CERTIFICATES : CERTIFICATES.slice(0, 5);
+  const displayedCerts = showAllCerts ? CERTIFICATES : CERTIFICATES.slice(0, 3);
 
   return (
     <div className="w-full py-4 md:py-8">
@@ -152,9 +172,9 @@ export default function AboutPage() {
         </div>
 
         {/* 2. Side-by-Side Cards: Edukasi & Sertifikasi (Kiri) vs Karir & Pengalaman (Kanan) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start mb-8">
           {/* Left Card: Pendidikan & Sertifikasi */}
-          <div className="lg:col-span-5 relative rounded-3xl border-2 border-teal-300/80 dark:border-teal-500/20 bg-teal-50/50 dark:bg-[#0c1619] p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(20,184,166,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(20,184,166,0.3)] flex flex-col justify-between">
+          <div className="lg:col-span-5 relative rounded-3xl border-2 border-teal-300/80 dark:border-teal-500/20 bg-teal-50/50 dark:bg-[#0c1619] p-4 sm:p-6 md:p-8 shadow-[6px_6px_0px_0px_rgba(20,184,166,0.2)] dark:shadow-[6px_6px_0px_0px_rgba(20,184,166,0.3)]">
             <div>
               <div className="flex items-center justify-between gap-3 mb-1">
                 <h3 className="text-neutral-900 dark:text-white text-lg sm:text-xl md:text-2xl font-brak font-bold">
@@ -293,15 +313,15 @@ export default function AboutPage() {
             </p>
 
             {/* Seamless Connected Vertical Timeline */}
-            <div className="relative space-y-4 before:absolute before:left-[20px] sm:before:left-[22px] before:top-6 before:bottom-6 before:w-[2px] before:bg-indigo-500/30 dark:before:bg-indigo-500/25">
+            <div className="relative space-y-4 before:absolute before:left-[20px] sm:before:left-[22px] md:before:left-[24px] before:top-6 before:bottom-6 before:w-[2px] before:bg-indigo-500/30 dark:before:bg-indigo-500/25">
               {displayedCareer.map((career, idx) => {
                 const Icon = career.icon;
                 return (
-                  <div key={idx} className="relative flex items-center gap-3 sm:gap-4 group">
+                  <div key={idx} className="relative flex items-start gap-3 sm:gap-4 group">
                     {/* Centered Node Avatar Badge */}
                     <div
                       className={cn(
-                        'relative z-10 flex h-10 w-10 sm:h-11 sm:w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-2xl border shadow-sm transition-transform duration-200 group-hover:scale-105',
+                        'relative z-10 flex h-10 w-10 sm:h-11 sm:w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-2xl border shadow-sm transition-transform duration-200 group-hover:scale-105 mt-0.5',
                         career.iconBg
                       )}
                     >
@@ -329,6 +349,23 @@ export default function AboutPage() {
                         <span>{career.type}</span>
                         <span>•</span>
                         <span>{career.workplace}</span>
+                      </div>
+
+                      {/* Role Description */}
+                      <p className="text-xs text-neutral-600 dark:text-neutral-300 mt-2.5 leading-relaxed">
+                        {locale === 'id' ? career.description.id : career.description.en}
+                      </p>
+
+                      {/* Skills Badges */}
+                      <div className="flex flex-wrap gap-1.5 mt-3 pt-2.5 border-t border-neutral-100 dark:border-white/5">
+                        {career.skills.map((skill) => (
+                          <span
+                            key={skill}
+                            className="px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-white/5 text-[10px] font-mono font-medium text-neutral-600 dark:text-neutral-300 border border-neutral-200 dark:border-white/10"
+                          >
+                            {skill}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
