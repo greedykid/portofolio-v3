@@ -165,34 +165,50 @@ export default function BlogDetailClient({ post, morePosts }: BlogDetailClientPr
     }
   }, []);
 
-  // Client-side enhancement: Add interactive Copy button to every code block
+  // Interactive Copy Code button listener for every code window
   useEffect(() => {
-    const preElements = document.querySelectorAll('.blog-prose pre');
-    preElements.forEach((pre) => {
-      if (pre.querySelector('.code-copy-btn')) return;
+    const handleContainerClick = async (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const copyBtn = target.closest('.copy-code-btn') as HTMLButtonElement | null;
+      if (!copyBtn) return;
 
-      const button = document.createElement('button');
-      button.className =
-        'code-copy-btn absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-neutral-300 hover:text-white text-[11px] font-mono font-medium border border-white/15 transition-all cursor-pointer select-none';
-      button.innerHTML = '<span>Copy</span>';
+      const codeWindow = copyBtn.closest('.code-window');
+      if (!codeWindow) return;
 
-      button.addEventListener('click', async () => {
-        const codeElement = pre.querySelector('code');
-        const code = (codeElement as HTMLElement)?.innerText || (pre as HTMLElement).innerText || pre.textContent || '';
-        try {
-          await navigator.clipboard.writeText(code);
-          button.innerHTML = '<span class="text-emerald-400 font-bold">Copied!</span>';
-          setTimeout(() => {
-            button.innerHTML = '<span>Copy</span>';
-          }, 2000);
-        } catch {
-          // ignore
+      const pre = codeWindow.querySelector('pre');
+      if (!pre) return;
+
+      const codeText = pre.textContent || (pre as HTMLElement).innerText || '';
+
+      try {
+        await navigator.clipboard.writeText(codeText.trim());
+
+        const label = copyBtn.querySelector('.copy-label');
+        const icon = copyBtn.querySelector('.copy-icon');
+
+        if (label) label.textContent = locale === 'id' ? 'Tersalin!' : 'Copied!';
+        copyBtn.classList.add('text-emerald-400', 'border-emerald-500/50', 'bg-emerald-500/15');
+        if (icon) {
+          icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />`;
         }
-      });
 
-      pre.appendChild(button);
-    });
-  }, [post.content]);
+        setTimeout(() => {
+          if (label) label.textContent = 'Copy';
+          copyBtn.classList.remove('text-emerald-400', 'border-emerald-500/50', 'bg-emerald-500/15');
+          if (icon) {
+            icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />`;
+          }
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy code: ', err);
+      }
+    };
+
+    document.addEventListener('click', handleContainerClick);
+    return () => {
+      document.removeEventListener('click', handleContainerClick);
+    };
+  }, [locale]);
 
   const formattedDate = formatDate(post.date, locale);
   const views = getViewsCount(post.slug);
